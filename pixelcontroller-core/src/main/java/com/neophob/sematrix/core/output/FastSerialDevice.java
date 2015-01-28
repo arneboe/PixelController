@@ -23,19 +23,23 @@ public class FastSerialDevice extends Output {
     private boolean initialized = false;
 
 
-    public FastSerialDevice(String portName, ApplicationConfigurationHelper ph) {
+    public FastSerialDevice(ApplicationConfigurationHelper ph) {
         super(OutputDeviceEnum.FASTSERIAL, ph, 8);
         //FIXME maybe reduce bbp to 4 if the speed is not high enough. Wont be visible anyway.
-
-        if (portName != null && !portName.trim().isEmpty()) {
-            LOG.log(Level.INFO, "Opening serial port: {0}", portName);
-            serialPortName = portName;
+        serialPortName = ph.getFastSerialDevice();
+        if (serialPortName != null && !serialPortName.trim().isEmpty()) {
+            LOG.log(Level.INFO, "Opening serial port: {0}", serialPortName);
             try {
-                openPort(portName);
+                openPort(serialPortName);
             } catch (NoSerialPortFoundException e) {
                 e.printStackTrace();
             }
             initialized = true;
+        }
+        else
+        {
+            LOG.log(Level.SEVERE, "Serial port value undefined");
+            throw new IllegalArgumentException("Serial port value undefined");
         }
     }
 
