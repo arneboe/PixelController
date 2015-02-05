@@ -41,12 +41,10 @@ import com.neophob.sematrix.osc.client.impl.OscClientFactory;
 public class PixConClient {
 
 	private static final float VERSION = 0.6f; 
-	
-    /** The Constant DEFAULT_PORT. */
+
     private static final int DEFAULT_PORT = 9876;
     private static final int DEFAULT_JMX_PORT = 1337;
 
-    /** The Constant DEFAULT_HOST. */
     private static final String DEFAULT_HOST = "127.0.0.1";
 
     private static final String PARAM_COMMAND = "command";

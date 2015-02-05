@@ -32,10 +32,8 @@ import com.neophob.sematrix.core.resize.Resize.ResizeName;
  */
 public class ColorScroll extends Generator {
 
-    /** The scroll mode. */
     private ScrollMode scrollMode;
     
-    /** The frame count. */
     private int frameCount;
     
     /** The internal buffer x size2. */
@@ -44,10 +42,6 @@ public class ColorScroll extends Generator {
     /** The internal buffer y size2. */
     private int internalBufferYSize2;
 
-    
-    /**
-     * The Enum ScrollMode.
-     */
     public enum ScrollMode{
 	    LEFT_TO_RIGHT(0),
 	    RIGHT_TO_LEFT(1),
@@ -66,7 +60,6 @@ public class ColorScroll extends Generator {
 	    EXPLODE_DIAMOND(14),
 	    IMPLODE_DIAMOND(15);
     	
-    	/** The mode. */
 	    private int mode;
     	
     	/**

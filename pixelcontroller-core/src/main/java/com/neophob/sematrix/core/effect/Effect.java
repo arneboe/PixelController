@@ -37,42 +37,20 @@ public abstract class Effect implements RandomizeState {
 	 */
 	public enum EffectName {
 		
-		/** The PASSTHRU. */
 		PASSTHRU(0),
-		
-		/** The INVERTER. */
 		INVERTER(1),
-		
-		/** The ROTOZOOM. */
 		ROTOZOOM(2),
-		
-		/** The BEAT horizontal shift. */
 		BEAT_HORIZONTAL_SHIFT(3),
-		
-		/** The BEAT vertical shift. */
 		BEAT_VERTICAL_SHIFT(4),
-		
-		/** The VOLUMINIZE. */
 		VOLUMINIZE(5),
-		
-		/** The THRESHOLD. */
 		THRESHOLD(6),
-				
 		TEXTURE_DEFORMATION(7),
-		
-		/** The ZOOM. */
 		ZOOM(8),
-		
 		FLIP_X(9),
-		
-		FLIP_Y(10),		
-		
-		STROBO(11),		
-
-		ROTATE90(12),		
+		FLIP_Y(10),
+		STROBO(11),
+		ROTATE90(12),
 		;
-
-		/** The id. */
 		private int id;
 		
 		/**

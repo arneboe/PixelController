@@ -34,7 +34,6 @@ import com.neophob.sematrix.core.properties.ColorFormat;
  */
 public class OutputHelper {
 
-	/** The log. */
 	private static final Logger LOG = Logger.getLogger(OutputHelper.class.getName());
 
 	private OutputHelper() {

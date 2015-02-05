@@ -44,7 +44,6 @@ import com.neophob.sematrix.core.resize.util.ScalrOld;
  */
 public class ScreenCapture extends Generator {
 
-	/** The log. */
 	private static final Logger LOG = Logger.getLogger(ScreenCapture.class.getName());
 
 	private static final int BORDER_SIZE = 20;

@@ -36,25 +36,18 @@ public class PixelImage extends Generator {
 
 	private static final Logger LOG = Logger.getLogger(PixelImage.class.getName());
 
-	/** The Constant PIXELNR. */
 	private static final int PIXELNR = 8;
 
-	/** The Constant NR_OF_IMAGES. */
 	private static final int NR_OF_IMAGES = 14;
 
-	/** The y diff. */
 	private int xDiff,yDiff;
 
-	/** The grid. */
 	private int[][] grid = new int[PIXELNR][PIXELNR];
 
-	/** The images. */
 	private int[][] images = new int[15][2];
 
-	/** The rnd. */
 	private Random rnd = new Random();
 
-	/** The frame. */
 	private int frame = 0;
 
 	private int fps;

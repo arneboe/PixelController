@@ -25,31 +25,22 @@ package com.neophob.sematrix.core.layout;
  */
 public class LayoutModel {
 	
-	/** The same fx on x. */
 	private int sameFxOnX;
 	
-	/** The same fx on y. */
 	private int sameFxOnY;
 	
-	/** The ofs x. */
 	private int ofsX;
 	
-	/** The ofs y. */
 	private int ofsY;
 	
-	/** The visual id */
 	private int visualId;
 	
-	/** The screen fragment x. */
 	private float screenFragmentX;
 	
-	/** The screen fragment y. */
 	private float screenFragmentY;
 	
-	/** The x width. */
 	private float xStart,xWidth;
 	
-	/** The y width. */
 	private float yStart,yWidth;
 	
 	/**

@@ -35,14 +35,8 @@ public abstract class Resize implements IResize {
 	 * @author michu
 	 */
 	public enum ResizeName {
-		
-		/** The PIXE l_ resize. */
 		PIXEL_RESIZE(0),
-		
-		/** The QUALIT y_ resize. */
 		QUALITY_RESIZE(1);
-		
-		/** The id. */
 		private int id;
 		
 		/**
@@ -63,8 +57,7 @@ public abstract class Resize implements IResize {
 			return id;
 		}
 	}
-	
-	/** The resize name. */
+
 	private ResizeName resizeName;
 	
 	/**

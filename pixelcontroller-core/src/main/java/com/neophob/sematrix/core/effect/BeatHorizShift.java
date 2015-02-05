@@ -27,7 +27,6 @@ import com.neophob.sematrix.core.sound.ISound;
  */
 public class BeatHorizShift extends Effect {
 
-	/** The ammount. */
 	private int ammount=0;
 	
 	private ISound sound;

@@ -37,29 +37,15 @@ import com.neophob.sematrix.core.glue.MatrixData;
  */
 public abstract class Fader implements IFader {
 
-	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Fader.class.getName());
 
 	protected static final int DEFAULT_FADER_DURATION = 1500;
 	
-	/**
-	 * The Enum FaderName.
-	 */
 	public enum FaderName {
-		
-		/** The SWITCH. */
 		SWITCH(0),
-		
-		/** The CROSSFADE. */
 		CROSSFADE(1),
-		
-		/** The SLIDE upside down. */
 		SLIDE_UPSIDE_DOWN(2),
-		
-		/** The SLIDE left right. */
 		SLIDE_LEFT_RIGHT(3);
-		
-		/** The id. */
 		private int id;
 		
 		/**

@@ -32,7 +32,6 @@ public class OutputMapping {
 	/** the visual number (offset) */
 	private int visualNumber;
 	
-	/** The fader. */
 	private IFader fader;
 
 	/**

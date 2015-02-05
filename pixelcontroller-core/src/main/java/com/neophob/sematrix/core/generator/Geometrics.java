@@ -37,21 +37,16 @@ import com.neophob.sematrix.core.sound.ISound;
  */
 public class Geometrics extends Generator {
 
-	/** The Constant THICKNESS. */
 	private static final int THICKNESS = 10;
 
-	/** The drops. */
 	private List<Drop> drops;
 
-	/** The tmp. */
 	private List<Drop> tmp;
 
-	/** The sound. */
 	private ISound sound;
 
 	public int[] internalBufferTmp;
 	
-	/** The rnd gen. */
 	private Random rndGen=new Random();
 
 	/**

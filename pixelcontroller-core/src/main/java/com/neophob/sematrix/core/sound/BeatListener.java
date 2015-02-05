@@ -35,10 +35,8 @@ import ddf.minim.analysis.BeatDetect;
  */
 public class BeatListener implements AudioListener {
 	  
-  	/** The beat. */
   	private BeatDetect beat;
 	  
-  	/** The source. */
   	private AudioInput source;
 	  
 	  /**

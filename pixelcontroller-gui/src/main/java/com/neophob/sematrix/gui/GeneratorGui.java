@@ -78,7 +78,6 @@ import controlP5.Toggle;
  */
 public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
-    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 2344499301021L;
 
     private static final int SELECTED_MARKER = 10;
@@ -94,13 +93,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     
     private static final String ALWAYS_VISIBLE_TAB = "global"; //$NON-NLS-1$
 
-    /** The log. */
     private static final Logger LOG = Logger.getLogger(GeneratorGui.class.getName());
 
-    /** The y. */
     private int windowWidth,windowHeight;
 
-    /** The p image. */
     private PImage pImage=null;
     private PImage logo;
 

@@ -33,13 +33,10 @@ import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
  */
 public class RainbowduinoV2Device extends ArduinoOutput {
 
-	/** The log. */
 	private static final Logger LOG = Logger.getLogger(RainbowduinoV2Device.class.getName());
 	
-	/** The all i2c address. */
 	private List<Integer> allI2cAddress;
 	
-	/** The rainbowduino. */
 	private Rainbowduino rainbowduino = null;
 
 	/**

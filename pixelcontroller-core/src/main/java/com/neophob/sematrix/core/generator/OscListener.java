@@ -31,10 +31,8 @@ import com.neophob.sematrix.core.resize.Resize.ResizeName;
  */
 public class OscListener extends Generator {
 
-    /** The Constant RESIZE_TYP. */
-    private static final ResizeName RESIZE_TYP = ResizeName.QUALITY_RESIZE;	
+    private static final ResizeName RESIZE_TYP = ResizeName.QUALITY_RESIZE;
 
-    /** The Constant LOG. */
     private static final Logger LOG = Logger.getLogger(OscListener.class.getName());
 
     private long lastUpdateTs;

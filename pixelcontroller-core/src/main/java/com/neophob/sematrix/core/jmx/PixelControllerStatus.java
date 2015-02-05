@@ -45,33 +45,24 @@ import com.neophob.sematrix.core.output.OutputDeviceEnum;
  */
 public class PixelControllerStatus implements PixelControllerStatusMBean {
 
-	/** The log. */
 	private static final Logger LOG = Logger.getLogger(PixelControllerStatus.class.getName());
 	
-	/** The Constant JMX_BEAN_NAME. */
 	public static final String JMX_BEAN_NAME = PixelControllerStatus.class.getCanonicalName()+":type=PixelControllerStatusMBean";
 	
-	/** The Constant VERSION. */
 	private static final float VERSION = 1.2f;
 	
-	/** The Constant SECONDS. */
 	private static final int SECONDS = 10;
 		
-	/** The Constant COOL_DOWN_MILLISECONDS. */
 	private static final int COOL_DOWN_MILLISECONDS = 3000;
 	
 	private static long coolDownTimestamp = System.currentTimeMillis();
 
-	/** The configured fps. */
 	private int configuredFps;
 	
-	/** The current fps. */
 	private float currentFps;
 	
-	/** The frame count. */
 	private long frameCount;
 	
-	/** The start time. */
 	private long startTime;
 	
 	/** The global time measure value. */
@@ -80,7 +71,6 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	/** The output dependent measure values */
 	private Map<IOutput, Map<TimeMeasureItemOutput, CircularFifoBuffer>> timeMeasureMapOutput;
 	
-	/** The output list. */
 	private List<IOutput> outputList;
 	
 	private Collector col;

@@ -33,19 +33,14 @@ import com.neophob.sematrix.core.resize.Resize.ResizeName;
  */
 public class Visual {
 
-	/** The generator1. */
 	private Generator generator1;
 	
-	/** The generator2. */
 	private Generator generator2;
 	
-	/** The effect1. */
 	private Effect effect1;
 	
-	/** The effect2. */
 	private Effect effect2;
 	
-	/** The mixer. */
 	private Mixer mixer;
 	
 	private ColorSet colorSet;

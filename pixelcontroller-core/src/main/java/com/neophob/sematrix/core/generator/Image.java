@@ -48,10 +48,8 @@ public class Image extends Generator {
 	//list to store movie files used by shuffler
     private List<String> imageFiles;
     
-	/** The Constant RESIZE_TYP. */
-	private static final ResizeName RESIZE_TYP = ResizeName.QUALITY_RESIZE;	
+	private static final ResizeName RESIZE_TYP = ResizeName.QUALITY_RESIZE;
 	
-	/** The Constant LOG. */
 	private static final Logger LOG = Logger.getLogger(Image.class.getName());
 	
 	/** The currently loaded file */

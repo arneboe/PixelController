@@ -48,13 +48,10 @@ import com.neophob.sematrix.gui.handler.WindowHandler;
  */
 public class PixelController extends PApplet {  
 
-	/** The log. */
 	private static final Logger LOG = Logger.getLogger(PixelController.class.getName());
 
-	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -1336765543826338205L;
-	
-	/** The Constant FPS. */
+
 	public static final int FPS = 25;
 
 	/** setup gui constants */
@@ -69,7 +66,6 @@ public class PixelController extends PApplet {
 
     private Collector collector;
 
-    /** The output. */
     private Output output;
     
     private OutputGui matrixEmulator;

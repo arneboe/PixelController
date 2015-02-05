@@ -35,14 +35,8 @@ public abstract class Layout {
 	 * The Enum LayoutName.
 	 */
 	public enum LayoutName {
-		
-		/** The HORIZONTAL. */
 		HORIZONTAL(0),
-		
-		/** The BOX. */
 		BOX(1);
-		
-		/** The id. */
 		private int id;
 		
 		/**
@@ -64,16 +58,12 @@ public abstract class Layout {
 		}
 	}
 	
-	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Layout.class.getName());
 	
-	/** The layout name. */
 	private LayoutName layoutName;
 	
-	/** The row1 size. */
 	protected int row1Size;
 	
-	/** The row2 size. */
 	protected int row2Size;
 	
 	/**

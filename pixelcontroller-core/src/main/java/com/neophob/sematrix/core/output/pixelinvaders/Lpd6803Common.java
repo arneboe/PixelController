@@ -32,19 +32,16 @@ import com.neophob.sematrix.core.properties.ColorFormat;
 
 public abstract class Lpd6803Common {
 	
-	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Lpd6803Common.class.getName());
 
 	protected int nrOfLedHorizontal;
 
 	protected int nrOfLedVertical;
 
-	/** The Constant BUFFERSIZE. */
 	protected int bufferSize;
 
 	protected static Adler32 adler = new Adler32();
 	
-	/** The connection error counter. */
 	protected int connectionErrorCounter;
 	
 	/** map to store checksum of image. */
@@ -55,8 +52,6 @@ public abstract class Lpd6803Common {
 
 	protected boolean initialized;
 	
-
-	/** The ack errors. */
 	protected long ackErrors = 0;
 	
 	/**

@@ -44,15 +44,12 @@ public class OutputGui {
 
 	private static final int MAX_BPP = 8;
 			
-	/** The frame. */
 	private int frame = 0;
 		
 	private PApplet parent;
 	
-	/** The matrix data. */
 	private MatrixData matrixData;
 	
-	/** The layout. */
 	private Layout layout;
 	
 	private Collector collector;

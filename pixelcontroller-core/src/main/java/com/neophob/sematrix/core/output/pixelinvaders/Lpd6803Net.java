@@ -45,7 +45,6 @@ import com.neophob.sematrix.core.output.gamma.RGBAdjust;
  */
 public class Lpd6803Net extends Lpd6803Common{
 		
-	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Lpd6803Net.class.getName());
 	
 	/** internal lib version. */

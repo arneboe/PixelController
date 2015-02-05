@@ -41,10 +41,8 @@ import com.neophob.sematrix.core.sound.BeatToAnimation;
 public final class MessageProcessor {
 
 
-	/** The log. */
 	private static final Logger LOG = Logger.getLogger(MessageProcessor.class.getName());
 
-	/** The Constant IGNORE_COMMAND. */
 	private static final String IGNORE_COMMAND = "Ignored command";
 
 	/**

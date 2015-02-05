@@ -57,31 +57,23 @@ public class Textwriter extends Generator {
 		//SINGLE_CHARACTERS
 	}
 	
-	/** The Constant TEXT_BUFFER_X_SIZE. */
 	private static final int TEXT_BUFFER_X_SIZE=128;
 	
-	/** The Constant CHANGE_SCROLLING_DIRECTION_TIMEOUT. */
 	private static final int CHANGE_SCROLLING_DIRECTION_TIMEOUT=12;
 	
-	/** The Constant SCROLL_AMMOUNT. */
 	private static final int SCROLL_AMMOUNT = 4;
 	
-	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Textwriter.class.getName());
 	
-	/** The font. */
 	private Font font;
 	
-	/** The xofs. */
 	private int xofs;
 	
-	/** The max x pos. */
 	private int maxXPos;
 	
 	/** The text stored as bitmap. */
 	private int[] textAsImage;
 	
-	/** The text. */
 	private String text;
 
 	private AbstractScroller scroller;

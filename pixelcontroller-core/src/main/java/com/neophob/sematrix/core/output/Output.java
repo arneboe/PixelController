@@ -40,22 +40,16 @@ import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
  */
 public abstract class Output implements IOutput {
 
-	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Output.class.getName());
 
-	/** The outputDeviceEnum. */
 	private OutputDeviceEnum outputDeviceEnum;
 	
-	/** The matrix data. */
 	protected MatrixData matrixData;
 	
-	/** The layout. */
 	protected Layout layout;
 	
-	/** The collector. */
 	protected Collector collector;
 	
-	/** bit per pixel. */
 	protected int bpp;
 	
 	/** counter used for buffer switching */

@@ -49,7 +49,6 @@ public class FileUtils {
 	private static final String BML_DIR = DATA_DIR+File.separator+"blinken"+File.separator;
 	private static final String IMAGE_DIR = DATA_DIR+File.separator+"pics";
 	
-    /** The Constant PRESENTS_FILENAME. */
     private static final String PRESETS_FILENAME = "presets.led";
 
 	private String rootDirectory;

@@ -36,7 +36,6 @@ public enum BeatToAnimation {
 	
 	;
 	
-	/** The id. */
 	private int id;
 
 	BeatToAnimation(int id) {

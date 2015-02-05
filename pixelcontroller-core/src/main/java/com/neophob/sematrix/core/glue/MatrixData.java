@@ -39,20 +39,13 @@ import com.neophob.sematrix.core.resize.Resize.ResizeName;
  */
 public class MatrixData {
 
-    /** The log. */
     private static final Logger LOG = Logger.getLogger(MatrixData.class.getName());
 
-    /** The device x size. */
     private final int deviceXSize;
 
-    /** The device y size. */
     private final int deviceYSize;
 
-    /** The device size. */
     private final int deviceSize;
-
-    /** This map is used to store temporary images */
-    //private Map<Output, PImage> pImagesMap;
 
     /** internal buffer size */
     private int bufferWidth;

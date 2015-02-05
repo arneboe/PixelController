@@ -43,14 +43,12 @@ import com.neophob.sematrix.core.output.gamma.RGBAdjust;
  */
 public class ApplicationConfigurationHelper {
 
-    /** The log. */
     private static final Logger LOG = Logger.getLogger(ApplicationConfigurationHelper.class.getName());
 
     private static final int DEFAULT_RESOLUTION = 8;
     private static final float DEFAULT_SOUND_THRESHOLD = 0.0005f;
     
-    /** The Constant ERROR_MULTIPLE_DEVICES_CONFIGURATED. */
-    private static final String ERROR_MULTIPLE_DEVICES_CONFIGURATED = 
+    private static final String ERROR_MULTIPLE_DEVICES_CONFIGURATED =
     		"Multiple devices configured, illegal configuration!";
 
     private static final String ERROR_MULTIPLE_CABLING_METHOD_CONFIGURATED = 
@@ -59,19 +57,15 @@ public class ApplicationConfigurationHelper {
     private static final String ERROR_INVALID_OUTPUT_MAPPING = 
     		"Invalid output mapping entries, output.mapping > output.resolution.x*output.resolution.y";
 
-    /** The Constant FAILED_TO_PARSE. */
     private static final String FAILED_TO_PARSE = "Failed to parse {0}";
     
     private static final int MAXIMAL_PIXELS_PER_UNIVERSE = 170;
 
-    /** The config. */
     protected Properties config=null;
 
-    /** The output device enum. */
     private OutputDeviceEnum outputDeviceEnum = null;
 
     //output specific settings
-    /** The i2c addr. */
     private List<Integer> i2cAddr=null;
     
     private List<String> rainbowduinoV3SerialDevices = null;
@@ -79,17 +73,14 @@ public class ApplicationConfigurationHelper {
 
     private String fastSerialDevice = null;
 
-    /** The lpd device. */
     private List<DeviceConfig> lpdDevice=null;
 
-    /** The stealth device. */
     private List<DeviceConfig> stealthDevice=null;
 
     private List<DeviceConfig> tpm2netDevice=null;
     private List<DeviceConfig> artNetDevice=null;
     private List<DeviceConfig> e131Device=null;
 
-    /** The color format. */
     private List<ColorFormat> colorFormat=null;
 
     /** define how the panels are arranged, used by pixelinvaders panels */
@@ -100,10 +91,8 @@ public class ApplicationConfigurationHelper {
     private Map<Integer, RGBAdjust> pixelInvadersCorrectionMap = new HashMap<Integer, RGBAdjust>();
     
     //how many output screens are used? needed to define layouts
-    /** The devices in row1. */
     private int devicesInRow1 = 0;
 
-    /** The devices in row2. */
     private int devicesInRow2 = 0;
 
     /** The output device x resolution. */

@@ -33,7 +33,6 @@ public class PresetSettings {
 	
     private static final String NAME_MARKER = "presetname=";
     	
-	/** The present. */
 	private List<String> present;
 	private String name = "";
 

@@ -31,16 +31,12 @@ import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
  */
 public abstract class ArduinoOutput extends Output {
 	
-	/** The log. */
 	private static final Logger LOG = Logger.getLogger(ArduinoOutput.class.getName());
 
-	/** The initialized. */
 	protected boolean initialized;
 	
-	/** The need update. */
 	protected long needUpdate;
 	
-	/** The no update. */
 	protected long noUpdate;
 	
 	/**
