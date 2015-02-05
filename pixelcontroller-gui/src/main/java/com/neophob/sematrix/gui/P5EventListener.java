@@ -146,8 +146,13 @@ public class P5EventListener implements ControlListener {
                 break;
 
             case THRESHOLD: 
-                LOG.log(Level.INFO, selection+": "+intVal);
+                LOG.log(Level.INFO, selection + ": " + intVal);
                 createMessage(ValidCommands.CHANGE_THRESHOLD_VALUE, intVal);		    
+                break;
+
+            case BPM:
+                LOG.log(Level.INFO, selection + ": " + intVal);
+                createMessage(ValidCommands.CHANGE_BPM_VALUE, intVal);
                 break;
 
             case FX_ROTOZOOMER:

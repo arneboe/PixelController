@@ -45,6 +45,7 @@ public enum GuiElement {
 	
 	//effects
 	THRESHOLD,
+	BPM,
 	FX_ROTOZOOMER,
 
 	RANDOM_ELEMENT,

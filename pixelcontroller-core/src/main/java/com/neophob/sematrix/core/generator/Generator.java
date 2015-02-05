@@ -92,23 +92,17 @@ public abstract class Generator implements RandomizeState {
 		}
 	}
 	
-	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Generator.class.getName());
 
-	/** The name. */
 	private GeneratorName name;
 	
-	/** The resize option. */
 	private ResizeName resizeOption;
 	
 	//internal, larger buffer
-	/** The internal buffer. */
 	public int[] internalBuffer;
 	
-	/** The internal buffer x size. */
 	protected int internalBufferXSize;
 	
-	/** The internal buffer y size. */
 	protected int internalBufferYSize;
 	
 	/** is the generator selected and thus active? */
@@ -117,7 +111,6 @@ public abstract class Generator implements RandomizeState {
 	/**
 	 * Instantiates a new generator.
 	 *
-	 * @param controller the controller
 	 * @param name the name
 	 * @param resizeOption the resize option
 	 */

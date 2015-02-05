@@ -114,7 +114,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private Toggle freeze;
     
     //Effect Tab    
-    private Slider thresholdSlider, fxRotoSlider;	
+    private Slider thresholdSlider, fxRotoSlider, bpmControl;
     private DropdownList textureDeformOptions, zoomOptions;
     
     //Generator Tab
@@ -384,7 +384,14 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         		0, 255, 255, genFxXOfs, genElYOfs+60, 140, 14);
         thresholdSlider.setSliderMode(Slider.FIX);
         thresholdSlider.setGroup(generatorTab);	
-        thresholdSlider.setDecimalPrecision(0);		
+        thresholdSlider.setDecimalPrecision(0);
+
+        bpmControl = cp5.addSlider(GuiElement.BPM.guiText(),
+                0, 400, 100, genFxXOfs, genElYOfs+60 + thresholdSlider.getHeight() + 2, 140, 14);
+        bpmControl.setSliderMode(Slider.FIX);
+        bpmControl.setGroup(generatorTab);
+        bpmControl.setDecimalPrecision(0);
+
 
         //rotozoom slider
         fxRotoSlider = cp5.addSlider(GuiElement.FX_ROTOZOOMER.guiText(), 
@@ -1255,6 +1262,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 				case CHANGE_THRESHOLD_VALUE:
 					thresholdSlider.changeValue(Float.parseFloat(s.getValue()));
 					break;
+
+                case CHANGE_BPM_VALUE:
+                    bpmControl.changeValue(Float.parseFloat(s.getValue()));
+                    break;
 					
 				case CHANGE_ROTOZOOM:
 					fxRotoSlider.changeValue(Float.parseFloat(s.getValue()));
