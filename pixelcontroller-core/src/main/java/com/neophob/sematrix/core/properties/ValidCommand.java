@@ -66,6 +66,9 @@ public enum ValidCommand {
     CHANGE_THRESHOLD_VALUE(CommandGroup.EFFECT, 1,
             "<INT> select current threshold for the threshold effect, 0-255"),
 
+    CHANGE_BPM_VALUE(CommandGroup.EFFECT, 1,
+            "<INT> select current bpm for all bpm effects, 1-360"),
+
     /** The CHANG e_ rotozoom. */
     CHANGE_ROTOZOOM(CommandGroup.EFFECT, 1, "<INT> select angle for the rotozoom effect, -127-127"),
 

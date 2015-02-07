@@ -26,13 +26,10 @@ import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.VisualState;
 
 /**
- * The Class Threshold.
- *
  * @author michu
  */
 public class Threshold extends Effect {
 
-	/** The threshold. */
 	private int threshold;
 	
 	/**
@@ -73,8 +70,6 @@ public class Threshold extends Effect {
 	
 	
 	/**
-	 * Sets the threshold.
-	 *
 	 * @param threshold the new threshold
 	 */
 	public void setThreshold(int threshold) {
@@ -82,8 +77,6 @@ public class Threshold extends Effect {
 	}	
 	
 	/**
-	 * Gets the threshold.
-	 *
 	 * @return the threshold
 	 */
 	public int getThreshold() {

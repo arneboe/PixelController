@@ -24,33 +24,36 @@ import com.neophob.sematrix.core.visual.MatrixData;
 /**
  * create a strobo effect.
  *
- * @author michu
+ * @author michu, arne
  */
 public class Strobo extends Effect {
 
-	private int stro;
-	private int count;
-	
-	/**
-	 * Instantiates a new threshold.
-	 *
-	 * @param controller the controller
-	 */
+	private boolean on; /**< Whether the strobe is on or off*/
+	private int period; /**<The time of half a strobe cycle. I.e. how long the strobe should be on/off */
+	private long lastTime; /**<The time of the last update() call in millis*/
+	private int[] offBuffer; /**<buffer that is returned when the strobo is off */
+
 	public Strobo(MatrixData matrix) {
 		super(matrix, EffectName.STROBO, ResizeName.QUALITY_RESIZE);
-		this.stro = 0;
-		this.count = 0;
+		lastTime = System.currentTimeMillis();
+		setBpm(150);
+		offBuffer = new int[1];
 	}
 
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.core.effect.Effect#getBuffer(int[])
 	 */
 	public int[] getBuffer(int[] buffer) {
-		if (stro==128) {
-			return new int[buffer.length];
+		if (on) {
+			return buffer;
 		}
-
-		return buffer;
+		else
+		{
+			if(offBuffer.length != buffer.length) {
+				offBuffer = new int[buffer.length];
+			}
+			return offBuffer;
+		}
 	}
 		
 	/* (non-Javadoc)
@@ -58,10 +61,15 @@ public class Strobo extends Effect {
      */
     @Override
 	public void update() {
-	    if (count++<2) {
-	        return;
-	    }
-	    count = 0;
-		stro^=128;
+		final long currentTime = System.currentTimeMillis();
+		if(currentTime - lastTime >= period) {
+			lastTime = currentTime;
+			on = !on;
+		}
+	}
+
+	public void setBpm(int bpm) {
+		final double bpms = bpm / 60.0 / 1000.0;
+		period = (int)(1.0/bpms / 2.0);
 	}
 }

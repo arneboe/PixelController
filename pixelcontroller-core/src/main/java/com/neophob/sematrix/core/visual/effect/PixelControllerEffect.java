@@ -38,10 +38,8 @@ public class PixelControllerEffect implements PixelControllerElement {
 
     private static final Logger LOG = Logger.getLogger(PixelControllerEffect.class.getName());
 
-    /** The all effects. */
     private List<Effect> allEffects;
 
-    /** The threshold. */
     private Threshold threshold;
     private RotoZoom rotoZoom;
     private Zoom zoom;
@@ -49,6 +47,7 @@ public class PixelControllerEffect implements PixelControllerElement {
     private MatrixData matrix;
     private ISound sound;
     private IResize resize;
+    private Strobo strobo;
 
     /**
      * Instantiates a new pixel controller effect.
@@ -96,7 +95,8 @@ public class PixelControllerEffect implements PixelControllerElement {
 
         allEffects.add(new FlipY(matrix));
         allEffects.add(new FlipX(matrix));
-        allEffects.add(new Strobo(matrix));
+        strobo = new Strobo(matrix);
+        allEffects.add(strobo);
         allEffects.add(new Rotate90(matrix, resize));
         allEffects.add(new Posterize(matrix));
         allEffects.add(new Darken(matrix));
@@ -248,6 +248,10 @@ public class PixelControllerEffect implements PixelControllerElement {
      */
     public int getZoomOption() {
         return zoom.getZoomMode();
+    }
+
+    public void setBpm(int bpm) {
+        strobo.setBpm(bpm);
     }
 
 }

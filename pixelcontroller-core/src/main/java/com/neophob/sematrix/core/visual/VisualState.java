@@ -61,22 +61,17 @@ public class VisualState extends Observable {
 
     private static final Logger LOG = Logger.getLogger(VisualState.class.getName());
 
-    /** The Constant EMPTY_CHAR. */
     private static final String EMPTY_CHAR = " ";
 
     /** The singleton instance. */
     private static VisualState instance = new VisualState();
 
-    /** The random mode. */
     private boolean randomMode = false;
 
-    /** The random mode. */
     private boolean randomPresetMode = false;
 
-    /** The initialized. */
     private boolean initialized;
 
-    /** The matrix. */
     private MatrixData matrix;
 
     /** all input elements. */
@@ -85,30 +80,22 @@ public class VisualState extends Observable {
     /** fx to screen mapping. */
     private List<OutputMapping> ioMapping;
 
-    /** The current visual. */
     private int currentVisual;
 
-    /** The current output. */
     private int currentOutput;
 
-    /** The pixel controller generator. */
     private PixelControllerGenerator pixelControllerGenerator;
 
-    /** The pixel controller mixer. */
     private PixelControllerMixer pixelControllerMixer;
 
-    /** The pixel controller effect. */
     private PixelControllerEffect pixelControllerEffect;
 
-    /** The pixel controller resize. */
     private PixelControllerResize pixelControllerResize;
 
-    /** The pixel controller shuffler select. */
     private PixelControllerShufflerSelect pixelControllerShufflerSelect;
 
     private PixelControllerFader pixelControllerFader;
 
-    /** The is loading present. */
     private boolean isLoadingPresent = false;
 
     private List<IColorSet> colorSets;
@@ -118,7 +105,6 @@ public class VisualState extends Observable {
 
     private float brightness = 1.0f;
 
-    /** Output gain */
     private float outputGain = 1.0f;
 
     // the fps multiplier

@@ -399,6 +399,17 @@ public enum MessageProcessor {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
                     }
                     break;
+                case CHANGE_BPM_VALUE:
+                    try {
+                        int a = parseValue(msg[1]);
+                        if (a < 0) {
+                            a = 0;
+                        }
+                        col.getPixelControllerEffect().setBpm(a);
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
 
                 case BLINKEN:
                     try {

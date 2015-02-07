@@ -34,7 +34,7 @@ public enum GuiElement {
     GENERATOR_SPEED, BEAT_WORKMODE,
 
     // effects
-    THRESHOLD, FX_ROTOZOOMER,
+    THRESHOLD, FX_ROTOZOOMER, BPM,
 
     RANDOM_ELEMENT,
 

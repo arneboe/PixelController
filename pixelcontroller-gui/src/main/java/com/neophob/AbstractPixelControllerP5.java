@@ -41,13 +41,10 @@ import com.neophob.sematrix.gui.service.PixConServer;
 abstract class AbstractPixelControllerP5 extends PApplet implements
         CallbackMessageInterface<String> {
 
-    /** The log. */
     protected static final Logger LOG = Logger.getLogger(AbstractPixelControllerP5.class.getName());
 
-    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = -1336765543826338205L;
 
-    /** The Constant FPS. */
     public static final int FPS = 25;
 
     protected PixConServer pixelController;

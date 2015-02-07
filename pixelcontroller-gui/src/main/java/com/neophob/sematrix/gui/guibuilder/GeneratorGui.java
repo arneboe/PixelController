@@ -83,8 +83,7 @@ import controlP5.Toggle;
  */
 public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
-    /** The Constant serialVersionUID. */
-    private static final long serialVersionUID = 2344499301021L;
+   private static final long serialVersionUID = 2344499301021L;
 
     private static final int SELECTED_MARKER = 10;
 
@@ -99,13 +98,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
     private static final String ALWAYS_VISIBLE_TAB = "global"; //$NON-NLS-1$
 
-    /** The log. */
     private static final Logger LOG = Logger.getLogger(GeneratorGui.class.getName());
 
-    /** The y. */
     private int windowWidth, windowHeight;
 
-    /** The p image. */
     private PImage pImage = null;
     private PImage logo;
 
@@ -123,7 +119,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private Toggle freeze;
 
     // Effect Tab
-    private Slider thresholdSlider, fxRotoSlider;
+    private Slider thresholdSlider, fxRotoSlider, bpmSlider;
     private DropdownList textureDeformOptions, zoomOptions;
 
     // Generator Tab
@@ -431,6 +427,12 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         thresholdSlider.setSliderMode(Slider.FIX);
         thresholdSlider.setGroup(generatorTab);
         thresholdSlider.setDecimalPrecision(0);
+
+        bpmSlider = cp5.addSlider(GuiElement.BPM.guiText(), 1, 360, 120, genFxXOfs,
+                genElYOfs + 80, 360, 14);
+        bpmSlider.setSliderMode(Slider.FIX);
+        bpmSlider.setGroup(generatorTab);
+        bpmSlider.setDecimalPrecision(0);
 
         // rotozoom slider
         fxRotoSlider = cp5.addSlider(GuiElement.FX_ROTOZOOMER.guiText(), -127, 127, 0, genFxXOfs
