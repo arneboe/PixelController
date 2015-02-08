@@ -51,9 +51,7 @@ import com.neophob.sematrix.mdns.server.PixMDnsServer;
 import com.neophob.sematrix.mdns.server.impl.MDnsServerFactory;
 
 /**
- * 
  * @author michu
- * 
  */
 final class PixelControllerServerImpl extends PixelControllerServer implements Runnable {
 

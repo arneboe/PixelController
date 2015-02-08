@@ -34,8 +34,6 @@ import com.neophob.sematrix.gui.guibuilder.eventhandler.WindowHandler;
 import com.neophob.sematrix.gui.service.PixConServer;
 
 /**
- * The Class PixelController.
- * 
  * @author michu
  */
 abstract class AbstractPixelControllerP5 extends PApplet implements
@@ -61,13 +59,9 @@ abstract class AbstractPixelControllerP5 extends PApplet implements
     private static final int SETUP_WINDOW_HEIGHT = 500;
 
     protected int setupStep = 0;
-    //
 
     protected boolean postInitDone = false;
 
-    /**
-	 * 
-	 */
     public void setup() {
         try {
             LOG.log(Level.INFO, "Initialize...");

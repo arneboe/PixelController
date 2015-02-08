@@ -269,6 +269,7 @@ public final class P5EventListener implements ControlListener {
             case SAVE_PRESET:
                 LOG.log(Level.INFO, "SAVE_PRESET");
                 createMessage(ValidCommand.SAVE_PRESET, callback.getCurrentPresetName());
+                callback.updateCurrentPresetState();//to show the new name
                 break;
 
             case BUTTON_TOGGLE_FREEZE:

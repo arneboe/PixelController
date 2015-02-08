@@ -74,6 +74,8 @@ public interface PixConServer {
 
     PresetSettings getCurrentPresetSettings();
 
+    List<PresetSettings> getAllPresetSettings();
+
     FileUtils getFileUtils();
 
     void updateNeededTimeForMatrixEmulator(long t);

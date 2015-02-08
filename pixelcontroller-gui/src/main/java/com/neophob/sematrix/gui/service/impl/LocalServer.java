@@ -88,6 +88,11 @@ public class LocalServer implements PixConServer {
     }
 
     @Override
+    public List<PresetSettings> getAllPresetSettings() {
+        return pixelController.getPresetService().getAllPresets();
+    }
+
+    @Override
     public void updateNeededTimeForMatrixEmulator(long t) {
         pixelController.getPixConStat().trackTime(TimeMeasureItemGlobal.MATRIX_EMULATOR_WINDOW, t);
     }

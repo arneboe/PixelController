@@ -55,6 +55,7 @@ import com.neophob.sematrix.gui.service.PixConServer;
 import com.neophob.sematrix.osc.client.OscClientException;
 import com.neophob.sematrix.osc.model.OscMessage;
 import com.neophob.sematrix.osc.server.OscMessageHandler;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * communicate service with remote pixelcontroller instance send and recieve
@@ -204,6 +205,11 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
     @Override
     public PresetSettings getCurrentPresetSettings() {
         return presetSettings;
+    }
+
+    @Override
+    public List<PresetSettings> getAllPresetSettings() {
+        throw new NotImplementedException();
     }
 
     @Override

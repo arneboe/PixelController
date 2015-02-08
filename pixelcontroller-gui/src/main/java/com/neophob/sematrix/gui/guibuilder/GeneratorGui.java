@@ -363,7 +363,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         helpTab.setColorForeground(0xffff0000);
 
         generatorTab.bringToFront();
-
         // -------------
         // Generic Options
         // -------------
@@ -928,11 +927,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         // unused
     }
 
-    /**
-     * this callback method is needed by the library but unused
-     * 
-     * @param val
-     */
+
     public void PRESET_BUTTONS(int val) {
         LOG.log(Level.INFO, "choose new preset " + val); //$NON-NLS-1$
         updateCurrentPresetState();
@@ -948,7 +943,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     }
 
     /**
-     * 
+     *
      * @param col
      * @return
      */
@@ -1086,6 +1081,25 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         } else {
             presetInfo.setText(messages.getString("GeneratorGui.VALID_ENTRY_FALSE")); //$NON-NLS-1$
             presetName.setText(""); //$NON-NLS-1$
+        }
+
+        //used presets contain the first 2 letters of the preset name
+        List<PresetSettings> allSettings = pixConServer.getAllPresetSettings();
+        if(null != allSettings) {
+            int i = 0;
+            for(PresetSettings s : allSettings) {
+                if(s.isSlotUsed()) {
+                    Toggle t = presetButtons.getItem(i);
+                    assert(t != null);
+                    t.setColorBackground(color(150));
+                    if(s.getName().length() > 0) {
+                        t.setLabel(s.getName().substring(0, min(3, s.getName().length())));
+                    }
+                }
+                ++i;
+            }
+        } else {
+            LOG.log(Level.WARNING, "Unable to update preset settings.");
         }
 
     }
