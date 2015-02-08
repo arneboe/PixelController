@@ -139,7 +139,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
     // preset tab
     private RadioButton presetButtons;
-    private Button loadPreset, savePreset;
+    private Button loadPreset, savePreset, deletePreset;
     private Label presetInfo;
     private Textfield presetName;
 
@@ -718,6 +718,11 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         savePreset.moveTo(presetTab);
         cp5.getTooltip().register(GuiElement.SAVE_PRESET.guiText(),
                 messages.getString("GeneratorGui.TOOLTIP_SAVE_PRESET")); //$NON-NLS-1$
+
+        deletePreset = cp5.addButton(GuiElement.DELETE_PRESET.guiText(), 0, GENERIC_X_OFS + 4
+                * Theme.DROPBOX_XOFS, yPosStartDrowdown + 170, 100, 15);
+        deletePreset.setCaptionLabel(GuiElement.DELETE_PRESET.guiText());
+        deletePreset.moveTo(presetTab);
 
         presetName = cp5
                 .addTextfield(
