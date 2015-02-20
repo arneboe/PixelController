@@ -26,15 +26,15 @@ import com.neophob.sematrix.core.visual.MatrixData;
  *
  * @author michu, arne
  */
-public class Strobo extends Effect {
+public class BpmStrobo extends Effect {
 
 	private boolean on; /**< Whether the strobe is on or off*/
 	private int period; /**<The time of half a strobe cycle. I.e. how long the strobe should be on/off */
 	private long lastTime; /**<The time of the last update() call in millis*/
 	private int[] offBuffer; /**<buffer that is returned when the strobo is off */
 
-	public Strobo(MatrixData matrix) {
-		super(matrix, EffectName.STROBO, ResizeName.QUALITY_RESIZE);
+	public BpmStrobo(MatrixData matrix) {
+		super(matrix, EffectName.BPM_STROBO, ResizeName.QUALITY_RESIZE);
 		lastTime = System.currentTimeMillis();
 		setBpm(150);
 		offBuffer = new int[1];

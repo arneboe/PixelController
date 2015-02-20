@@ -72,23 +72,12 @@ public final class SoundMinim implements ISound, Runnable {
         minim = new Minim(this);
         // in = minim.getLineIn( Minim.STEREO, 512 );
         in = minim.getLineIn(Minim.MONO, 1024);
-
+        System.out.println("blaaaaaaaa");
         // a beat detection object that is FREQ_ENERGY mode that
         // expects buffers the length of song's buffer size
         // and samples captured at songs's sample rate
         beat = new BeatDetect(in.bufferSize(), in.sampleRate());
-
-        // set the sensitivity to 300 milliseconds
-        // After a beat has been detected, the algorithm will wait for 300
-        // milliseconds
-        // before allowing another beat to be reported. You can use this to
-        // dampen the
-        // algorithm if it is giving too many false-positives. The default value
-        // is 10,
-        // which is essentially no damping. If you try to set the sensitivity to
-        // a negative value,
-        // an error will be reported and it will be set to 10 instead.
-        beat.setSensitivity(250);
+        beat.setSensitivity(100);
         beat.detectMode(BeatDetect.FREQ_ENERGY);
 
         bl = new BeatListener(beat, in);

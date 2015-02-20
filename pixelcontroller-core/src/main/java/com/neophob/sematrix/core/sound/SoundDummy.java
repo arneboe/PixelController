@@ -21,9 +21,7 @@ package com.neophob.sematrix.core.sound;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * The Class SoundDummy.
- */
+
 public class SoundDummy implements ISound {
 
     private static final transient Logger LOG = Logger.getLogger(SoundDummy.class.getName());
@@ -35,18 +33,11 @@ public class SoundDummy implements ISound {
         LOG.log(Level.INFO, "Sound thread started, dummy implementation...");
     }
 
-    /**
-     * get current volume.
-     * 
-     * @return the volume
-     */
     public float getVolume() {
         return 0.5f;
     }
 
     /*
-     * (non-Javadoc)
-     * 
      * @see com.neophob.sematrix.core.input.SeSound#getVolumeNormalized()
      */
     public float getVolumeNormalized() {
@@ -54,8 +45,6 @@ public class SoundDummy implements ISound {
     }
 
     /*
-     * (non-Javadoc)
-     * 
      * @see com.neophob.sematrix.core.input.SeSound#isKick()
      */
     public boolean isKick() {
@@ -63,8 +52,6 @@ public class SoundDummy implements ISound {
     }
 
     /*
-     * (non-Javadoc)
-     * 
      * @see com.neophob.sematrix.core.input.SeSound#isSnare()
      */
     public boolean isSnare() {
@@ -72,8 +59,6 @@ public class SoundDummy implements ISound {
     }
 
     /*
-     * (non-Javadoc)
-     * 
      * @see com.neophob.sematrix.core.input.SeSound#isHat()
      */
     public boolean isHat() {
@@ -81,8 +66,6 @@ public class SoundDummy implements ISound {
     }
 
     /*
-     * (non-Javadoc)
-     * 
      * @see com.neophob.sematrix.core.input.SeSound#isPang()
      */
     public boolean isPang() {
@@ -90,8 +73,6 @@ public class SoundDummy implements ISound {
     }
 
     /*
-     * (non-Javadoc)
-     * 
      * @see com.neophob.sematrix.core.input.SeSound#getFftAvg()
      */
     public int getFftAvg() {
@@ -99,8 +80,6 @@ public class SoundDummy implements ISound {
     }
 
     /*
-     * (non-Javadoc)
-     * 
      * @see com.neophob.sematrix.core.input.SeSound#getFftAvg(int)
      */
     public float getFftAvg(int i) {

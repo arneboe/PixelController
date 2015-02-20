@@ -41,34 +41,26 @@ import com.neophob.sematrix.core.visual.generator.ColorScroll.ScrollMode;
 import com.neophob.sematrix.core.visual.generator.Generator.GeneratorName;
 
 /**
- * The Class PixelControllerGenerator.
- * 
  * @author michu
  */
 public class PixelControllerGenerator implements PixelControllerElement {
 
-    /** The log. */
     private static final Logger LOG = Logger.getLogger(PixelControllerGenerator.class.getName());
 
     private static final String DEFAULT_TTF = "04B_03__.TTF";
     private static final String DEFAULT_TTF_SIZE = "82";
 
-    /** The all generators. */
     private List<Generator> allGenerators;
 
-    /** The blinkenlights. */
     private Blinkenlights blinkenlights;
 
-    /** The image. */
     private Image image;
 
-    /** The ColorScroller. */
     private ColorScroll colorScroll;
 
     private OscListener oscListener1;
     private OscListener oscListener2;
 
-    /** The textwriter. */
     private Textwriter textwriter;
 
     BeatToAnimation bta = BeatToAnimation.MODERATE;
