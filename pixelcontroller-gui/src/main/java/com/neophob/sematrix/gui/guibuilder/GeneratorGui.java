@@ -174,20 +174,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private int nrOfVisuals;
     private P5EventListener listener;
 
-    /**
-     * Instantiates a new internal buffer.
-     * 
-     * @param displayHoriz
-     *            the display horiz
-     * @param x
-     *            the x
-     * @param y
-     *            the y
-     * @param singleVisualXSize
-     *            the target x size
-     * @param singleVisualYSize
-     *            the target y size
-     */
     public GeneratorGui(PixConServer pixelController, WindowSizeCalculator wsc) {
         super();
         this.pixConServer = pixelController;
