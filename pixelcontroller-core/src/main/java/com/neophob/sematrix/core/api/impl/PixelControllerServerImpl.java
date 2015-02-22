@@ -43,6 +43,7 @@ import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.sound.SoundDummy;
 import com.neophob.sematrix.core.sound.SoundMinim;
+import com.neophob.sematrix.core.sound.SoundMinimKctess5;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.OutputMapping;
 import com.neophob.sematrix.core.visual.VisualState;
@@ -76,8 +77,6 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
     private PixelControllerOscServer oscServer;
     private PixelControllerStatusMBean pixConStat;
     private PixelControllerOutput pixelControllerOutput;
-
-    private PixMDnsServer bonjour;
 
     /**
      * 
@@ -145,7 +144,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 
         try {
             if (listeningOscPort > 0) {
-                bonjour = MDnsServerFactory.createServer(listeningOscPort, ZEROCONF_NAME);
+                PixMDnsServer bonjour = MDnsServerFactory.createServer(listeningOscPort, ZEROCONF_NAME);
                 bonjour.startServerAsync();
             } else {
                 LOG.log(Level.INFO, "MDNS Server disabled, OSC port: " + listeningOscPort);
@@ -175,6 +174,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 
         LOG.log(Level.INFO, "Enter main loop");
 
+        int c = 0;
         // Mainloop
         while (Thread.currentThread() == runner) {
             if (this.visualState.isInPauseMode()) {
@@ -183,7 +183,13 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
             }
 
             try {
+                if(this.sound.isPang())
+                {
+                    System.out.println("gui " + c);
+                    ++c;
+                }
                 this.visualState.updateSystem(pixConStat);
+                this.sound.reset(); //reset sound after updating all sound aware modules
             } catch (Exception e) {
                 LOG.log(Level.SEVERE, "VisualState.getInstance().updateSystem() failed!", e);
             }
@@ -233,23 +239,15 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
     private void sleep(long delay) {
         try {
             Thread.sleep(delay);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ignored) {
         }
     }
 
-    /**
-     * @return the presetService
-     */
     @Override
     public PresetService getPresetService() {
         return presetService;
     }
 
-    /**
-     * 
-     * @param collector
-     * @param applicationConfig
-     */
     private void setupInitialConfig() {
         // start in random mode?
         if (applicationConfig.startRandommode()) {
@@ -275,16 +273,12 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
         visualState.notifyGuiUpdate();
     }
 
-    /**
-     * Initialize sound
-     * 
-     * @return
-     */
     private void initSound() {
         // choose sound implementation
         if (applicationConfig.isAudioAware()) {
             try {
-                sound = new SoundMinim(applicationConfig.getSoundSilenceThreshold());
+                sound = new SoundMinimKctess5();
+                sound.start();
                 return;
             } catch (Exception e) {
                 LOG.log(Level.WARNING, "FAILED TO INITIALIZE SOUND INSTANCE. Disable sound input.",

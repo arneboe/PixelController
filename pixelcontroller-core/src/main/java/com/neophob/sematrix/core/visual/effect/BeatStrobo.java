@@ -42,18 +42,10 @@ public class BeatStrobo extends Effect {
 	 * @see com.neophob.sematrix.core.effect.Effect#getBuffer(int[])
 	 */
 	public int[] getBuffer(int[] buffer) {
-		if (on) {
-			on = false;
-			return buffer;
+		if(offBuffer.length != buffer.length) {
+			offBuffer = new int[buffer.length];
 		}
-		else
-		{
-			if(offBuffer.length != buffer.length) {
-				offBuffer = new int[buffer.length];
-			}
-			return offBuffer;
-		}
-
+		return offBuffer;
 	}
 		
 	/* (non-Javadoc)
@@ -61,7 +53,12 @@ public class BeatStrobo extends Effect {
      */
     @Override
 	public void update() {
-		//if it was on before, leave it on
-		on = sound.isPang() | on;
+		if(sound.isPang())
+		{
+			for(int i = 0; i < offBuffer.length; ++i)
+			{
+				offBuffer[i] += 51;
+			}
+		}
 	}
 }

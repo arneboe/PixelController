@@ -86,6 +86,16 @@ public class SoundDummy implements ISound {
         return 1.0f;
     }
 
+    @Override
+    public void start() {
+
+    }
+
+    @Override
+    public void reset() {
+
+    }
+
     /*
      * (non-Javadoc)
      * 

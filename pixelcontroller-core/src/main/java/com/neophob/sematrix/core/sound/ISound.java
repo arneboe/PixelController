@@ -52,21 +52,21 @@ public interface ISound {
 	 * @return true, if is kick drum is heard
 	 */
 	boolean isKick();
-	
+
 	/**
 	 * Checks if is snare.
 	 *
 	 * @return true, if is snare drum is heard
 	 */
 	boolean isSnare();
-	
+
 	/**
 	 * Checks if is hat.
 	 *
 	 * @return true, if is hat is heard
 	 */
 	boolean isHat();
-	
+
 	/**
 	 * Checks if is pang.
 	 *
@@ -93,4 +93,11 @@ public interface ISound {
 	 * @return the fft avg
 	 */
 	float getFftAvg(int i);
+
+	/**Starts the detection thread (in case  there is one). Otherwise does nothing */
+	void start();
+
+	/**Resets the beat detector. isBeat() will return true if a beat has been detected since the last time reset()
+	 * has been called */
+	void reset();
 }

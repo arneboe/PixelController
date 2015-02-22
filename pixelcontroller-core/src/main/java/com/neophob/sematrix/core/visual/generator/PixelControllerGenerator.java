@@ -120,7 +120,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
         allGenerators.add(textwriter);
 
         allGenerators.add(new Cell(matrix));
-        allGenerators.add(new FFTSpectrum(matrix, sound));
+        //allGenerators.add(new FFTSpectrum(matrix, sound));
         allGenerators.add(new Geometrics(matrix, sound));
 
         int screenCapureXSize = ph.parseScreenCaptureWindowSizeX();
@@ -170,11 +170,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
     private int getKickValues() {
         int updateAmount = 0;
 
-        if (sound.isKick()) {
+        if (sound.isPang()) {
             updateAmount += 3;
-        }
-        if (sound.isHat()) {
-            updateAmount += 1;
         }
 
         return updateAmount;

@@ -27,52 +27,36 @@ import ddf.minim.Minim;
 import ddf.minim.analysis.BeatDetect;
 import ddf.minim.analysis.FFT;
 
-/**
- * The Class SoundMinim.
- */
 public final class SoundMinim implements ISound, Runnable {
 
     // samples per 1/4s
-    /** The Constant SOUND_BUFFER_RESOLUTION. */
     private static final transient int SOUND_BUFFER_RESOLUTION = 8;
 
-    /** The log. */
     private static final transient Logger LOG = Logger.getLogger(SoundMinim.class.getName());
 
-    /** The minim. */
     private transient Minim minim;
 
-    /** The in. */
     private transient AudioInput in;
 
-    /** The beat. */
     private transient BeatDetect beat;
 
-    /** The bl. */
     @SuppressWarnings("unused")
     private transient BeatListener bl;
 
-    /** The fft. */
     private transient FFT fft;
 
     /* thread to collect volume information */
-    /** The runner. */
     private transient Thread runner;
 
-    /** The snd volume max. */
     private float sndVolumeMax = 0;
 
     private float silenceThreshold;
     private long dropedVolumeRequests;
 
-    /**
-     * Instantiates a new sound minim.
-     */
     public SoundMinim(float silenceThreshold) {
         minim = new Minim(this);
         // in = minim.getLineIn( Minim.STEREO, 512 );
         in = minim.getLineIn(Minim.MONO, 1024);
-        System.out.println("blaaaaaaaa");
         // a beat detection object that is FREQ_ENERGY mode that
         // expects buffers the length of song's buffer size
         // and samples captured at songs's sample rate
@@ -211,6 +195,16 @@ public final class SoundMinim implements ISound, Runnable {
      */
     public float getFftAvg(int i) {
         return fft.getAvg(i);
+    }
+
+    @Override
+    public void start() {
+
+    }
+
+    @Override
+    public void reset() {
+
     }
 
     /*

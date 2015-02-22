@@ -22,6 +22,7 @@ import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.visual.MatrixData;
 
+//FIXME this class is broken due to change in ISound.
 /**
  * idea ripped from http://www.macetech.com/blog/
  * 
