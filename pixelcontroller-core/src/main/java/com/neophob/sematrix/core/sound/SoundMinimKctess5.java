@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  */
 public class SoundMinimKctess5 extends TimerTask implements ISound {
 
-    private static final transient Logger LOG = Logger.getLogger(SoundMinim.class.getName());
+    private static final transient Logger LOG = Logger.getLogger(SoundMinimKctess5.class.getName());
     private AudioInput in;
     private FFT fft;
     private int k;

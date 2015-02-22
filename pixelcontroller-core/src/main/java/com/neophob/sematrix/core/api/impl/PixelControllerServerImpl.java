@@ -42,7 +42,6 @@ import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.sound.SoundDummy;
-import com.neophob.sematrix.core.sound.SoundMinim;
 import com.neophob.sematrix.core.sound.SoundMinimKctess5;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.OutputMapping;
