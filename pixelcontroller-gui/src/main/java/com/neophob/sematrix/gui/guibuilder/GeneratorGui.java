@@ -882,8 +882,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         cp5.addTextlabel(
                 "frameDesc", messages.getString("GeneratorGui.FRAME_PROGRESS"), GENERIC_X_OFS, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         cp5.addTextlabel(
-                "sndDesc", messages.getString("GeneratorGui.SOUND_DESC"), GENERIC_X_OFS + xSizeForEachWidget, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
-        cp5.addTextlabel(
                 "sndVol", messages.getString("GeneratorGui.INPUT_VOLUME"), GENERIC_X_OFS + xSizeForEachWidget * 2, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         cp5.addTextlabel(
                 "outputDevice", messages.getString("GeneratorGui.OUTPUT_DEVICE"), GENERIC_X_OFS + xSizeForEachWidget * 3, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1110,23 +1108,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         rect(GENERIC_X_OFS + currentFrames, localY + SELECTED_MARKER + 4, xSizeForEachWidget
                 - currentFrames - WIDGET_BOARDER, WIDGET_BAR_SIZE);
 
-        // draw sound stats
-        ISound snd = pixConServer.getSoundImplementation();
-        int xofs = GENERIC_X_OFS + xSizeForEachWidget;
-        int xx = (xSizeForEachWidget - WIDGET_BOARDER * 2) / 3;
-
-        colorSelect(snd.isKick());
-        rect(xofs, localY + SELECTED_MARKER + 4, xx, WIDGET_BAR_SIZE);
-
-        xofs += xx + WIDGET_BOARDER / 2;
-        colorSelect(snd.isSnare());
-        rect(xofs, localY + SELECTED_MARKER + 4, xx, WIDGET_BAR_SIZE);
-
-        xofs += xx + WIDGET_BOARDER / 2;
-        colorSelect(snd.isHat());
-        rect(xofs, localY + SELECTED_MARKER + 4, xx, WIDGET_BAR_SIZE);
 
         // Draw input volume
+        ISound snd = pixConServer.getSoundImplementation();
         int vol = (int) ((xSizeForEachWidget - WIDGET_BOARDER) * snd.getVolumeNormalized());
         fill(0, 180, 234);
         rect(GENERIC_X_OFS + 2 * xSizeForEachWidget, localY + SELECTED_MARKER + 4, vol,
