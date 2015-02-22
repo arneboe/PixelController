@@ -151,13 +151,10 @@ public class SoundMinimKctess5 extends TimerTask implements ISound {
     public float getFftAvg(int i) {
         return fft.getAvg(i);
     }
-
-    int bt = 0;
+    
     public void run() {
         if(beatDetect()) {
             beatDetected.set(true);
-            System.out.println(bt);
-            bt++;
         }
     }
 

@@ -174,7 +174,6 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 
         LOG.log(Level.INFO, "Enter main loop");
 
-        int c = 0;
         // Mainloop
         while (Thread.currentThread() == runner) {
             if (this.visualState.isInPauseMode()) {
@@ -183,11 +182,6 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
             }
 
             try {
-                if(this.sound.isPang())
-                {
-                    System.out.println("gui " + c);
-                    ++c;
-                }
                 this.visualState.updateSystem(pixConStat);
                 this.sound.reset(); //reset sound after updating all sound aware modules
             } catch (Exception e) {
