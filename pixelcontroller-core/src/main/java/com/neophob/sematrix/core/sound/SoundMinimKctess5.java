@@ -12,7 +12,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This is a port of the beat detection algorithm by kctess5.
+ * This is a combination of the old beat detect and a port of the beat detection algorithm by kctess5.
+ * isPang() is provided by kctess5's aglorithm. isKick(), isSnare() and isHat() are provided by minim BeatDetect.
  * @see https://github.com/kctess5/Processing-Beat-Detection
  *
  * This thread runs at 60 fps doing a fft each frame.
@@ -71,7 +72,7 @@ public class SoundMinimKctess5 extends TimerTask implements ISound {
     private final int fps = 60;
     /**True if a beat has been detected since the last call to reset() */
     private AtomicBoolean beatDetected;
-
+    private BeatDetect beatDetect;
 
     public SoundMinimKctess5(){
         for (int i = 0; i < beatBands; i += 1) {
@@ -84,10 +85,16 @@ public class SoundMinimKctess5 extends TimerTask implements ISound {
         beatDetected = new AtomicBoolean(false);
         Minim minim = new Minim(this);
 
-        //in = minim.getLineIn(Minim.STEREO, 1024);
         in = minim.getLineIn(Minim.STEREO, 2048);                     //Gets values from mic (and soundcard?)
         fft = new FFT(in.bufferSize(), in.sampleRate());              //Sets up the FFT
         fft.logAverages(30, 5);                                       //Creates a 5 band/oct FFT starting at 40Hz
+
+        beatDetect = new BeatDetect(in.bufferSize(), in.sampleRate());
+        beatDetect.setSensitivity(100);
+        beatDetect.detectMode(BeatDetect.FREQ_ENERGY);
+
+        new BeatListener(beatDetect, in);
+
     }
 
     /**Minim requires this method to be present when using it independently of processing */
@@ -118,24 +125,23 @@ public class SoundMinimKctess5 extends TimerTask implements ISound {
     }
 
     @Override
-    public boolean isKick() {
-        return isPang();
-    }
+    public boolean isKick() { return beatDetect.isKick();    }
 
     @Override
     public boolean isSnare() {
-        return isPang();
+        return beatDetect.isSnare();
     }
 
     @Override
     public boolean isHat() {
-        return isPang();
+        return beatDetect.isHat();
     }
 
     @Override
-    public boolean isPang() {
-        return beatDetected.get();
-    }
+    public boolean isPang() { return isKick() || isSnare() || isHat(); }
+
+    @Override
+    public boolean isBeat() { return beatDetected.get(); }
 
     @Override
     public void shutdown() {
@@ -151,7 +157,7 @@ public class SoundMinimKctess5 extends TimerTask implements ISound {
     public float getFftAvg(int i) {
         return fft.getAvg(i);
     }
-    
+
     public void run() {
         if(beatDetect()) {
             beatDetected.set(true);

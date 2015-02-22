@@ -40,7 +40,6 @@ public final class SoundMinim implements ISound, Runnable {
 
     private transient BeatDetect beat;
 
-    @SuppressWarnings("unused")
     private transient BeatListener bl;
 
     private transient FFT fft;
@@ -172,6 +171,11 @@ public final class SoundMinim implements ISound, Runnable {
      */
     public boolean isPang() {
         return beat.isHat() || beat.isKick() || beat.isSnare();
+    }
+
+    @Override
+    public boolean isBeat() {
+        return false;
     }
 
     /**

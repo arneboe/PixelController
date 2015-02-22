@@ -53,7 +53,7 @@ public class BeatStrobo extends Effect {
      */
     @Override
 	public void update() {
-		if(sound.isPang())
+		if(sound.isBeat())
 		{
 			for(int i = 0; i < offBuffer.length; ++i)
 			{

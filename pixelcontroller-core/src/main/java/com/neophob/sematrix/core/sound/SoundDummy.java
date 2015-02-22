@@ -72,6 +72,11 @@ public class SoundDummy implements ISound {
         return false;
     }
 
+    @Override
+    public boolean isBeat() {
+        return false;
+    }
+
     /*
      * @see com.neophob.sematrix.core.input.SeSound#getFftAvg()
      */

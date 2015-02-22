@@ -75,6 +75,12 @@ public interface ISound {
 	boolean isPang();
 
 	/**
+	 * Checks if a beat occurred since the last call to reset using a different algorithm than the above methods.
+	 * @return
+	 */
+	boolean isBeat();
+
+	/**
 	 * Shutdown.
 	 */
 	void shutdown();
