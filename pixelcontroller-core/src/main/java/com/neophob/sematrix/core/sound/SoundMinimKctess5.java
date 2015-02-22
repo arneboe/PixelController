@@ -74,6 +74,10 @@ public class SoundMinimKctess5 extends TimerTask implements ISound {
     private AtomicBoolean beatDetected;
     private BeatDetect beatDetect;
 
+    private float movingMaxVolume;
+    private float currentVolume; //the volume at the time the movingMaxVolume was calculated
+    private final float minimumMovingVolume = 0.01f; //lower bound of the moving max volume. Without this the noise will be amplified too much when there is no sound playing
+
     public SoundMinimKctess5(){
         for (int i = 0; i < beatBands; i += 1) {
             count[i] = 0;
@@ -116,12 +120,12 @@ public class SoundMinimKctess5 extends TimerTask implements ISound {
 
     @Override
     public float getVolume() {
-        return 0;
+        return currentVolume;
     }
 
     @Override
     public float getVolumeNormalized() {
-        return 0;
+        return (1.0f / movingMaxVolume) * currentVolume;
     }
 
     @Override
@@ -161,6 +165,16 @@ public class SoundMinimKctess5 extends TimerTask implements ISound {
     public void run() {
         if(beatDetect()) {
             beatDetected.set(true);
+        }
+
+        movingMaxVolume *= 0.99f;
+        currentVolume = in.mix.level();
+        if(movingMaxVolume < currentVolume) {
+            movingMaxVolume = currentVolume;
+        }
+        if(movingMaxVolume < minimumMovingVolume)
+        {
+            movingMaxVolume = minimumMovingVolume;
         }
     }
 

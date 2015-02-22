@@ -1111,13 +1111,22 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
         // Draw input volume
         ISound snd = pixConServer.getSoundImplementation();
-        int vol = (int) ((xSizeForEachWidget - WIDGET_BOARDER) * snd.getVolumeNormalized());
+        final int normalizedVolume = (int) ((xSizeForEachWidget - WIDGET_BOARDER) * snd.getVolumeNormalized());
+
         fill(0, 180, 234);
-        rect(GENERIC_X_OFS + 2 * xSizeForEachWidget, localY + SELECTED_MARKER + 4, vol,
+        rect(GENERIC_X_OFS + 2 * xSizeForEachWidget, localY + SELECTED_MARKER + 4, normalizedVolume,
                 WIDGET_BAR_SIZE);
         fill(2, 52, 77);
-        rect(GENERIC_X_OFS + 2 * xSizeForEachWidget + vol, localY + SELECTED_MARKER + 4,
-                xSizeForEachWidget - WIDGET_BOARDER - vol, WIDGET_BAR_SIZE);
+        rect(GENERIC_X_OFS + 2 * xSizeForEachWidget + normalizedVolume, localY + SELECTED_MARKER + 4,
+                xSizeForEachWidget - WIDGET_BOARDER - normalizedVolume, WIDGET_BAR_SIZE/2);
+
+        final int volume = (int) ((xSizeForEachWidget - WIDGET_BOARDER) * snd.getVolume());
+        fill(200, 0, 0);
+        rect(GENERIC_X_OFS + 2 * xSizeForEachWidget, localY + SELECTED_MARKER + 4 + WIDGET_BAR_SIZE/2, volume,
+                WIDGET_BAR_SIZE/2);
+        fill(2, 52, 77);
+        rect(GENERIC_X_OFS + 2 * xSizeForEachWidget + volume, localY + SELECTED_MARKER + 4 + WIDGET_BAR_SIZE/2,
+                xSizeForEachWidget - WIDGET_BOARDER - volume, WIDGET_BAR_SIZE/2);
 
         // draw output device
         Boolean isConnected = isOutputDeviceConnected();
