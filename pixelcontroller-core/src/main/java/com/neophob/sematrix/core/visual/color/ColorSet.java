@@ -19,12 +19,8 @@
 package com.neophob.sematrix.core.visual.color;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -118,6 +114,53 @@ public class ColorSet implements Serializable, IColorSet {
         return (r << 16) | (g << 8) | (b);
     }
 
+
+    private static IColorSet parseEntry(final String name, final String entry) throws Exception
+    {
+        Scanner scn = new Scanner(entry);
+        if(scn.hasNext("RGB:"))
+        {
+            scn.next("RGB:");//discard to advance pointer
+            return parseRGBEntry(name, scn);
+        }
+        else if(scn.hasNext("HSV:"))
+        {
+            scn.next("HSV:");
+            return parseHSVEntry(name, scn);
+        }
+        else
+        {
+            throw new Exception("Expected 'HSV:' or 'RGB:' but found '" + entry + "'");
+        }
+    }
+
+    private static IColorSet parseRGBEntry(final String name, final Scanner scn) throws Exception
+    {
+        ArrayList<Integer> colorsAsInt = new ArrayList<Integer>();
+        while(scn.hasNext("0x[a-fA-F0-9]{6};"))
+        {
+            final String color = scn.next().replace(";","");
+            colorsAsInt.add(Integer.decode(color.trim()));
+        }
+
+        if(colorsAsInt.isEmpty())
+        {
+            throw new Exception("Expected rgb list, found nothing");
+        }
+        //java doesn't allow array conversion and unboxing at the same time :(
+        int[] colArr = new int[colorsAsInt.size()];
+        for(int i = 0; i < colorsAsInt.size(); ++i)
+        {
+            colArr[i] = colorsAsInt.get(i);
+        }
+        return new ColorSet(name, colArr);
+    }
+
+    private static IColorSet parseHSVEntry(final String name, final Scanner scn) throws Exception
+    {
+        
+    }
+
     /**
      * convert entries from the properties file into colorset objects
      * 
@@ -130,17 +173,9 @@ public class ColorSet implements Serializable, IColorSet {
         for (Entry<Object, Object> entry : palette.entrySet()) {
             try {
                 String setName = (String) entry.getKey();
-                String setColors = (String) entry.getValue();
-                String[] colorsAsString = setColors.split(",");
+                String setValue = (String) entry.getValue();
 
-                // convert hex string into int
-                int[] colorsAsInt = new int[colorsAsString.length];
-                int ofs = 0;
-                for (String s : colorsAsString) {
-                    colorsAsInt[ofs++] = Integer.decode(s.trim());
-                }
-                IColorSet cs = new ColorSet(setName, colorsAsInt);
-                ret.add(cs);
+                ret.add(parseEntry(setName, setValue));
             } catch (Exception e) {
                 LOG.log(Level.SEVERE, "Failed to load Palette entry: " + entry.getKey(), e);
             }
