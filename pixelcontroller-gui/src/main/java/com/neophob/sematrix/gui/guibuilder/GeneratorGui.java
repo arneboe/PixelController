@@ -880,8 +880,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         int xSizeForEachWidget = (windowWidth - 2 * GENERIC_X_OFS) / NR_OF_WIDGETS;
 
         cp5.addTextlabel(
-                "frameDesc", messages.getString("GeneratorGui.FRAME_PROGRESS"), GENERIC_X_OFS, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
-        cp5.addTextlabel(
                 "sndVol", messages.getString("GeneratorGui.INPUT_VOLUME"), GENERIC_X_OFS + xSizeForEachWidget * 2, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         cp5.addTextlabel(
                 "outputDevice", messages.getString("GeneratorGui.OUTPUT_DEVICE"), GENERIC_X_OFS + xSizeForEachWidget * 3, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1099,15 +1097,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
      */
     private void displayWidgets(int localY) {
         int xSizeForEachWidget = (windowWidth - 2 * GENERIC_X_OFS) / NR_OF_WIDGETS;
-
-        // display frame progress
-        long currentFrames = pixConServer.getFrameCount() % (xSizeForEachWidget - WIDGET_BOARDER);
-        fill(0, 180, 234);
-        rect(GENERIC_X_OFS, localY + SELECTED_MARKER + 4, currentFrames, WIDGET_BAR_SIZE);
-        fill(2, 52, 77);
-        rect(GENERIC_X_OFS + currentFrames, localY + SELECTED_MARKER + 4, xSizeForEachWidget
-                - currentFrames - WIDGET_BOARDER, WIDGET_BAR_SIZE);
-
 
         // Draw input volume
         ISound snd = pixConServer.getSoundImplementation();
