@@ -673,13 +673,13 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
         presetButtons = cp5.addRadioButton(GuiElement.PRESET_BUTTONS.guiText())
                 .setPosition(10, yPosStartDrowdown).setSize(24, 14).setColorForeground(color(120))
-                .setColorActive(color(255)).setColorLabel(color(255)).setItemsPerRow(16)
-                .setSpacingColumn(26).setNoneSelectedAllowed(false);
+                .setColorActive(color(255)).setColorLabel(color(255)).setItemsPerRow(10)
+                .setSpacingColumn(55).setNoneSelectedAllowed(false);
 
-        for (i = 0; i < 96 + 48; i++) {
-            String label = "" + i; //$NON-NLS-1$
+        for (i = 0; i < 100; i++) {
+            String label = "" + i;
             if (i < 10) {
-                label = "0" + i; //$NON-NLS-1$
+                label = "0" + i;
             }
             presetButtons.addItem(label, i);
         }
@@ -1058,19 +1058,19 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         if (preset != null) {
             String presetState;
             if (preset.isSlotUsed()) {
-                presetState = messages.getString("GeneratorGui.STR_TRUE"); //$NON-NLS-1$
+                presetState = messages.getString("GeneratorGui.STR_TRUE");
             } else {
-                presetState = messages.getString("GeneratorGui.STR_FALSE"); //$NON-NLS-1$
+                presetState = messages.getString("GeneratorGui.STR_FALSE");
             }
 
-            presetInfo.setText(messages.getString("GeneratorGui.VALID_ENTRY_EMPTY") + presetState); //$NON-NLS-1$
+            presetInfo.setText(messages.getString("GeneratorGui.VALID_ENTRY_EMPTY") + presetState);
             presetName.setText(preset.getName());
         } else {
-            presetInfo.setText(messages.getString("GeneratorGui.VALID_ENTRY_FALSE")); //$NON-NLS-1$
-            presetName.setText(""); //$NON-NLS-1$
+            presetInfo.setText(messages.getString("GeneratorGui.VALID_ENTRY_FALSE"));
+            presetName.setText("");
         }
 
-        //used presets contain the first 2 letters of the preset name
+        //used presets contain the first letters of the preset name
         List<PresetSettings> allSettings = pixConServer.getAllPresetSettings();
         if(null != allSettings) {
             int i = 0;
@@ -1080,7 +1080,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                     assert(t != null);
                     t.setColorBackground(color(150));
                     if(s.getName().length() > 0) {
-                        t.setLabel(s.getName().substring(0, min(3, s.getName().length())));
+                        t.setLabel(s.getName().substring(0, min(8, s.getName().length())));
                     }
                 }
                 ++i;

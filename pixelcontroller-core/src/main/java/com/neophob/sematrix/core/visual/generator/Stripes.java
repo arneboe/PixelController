@@ -18,6 +18,15 @@
  */
 package com.neophob.sematrix.core.visual.generator;
 
+import com.neophob.sematrix.core.glue.FileUtils;
+import com.neophob.sematrix.core.glue.ShufflerOffset;
+import com.neophob.sematrix.core.resize.IResize;
+import com.neophob.sematrix.core.resize.Resize.ResizeName;
+import com.neophob.sematrix.core.visual.MatrixData;
+import com.neophob.sematrix.core.visual.VisualState;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -25,17 +34,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.imageio.ImageIO;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.neophob.sematrix.core.glue.FileUtils;
-import com.neophob.sematrix.core.glue.ShufflerOffset;
-import com.neophob.sematrix.core.resize.IResize;
-import com.neophob.sematrix.core.resize.Resize.ResizeName;
-import com.neophob.sematrix.core.visual.MatrixData;
-import com.neophob.sematrix.core.visual.VisualState;
 
 /**
  * display an image.

@@ -49,7 +49,7 @@ public class Threshold extends Effect {
 		int[] ret = new int[buffer.length];
 		
 		for (int i=0; i<buffer.length; i++){
-    		if ((buffer[i]&255)<this.threshold) {
+    		if (buffer[i] < this.threshold) {
     		    ret[i]=128; 
     		} else {
     		    ret[i]=0;

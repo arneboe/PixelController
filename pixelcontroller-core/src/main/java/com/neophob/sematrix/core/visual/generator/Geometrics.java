@@ -91,7 +91,7 @@ public class Geometrics extends Generator {
     @Override
     public void update(int amount) {
         // maximal 3 active drops
-        if ((sound.isHat() || sound.isKick() || drops.isEmpty()) && drops.size() < 3) {
+        if ((sound.isBeat() || drops.isEmpty()) && drops.size() < 5) {
             drops.add(new Drop(random(THICKNESS, internalBufferXSize), random(THICKNESS,
                     internalBufferYSize), random(0, 255)));
         }
@@ -131,13 +131,6 @@ public class Geometrics extends Generator {
 
         /**
          * Instantiates a new drop.
-         * 
-         * @param x
-         *            the x
-         * @param y
-         *            the y
-         * @param c
-         *            the c
          */
         private Drop(int x, int y, int color) {
             xpos = x;
