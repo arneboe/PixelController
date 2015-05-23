@@ -30,6 +30,7 @@ import com.neophob.sematrix.core.visual.MatrixData;
  */
 public abstract class Effect implements IShuffleState {
 
+
     /**
      * The Enum EffectName.
      * 
@@ -162,5 +163,4 @@ public abstract class Effect implements IShuffleState {
                 .format("Effect [effectName=%s, resizeOption=%s, internalBufferXSize=%s, internalBufferYSize=%s]",
                         effectName, resizeOption, internalBufferXSize, internalBufferYSize);
     }
-
 }

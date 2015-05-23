@@ -39,6 +39,9 @@ import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.visual.color.IColorSet;
 import com.neophob.sematrix.core.visual.effect.Effect;
 import com.neophob.sematrix.core.visual.effect.Effect.EffectName;
+import com.neophob.sematrix.core.visual.effect.Options.IOption;
+import com.neophob.sematrix.core.visual.effect.Options.Options;
+import com.neophob.sematrix.core.visual.effect.Options.SliderOption;
 import com.neophob.sematrix.core.visual.effect.PixelControllerEffect;
 import com.neophob.sematrix.core.visual.fader.Fader.FaderName;
 import com.neophob.sematrix.core.visual.fader.IFader;
@@ -668,6 +671,8 @@ public class VisualState extends Observable {
         ret.add(ValidCommand.CHANGE_EFFECT_B + EMPTY_CHAR + v.getEffect2Idx());
         ret.add(ValidCommand.CHANGE_MIXER + EMPTY_CHAR + v.getMixerIdx());
         ret.add(ValidCommand.CURRENT_COLORSET + EMPTY_CHAR + v.getColorSet().getName());
+
+
         return ret;
     }
 
@@ -705,6 +710,17 @@ public class VisualState extends Observable {
         return ret;
     }
 
+
+    public Options getCurrentEffectOptions()
+    {
+        //FIXME dummy options
+        ArrayList<IOption> temp = new ArrayList<IOption>();
+        temp.add(new SliderOption("test1", -1, 13));
+        temp.add(new SliderOption("test123", 12, 42));
+
+        return new Options(temp, Options.Target.EFFECT_A);
+    }
+
     /**
      * get the current state of the current visual/outputs - used to update the
      * gui
@@ -737,6 +753,7 @@ public class VisualState extends Observable {
     public void notifyGuiUpdate() {
         setChanged();
         notifyObservers(getGuiState());
+        setChanged();
+        notifyObservers(getCurrentEffectOptions());
     }
-
 }

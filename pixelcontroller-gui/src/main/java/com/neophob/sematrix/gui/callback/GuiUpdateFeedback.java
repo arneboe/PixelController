@@ -25,6 +25,7 @@ import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.core.visual.effect.Options.Options;
 import com.neophob.sematrix.gui.guibuilder.GuiCallbackAction;
 
 /**
@@ -60,7 +61,13 @@ public class GuiUpdateFeedback implements Observer {
                 callBackAction.updateGuiElements(diff);
                 LOG.log(Level.INFO, "{0} settings updated.", diff.size());
             }
-        } else {
+        }
+        else if(arg instanceof Options)
+        {
+            final Options ops = (Options) arg;
+            callBackAction.updateGuiOptions(ops);
+        }
+        else {
             LOG.log(Level.WARNING, "Ignored notification of unknown type: " + arg);
         }
     }

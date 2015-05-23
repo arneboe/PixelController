@@ -27,6 +27,9 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.core.visual.effect.Options.IOption;
+import com.neophob.sematrix.core.visual.effect.Options.Options;
+import com.neophob.sematrix.core.visual.effect.Options.SliderOption;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
@@ -75,6 +78,7 @@ import controlP5.Tab;
 import controlP5.Textfield;
 import controlP5.Textlabel;
 import controlP5.Toggle;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Display the internal Visual buffers in full resolution
@@ -120,7 +124,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
     // Effect Tab
     private Slider thresholdSlider, fxRotoSlider, bpmSlider;
-    private DropdownList textureDeformOptions, zoomOptions;
 
     // Generator Tab
     private DropdownList blinkenLightsList, imageList, textwriterOption, beatWorkmode;
@@ -173,6 +176,13 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private IResize resize;
     private int nrOfVisuals;
     private P5EventListener listener;
+
+    /**currently active options for the effects A and B */
+    private List<String> effectAOptions = new ArrayList<String>();
+    private List<String> effectBOptions = new ArrayList<String>();
+    /**y coordinate of the next gui item that will be added to the options */
+    private int effectANextYOffset = 0;
+    private int effectBNextYOffset = 0;
 
     public GeneratorGui(PixConServer pixelController, WindowSizeCalculator wsc) {
         super();
@@ -403,65 +413,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         // EFFECTS OPTIONS
         // ---------------
         int genElYOfs = yPosStartDrowdown + 105;
-        cp5.addTextlabel(
-                "genOptionsFx", messages.getString("GeneratorGui.EFFECT_OPTIONS"), GENERIC_X_OFS, genElYOfs).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$        
+        cp5.addTextlabel("genOptionsFxA", messages.getString("GeneratorGui.EFFECT_OPTIONS_A"),
+                         GENERIC_X_OFS, genElYOfs).moveTo(generatorTab).getValueLabel();
 
-        // threshold slider
-        thresholdSlider = cp5.addSlider(GuiElement.THRESHOLD.guiText(), 0, 255, 255, genFxXOfs,
-                genElYOfs + 60, 140, 14);
-        thresholdSlider.setSliderMode(Slider.FIX);
-        thresholdSlider.setGroup(generatorTab);
-        thresholdSlider.setDecimalPrecision(0);
 
-        bpmSlider = cp5.addSlider(GuiElement.BPM.guiText(), 1, 360, 120, genFxXOfs,
-                genElYOfs + 80, 360, 14);
-        bpmSlider.setSliderMode(Slider.FIX);
-        bpmSlider.setGroup(generatorTab);
-        bpmSlider.setDecimalPrecision(0);
-
-        // rotozoom slider
-        fxRotoSlider = cp5.addSlider(GuiElement.FX_ROTOZOOMER.guiText(), -127, 127, 0, genFxXOfs
-                + 2 * Theme.DROPBOX_XOFS, genElYOfs + 60, 140, 14);
-        fxRotoSlider.setSliderMode(Slider.FIX);
-        fxRotoSlider.setGroup(generatorTab);
-        fxRotoSlider.setDecimalPrecision(0);
-        fxRotoSlider.setCaptionLabel(messages.getString("GeneratorGui.EFFECT_ROTOZOOM_SPEED")); //$NON-NLS-1$
-
-        genElYOfs += 25;
-
-        // texturedeform options
-        cp5.addTextlabel(
-                "genTextdefOpt", messages.getString("GeneratorGui.TEXTUREDDEFORM_OPTIONS"), genFxXOfs + 3 + 0 * Theme.DROPBOX_XOFS, genElYOfs + 16).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
-        textureDeformOptions = cp5.addDropdownList(GuiElement.TEXTUREDEFORM_OPTIONS.guiText(),
-                genFxXOfs + 0 * Theme.DROPBOX_XOFS, genElYOfs + 11, Theme.DROPBOXLIST_LENGTH, 80);
-        Theme.themeDropdownList(textureDeformOptions);
-        textureDeformOptions.addItem(
-                messages.getString("GeneratorGui.TEXTUREDEFORM_ANAMORPHOSIS"), 0); //$NON-NLS-1$
-        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_SPIRAL"), 1); //$NON-NLS-1$
-        textureDeformOptions.addItem(
-                messages.getString("GeneratorGui.TEXTUREDEFORM_ROTATINGTUNNEL"), 2); //$NON-NLS-1$
-        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_START"), 3); //$NON-NLS-1$
-        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_TUNNEL"), 4); //$NON-NLS-1$
-        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_FLOWER"), 5); //$NON-NLS-1$
-        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_CLOUD"), 6); //$NON-NLS-1$
-        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_PLANAR"), 7); //$NON-NLS-1$
-        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_CIRCLE"), 8); //$NON-NLS-1$
-        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_FLUSH"), 9); //$NON-NLS-1$
-        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_3D"), 10); //$NON-NLS-1$
-        textureDeformOptions.setLabel(textureDeformOptions.getItem(0).getName());
-        textureDeformOptions.setGroup(generatorTab);
-
-        cp5.addTextlabel(
-                "genZoomOpt", messages.getString("GeneratorGui.ZOOM_OPTIONS"), genFxXOfs + 3 + 1 * Theme.DROPBOX_XOFS, genElYOfs + 16).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
-        zoomOptions = cp5.addDropdownList(GuiElement.ZOOM_OPTIONS.guiText(), genFxXOfs + 1
-                * Theme.DROPBOX_XOFS, genElYOfs + 11, Theme.DROPBOXLIST_LENGTH, 80);
-        Theme.themeDropdownList(zoomOptions);
-        zoomOptions.addItem(messages.getString("GeneratorGui.ZOOM_IN"), 0); //$NON-NLS-1$
-        zoomOptions.addItem(messages.getString("GeneratorGui.ZOOM_OUT"), 1); //$NON-NLS-1$
-        zoomOptions.addItem(messages.getString("GeneratorGui.ZOOM_HORIZONTAL"), 2); //$NON-NLS-1$
-        zoomOptions.addItem(messages.getString("GeneratorGui.ZOOM_VERTICAL"), 3); //$NON-NLS-1$
-        zoomOptions.setLabel(zoomOptions.getItem(0).getName());
-        zoomOptions.setGroup(generatorTab);
 
         // GENERATOR OPTIONS
         // -----------------
@@ -1195,17 +1150,12 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         if (!clickedOn.contains(GuiElement.OUTPUT_SELECTED_VISUAL_DROPDOWN)) {
             dropdownOutputVisual.setOpen(false);
         }
-        if (!clickedOn.contains(GuiElement.TEXTUREDEFORM_OPTIONS)) {
-            textureDeformOptions.setOpen(false);
-        }
+
         if (!clickedOn.contains(GuiElement.TEXTWR_OPTION)) {
             textwriterOption.setOpen(false);
         }
         if (!clickedOn.contains(GuiElement.COLORSCROLL_OPTIONS)) {
             colorScrollList.setOpen(false);
-        }
-        if (!clickedOn.contains(GuiElement.ZOOM_OPTIONS)) {
-            zoomOptions.setOpen(false);
         }
 
         if (allOutputTabVis != null
@@ -1381,19 +1331,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                                 Integer.parseInt(s.getValue())).getName());
                         break;
 
-                    case ZOOMOPT:
-                        zoomOptions.setLabel(zoomOptions.getItem(Integer.parseInt(s.getValue()))
-                                .getName());
-                        break;
 
                     case TEXTWR_OPTION:
                         textwriterOption.setLabel(textwriterOption.getItem(
                                 Integer.parseInt(s.getValue())).getName());
-                        break;
-
-                    case TEXTDEF:
-                        int i = Integer.parseInt(s.getValue());
-                        textureDeformOptions.setLabel(textureDeformOptions.getItem(i).getName());
                         break;
 
                     case CHANGE_BRIGHTNESS:
@@ -1460,5 +1401,67 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             }
         }
 
+    }
+
+    @Override
+    public void updateGuiOptions(Options opts) {
+        switch(opts.getTarget())
+        {
+            case EFFECT_A:
+            case EFFECT_B:
+                clearEffectOptions(opts.getTarget());
+                for(IOption o : opts.getOptions())
+                    addEffectOption(o, opts.getTarget(), "TODO");
+                break;
+            case GEN_A:
+            case GEN_B:
+                throw new NotImplementedException();
+                //break;
+            default:
+                throw new RuntimeException("DEFAULT CASE!!!");
+        }
+    }
+
+    private List<String> getActiveOptions(final Options.Target target) {
+        if(target == Options.Target.EFFECT_A) {
+            return effectAOptions;
+        }
+        else {
+            return effectBOptions;
+        }
+    }
+
+    private void clearEffectOptions(final Options.Target target) {
+        List<String> activeOptions = getActiveOptions(target);
+        for(final String optName : activeOptions) {
+            cp5.remove(optName);
+        }
+        activeOptions.clear();
+        if(target == Options.Target.EFFECT_A)
+        {
+            effectANextYOffset = p5GuiYOffset + 36 + 105 + 20;
+        }
+        else
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    /**only call this method if the options have been cleared before */
+    private void addEffectOption(final IOption opt, final Options.Target target, final String effectName)
+    {
+        final String name = effectName + "_" + opt.getName();
+        List<String> activeOptions = getActiveOptions(target);
+
+        if(opt instanceof SliderOption)
+        {
+            Slider s = cp5.addSlider(name, 0, 255, 255, 43,
+                    effectANextYOffset, 140, 14);
+            effectANextYOffset += 20;
+        }
+        else
+        {
+            throw new NotImplementedException();
+        }
     }
 }

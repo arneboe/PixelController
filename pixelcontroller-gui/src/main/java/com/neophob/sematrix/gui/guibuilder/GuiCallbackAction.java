@@ -18,6 +18,8 @@
  */
 package com.neophob.sematrix.gui.guibuilder;
 
+import com.neophob.sematrix.core.visual.effect.Options.Options;
+
 import java.util.Map;
 
 /**
@@ -50,4 +52,7 @@ public interface GuiCallbackAction {
     void selectPreviousTab();
     
 	void updateGuiElements(Map<String, String> map);
+
+    /**update the corresponding option display */
+    void updateGuiOptions(Options opts);
 }
