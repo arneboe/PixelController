@@ -715,8 +715,8 @@ public class VisualState extends Observable {
     {
         //FIXME dummy options
         ArrayList<IOption> temp = new ArrayList<IOption>();
-        temp.add(new SliderOption("test1", -1, 13));
-        temp.add(new SliderOption("test123", 12, 42));
+        temp.add(new SliderOption("test1", -1, 13, 5));
+        temp.add(new SliderOption("test123", 12, 42, 40));
 
         return new Options(temp, Options.Target.EFFECT_A);
     }

@@ -1450,18 +1450,43 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     /**only call this method if the options have been cleared before */
     private void addEffectOption(final IOption opt, final Options.Target target, final String effectName)
     {
-        final String name = effectName + "_" + opt.getName();
         List<String> activeOptions = getActiveOptions(target);
 
         if(opt instanceof SliderOption)
         {
-            Slider s = cp5.addSlider(name, 0, 255, 255, 43,
-                    effectANextYOffset, 140, 14);
-            effectANextYOffset += 20;
+            addSliderOption((SliderOption)opt, target);
         }
         else
         {
             throw new NotImplementedException();
         }
+    }
+
+    private void addSliderOption(final SliderOption opt, final Options.Target target) {
+        int x = 0;
+        int y = 0;
+        switch (target) {
+            case EFFECT_A:
+                x = 43;
+                y = effectANextYOffset;
+                effectANextYOffset += 20;
+                break;
+            case EFFECT_B:
+                throw new NotImplementedException();
+                //break;
+            case GEN_A:
+                throw new NotImplementedException();
+                //break;
+            case GEN_B:
+                throw new NotImplementedException();
+                //break;
+            default:
+                throw new RuntimeException("default case");
+        }
+        Slider s = cp5.addSlider(opt.getName(), 0, 255, 255, x,
+                y, 140, 14);
+        s.setMin(opt.getLower());
+        s.setMax(opt.getUpper());
+        s.setValue(opt.getValue());
     }
 }
