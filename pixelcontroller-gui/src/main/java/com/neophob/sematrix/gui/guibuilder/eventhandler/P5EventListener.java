@@ -24,12 +24,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.properties.ValidCommand;
+import com.neophob.sematrix.core.visual.effect.Options.IOption;
+import com.neophob.sematrix.core.visual.effect.Options.Options;
 import com.neophob.sematrix.gui.guibuilder.GeneratorGui;
 import com.neophob.sematrix.gui.model.GuiElement;
 import com.neophob.sematrix.gui.service.PixConServer;
 
 import controlP5.ControlEvent;
 import controlP5.ControlListener;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * GUI Listener
@@ -101,7 +104,28 @@ public final class P5EventListener implements ControlListener {
             return;
         }
 
-        if (selection == null) {
+        if (selection == null &&
+            theEvent.getName().startsWith("OPTION")) {//FIXME "OPTION" should be a constant somewhere
+            //dynamic options are not transferred using the messages, instead they are set directly.
+            //Not sure if this is a good idea but its faster to implement and I don't have a lot of time right now
+            IOption opt = null;
+            //FIXME this sucks haaard
+            if(theEvent.getName().contains("EFFECT_A")) {
+                opt = callback.getActiveOption(theEvent.getName(), Options.Target.EFFECT_A);
+            }
+            else if(theEvent.getName().contains("EFFECT_B")) {
+                opt = callback.getActiveOption(theEvent.getName(), Options.Target.EFFECT_B);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+            if(null != opt) {
+                opt.setValue(value);
+            }
+            return;
+        }
+        else if(selection == null)  {
             LOG.log(Level.INFO, "Null selection <" + theEvent.getName() + ">, details: " + theEvent);
             return;
         }
@@ -324,14 +348,17 @@ public final class P5EventListener implements ControlListener {
         lastCallbackEvent = System.currentTimeMillis();
     }
 
-    /**
-     * 
-     * @param newValue
-     * @param source
-     */
+
     private void createMessage(ValidCommand validCommand, float newValue) {
         String[] msg = new String[2];
         msg[0] = "" + validCommand;
+        msg[1] = "" + (int) newValue;
+        singleSendMessageOut(msg);
+    }
+
+    private void createMessageFromString(final String cmd, final float newValue) {
+        String[] msg = new String[2];
+        msg[0] = cmd;
         msg[1] = "" + (int) newValue;
         singleSendMessageOut(msg);
     }

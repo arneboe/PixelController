@@ -52,6 +52,7 @@ import com.neophob.sematrix.core.visual.generator.PixelControllerGenerator;
 import com.neophob.sematrix.core.visual.mixer.Mixer;
 import com.neophob.sematrix.core.visual.mixer.Mixer.MixerName;
 import com.neophob.sematrix.core.visual.mixer.PixelControllerMixer;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Visual State of PixelController
@@ -711,14 +712,33 @@ public class VisualState extends Observable {
     }
 
 
-    public Options getCurrentEffectOptions()
+    public Options getCurrentOptions(final Options.Target target)
     {
         //FIXME dummy options
         ArrayList<IOption> temp = new ArrayList<IOption>();
         temp.add(new SliderOption("test1", -1, 13, 5));
         temp.add(new SliderOption("test123", 12, 42, 40));
 
-        return new Options(temp, Options.Target.EFFECT_A);
+        final int visNum = getCurrentVisual();
+        final Visual vis = getVisual(visNum);
+        Effect effect = null;
+        switch(target) {
+            case EFFECT_A:
+                effect = vis.getEffect1();
+                break;
+            case EFFECT_B:
+                effect = vis.getEffect2();
+                break;
+            case GEN_A:
+                throw new NotImplementedException();
+                // break;
+            case GEN_B:
+                throw new NotImplementedException();
+               // break;
+            default:
+                throw new RuntimeException("default case");
+        }
+        return new Options(effect.getOptions(), target);
     }
 
     /**
@@ -747,13 +767,12 @@ public class VisualState extends Observable {
         return ret;
     }
 
-    /**
-	 * 
-	 */
     public void notifyGuiUpdate() {
         setChanged();
         notifyObservers(getGuiState());
         setChanged();
-        notifyObservers(getCurrentEffectOptions());
+        notifyObservers(getCurrentOptions(Options.Target.EFFECT_A));
+       // setChanged();
+       // notifyObservers(getCurrentOptions(Options.Target.EFFECT_B));
     }
 }

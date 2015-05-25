@@ -5,5 +5,6 @@ package com.neophob.sematrix.core.visual.effect.Options;
 public interface IOption {
 
     String getName();
+    void setValue(final float value);
 
 }

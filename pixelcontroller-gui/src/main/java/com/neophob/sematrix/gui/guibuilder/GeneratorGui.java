@@ -19,11 +19,7 @@
 package com.neophob.sematrix.gui.guibuilder;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -80,6 +76,8 @@ import controlP5.Textlabel;
 import controlP5.Toggle;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import javax.swing.text.html.Option;
+
 /**
  * Display the internal Visual buffers in full resolution
  * 
@@ -122,10 +120,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private Slider brightnessControll;
     private Toggle freeze;
 
-    // Effect Tab
-    private Slider thresholdSlider, fxRotoSlider, bpmSlider;
-
-    // Generator Tab
+      // Generator Tab
     private DropdownList blinkenLightsList, imageList, textwriterOption, beatWorkmode;
     private Label passThroughMode;
     private Slider generatorSpeedSlider;
@@ -178,8 +173,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private P5EventListener listener;
 
     /**currently active options for the effects A and B */
-    private List<String> effectAOptions = new ArrayList<String>();
-    private List<String> effectBOptions = new ArrayList<String>();
+    private HashMap<String, IOption> effectAOptions = new HashMap<String, IOption>();
+    private HashMap<String, IOption> effectBOptions = new HashMap<String, IOption>();
     /**y coordinate of the next gui item that will be added to the options */
     private int effectANextYOffset = 0;
     private int effectBNextYOffset = 0;
@@ -1318,13 +1313,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                         updateCurrentPresetState();
                         break;
 
-                    case CHANGE_THRESHOLD_VALUE:
-                        thresholdSlider.changeValue(Float.parseFloat(s.getValue()));
-                        break;
-
-                    case CHANGE_ROTOZOOM:
-                        fxRotoSlider.changeValue(Float.parseFloat(s.getValue()));
-                        break;
 
                     case COLOR_SCROLL_OPT:
                         colorScrollList.setLabel(colorScrollList.getItem(
@@ -1422,7 +1410,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         }
     }
 
-    private List<String> getActiveOptions(final Options.Target target) {
+    private HashMap<String, IOption> getActiveOptions(final Options.Target target) {
         if(target == Options.Target.EFFECT_A) {
             return effectAOptions;
         }
@@ -1432,8 +1420,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     }
 
     private void clearEffectOptions(final Options.Target target) {
-        List<String> activeOptions = getActiveOptions(target);
-        for(final String optName : activeOptions) {
+        HashMap<String, IOption> activeOptions = getActiveOptions(target);
+        for(final String optName : activeOptions.keySet()) {
             cp5.remove(optName);
         }
         activeOptions.clear();
@@ -1441,7 +1429,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         {
             effectANextYOffset = p5GuiYOffset + 36 + 105 + 20;
         }
-        else
+        else if(target == Options.Target.EFFECT_B)
         {
             throw new NotImplementedException();
         }
@@ -1450,8 +1438,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     /**only call this method if the options have been cleared before */
     private void addEffectOption(final IOption opt, final Options.Target target, final String effectName)
     {
-        List<String> activeOptions = getActiveOptions(target);
-
         if(opt instanceof SliderOption)
         {
             addSliderOption((SliderOption)opt, target);
@@ -1465,11 +1451,13 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private void addSliderOption(final SliderOption opt, final Options.Target target) {
         int x = 0;
         int y = 0;
+        String name = "";
         switch (target) {
             case EFFECT_A:
                 x = 43;
                 y = effectANextYOffset;
                 effectANextYOffset += 20;
+                name = "OPTION_EFFECT_A_" + opt.getName();
                 break;
             case EFFECT_B:
                 throw new NotImplementedException();
@@ -1483,10 +1471,23 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             default:
                 throw new RuntimeException("default case");
         }
-        Slider s = cp5.addSlider(opt.getName(), 0, 255, 255, x,
+
+        //this needs to happen before the slider is created because setMin() etc. cause value change events on the slider
+        //which cause a hash map lookup
+        HashMap<String, IOption> activeOptions = getActiveOptions(target);
+        activeOptions.put(name, opt);
+
+        Slider s = cp5.addSlider(name, 0, 255, 255, x,
                 y, 140, 14);
         s.setMin(opt.getLower());
         s.setMax(opt.getUpper());
         s.setValue(opt.getValue());
+        s.setCaptionLabel(opt.getName());
+    }
+
+    public IOption getActiveOption(final String name, final Options.Target target)
+    {
+        HashMap<String, IOption> activeOptions = getActiveOptions(target);
+        return activeOptions.get(name);
     }
 }

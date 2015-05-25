@@ -18,12 +18,16 @@
  */
 package com.neophob.sematrix.core.visual.effect;
 
+import com.neophob.sematrix.core.visual.effect.Options.IOption;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.IShuffleState;
 import com.neophob.sematrix.core.visual.MatrixData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Class Effect.
@@ -97,15 +101,12 @@ public abstract class Effect implements IShuffleState {
     /** The internal buffer y size. */
     protected int internalBufferYSize;
 
+    /**options of this effect */
+    protected List<IOption> options = new ArrayList<IOption>(5);
+
     /**
      * Instantiates a new effect.
-     * 
-     * @param controller
-     *            the controller
-     * @param effectName
-     *            the effect name
-     * @param resizeOption
-     *            the resize option
+     *
      */
     public Effect(MatrixData matrix, EffectName effectName, ResizeName resizeOption) {
         this.effectName = effectName;
@@ -162,5 +163,10 @@ public abstract class Effect implements IShuffleState {
         return String
                 .format("Effect [effectName=%s, resizeOption=%s, internalBufferXSize=%s, internalBufferYSize=%s]",
                         effectName, resizeOption, internalBufferXSize, internalBufferYSize);
+    }
+
+    public List<IOption> getOptions()
+    {
+        return options;
     }
 }
