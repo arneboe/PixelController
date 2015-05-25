@@ -34,7 +34,6 @@ import java.util.List;
  */
 public abstract class Effect implements IShuffleState {
 
-
     /**
      * The Enum EffectName.
      * 

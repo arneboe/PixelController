@@ -772,7 +772,7 @@ public class VisualState extends Observable {
         notifyObservers(getGuiState());
         setChanged();
         notifyObservers(getCurrentOptions(Options.Target.EFFECT_A));
-       // setChanged();
-       // notifyObservers(getCurrentOptions(Options.Target.EFFECT_B));
+        setChanged();
+        notifyObservers(getCurrentOptions(Options.Target.EFFECT_B));
     }
 }

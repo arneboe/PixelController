@@ -98,6 +98,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private static final int WIDGET_BOARDER = 10;
     private static final int WIDGET_BAR_SIZE = 6;
 
+    private static final int EFFECT_B_OPTIONS_X_OFFSET = GENERIC_X_OFS + 300;
+
     private static final String ALWAYS_VISIBLE_TAB = "global"; //$NON-NLS-1$
 
     private static final Logger LOG = Logger.getLogger(GeneratorGui.class.getName());
@@ -411,6 +413,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         cp5.addTextlabel("genOptionsFxA", messages.getString("GeneratorGui.EFFECT_OPTIONS_A"),
                          GENERIC_X_OFS, genElYOfs).moveTo(generatorTab).getValueLabel();
 
+        cp5.addTextlabel("genOptionsFxB", messages.getString("GeneratorGui.EFFECT_OPTIONS_B"),
+                EFFECT_B_OPTIONS_X_OFFSET, genElYOfs).moveTo(generatorTab).getValueLabel();
 
 
         // GENERATOR OPTIONS
@@ -1431,7 +1435,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         }
         else if(target == Options.Target.EFFECT_B)
         {
-            throw new NotImplementedException();
+            effectBNextYOffset = p5GuiYOffset + 36 + 105 + 20;
         }
     }
 
@@ -1460,8 +1464,11 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                 name = "OPTION_EFFECT_A_" + opt.getName();
                 break;
             case EFFECT_B:
-                throw new NotImplementedException();
-                //break;
+                x = EFFECT_B_OPTIONS_X_OFFSET + 20;
+                y = effectBNextYOffset;
+                effectBNextYOffset += 20;
+                name = "OPTION_EFFECT_B_" + opt.getName();
+                break;
             case GEN_A:
                 throw new NotImplementedException();
                 //break;
