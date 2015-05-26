@@ -1484,11 +1484,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         HashMap<String, IOption> activeOptions = getActiveOptions(target);
         activeOptions.put(name, opt);
 
-        Slider s = cp5.addSlider(name, 0, 255, 255, x,
+        Slider s = cp5.addSlider(name, opt.getLower(), opt.getUpper(), opt.getValue(), x,
                 y, 140, 14);
-        s.setMin(opt.getLower());
-        s.setMax(opt.getUpper());
-        s.setValue(opt.getValue());
         s.setCaptionLabel(opt.getName());
     }
 
