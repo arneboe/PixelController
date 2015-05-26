@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.visual.effect.Options.IOption;
 import com.neophob.sematrix.core.visual.effect.Options.Options;
-import com.neophob.sematrix.core.visual.effect.Options.SliderOption;
+import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
@@ -75,8 +75,6 @@ import controlP5.Textfield;
 import controlP5.Textlabel;
 import controlP5.Toggle;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import javax.swing.text.html.Option;
 
 /**
  * Display the internal Visual buffers in full resolution
@@ -1442,9 +1440,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     /**only call this method if the options have been cleared before */
     private void addEffectOption(final IOption opt, final Options.Target target, final String effectName)
     {
-        if(opt instanceof SliderOption)
+        if(opt instanceof FloatRangeOption)
         {
-            addSliderOption((SliderOption)opt, target);
+            addSliderOption((FloatRangeOption)opt, target);
         }
         else
         {
@@ -1452,7 +1450,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         }
     }
 
-    private void addSliderOption(final SliderOption opt, final Options.Target target) {
+    private void addSliderOption(final FloatRangeOption opt, final Options.Target target) {
         int x = 0;
         int y = 0;
         String name = "";

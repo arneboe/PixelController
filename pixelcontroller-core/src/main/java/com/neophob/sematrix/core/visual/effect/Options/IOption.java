@@ -6,5 +6,6 @@ public interface IOption {
 
     String getName();
     void setValue(final float value);
+    float getValue();
 
 }

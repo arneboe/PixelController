@@ -149,12 +149,34 @@ public abstract class Effect implements IShuffleState {
     }
 
     /*
-     * (non-Javadoc)
-     * 
      * @see com.neophob.sematrix.core.glue.RandomizeState#shuffle()
      */
     public void shuffle() {
         // default shuffle method - do nothing
+    }
+
+    /**
+     * @return the current state of all options. Used for saving
+     */
+    public String getOptionState() {
+        String ret = "";
+        for(IOption opt : options) {
+            ret += opt.getName() + " " + opt.getValue() + " ";
+        }
+        return ret;
+    }
+
+    public void setOptionState(final String[] opts){
+        for(int i = 0; i < opts.length; i += 2) {
+            final String name = opts[i];
+            final float value = Float.parseFloat(opts[i + 1]);
+            for(IOption o :options) {
+                if(o.getName().equals(name)) {
+                    o.setValue(value);
+                    break;
+                }
+            }
+        }
     }
 
     @Override

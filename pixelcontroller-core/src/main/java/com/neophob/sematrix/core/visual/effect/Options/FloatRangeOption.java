@@ -1,13 +1,13 @@
 package com.neophob.sematrix.core.visual.effect.Options;
 
-public class SliderOption implements IOption {
+public class FloatRangeOption implements IOption {
 
     private final String name;
     private final float min;
     private final float max;
     private float value;
 
-    public SliderOption(final String name, final float min, final float max, final float value)
+    public FloatRangeOption(final String name, final float min, final float max, final float value)
     {
         this.name = name;
         this.min = min;

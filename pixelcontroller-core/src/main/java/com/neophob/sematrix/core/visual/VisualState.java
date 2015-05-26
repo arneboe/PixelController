@@ -41,7 +41,7 @@ import com.neophob.sematrix.core.visual.effect.Effect;
 import com.neophob.sematrix.core.visual.effect.Effect.EffectName;
 import com.neophob.sematrix.core.visual.effect.Options.IOption;
 import com.neophob.sematrix.core.visual.effect.Options.Options;
-import com.neophob.sematrix.core.visual.effect.Options.SliderOption;
+import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
 import com.neophob.sematrix.core.visual.effect.PixelControllerEffect;
 import com.neophob.sematrix.core.visual.fader.Fader.FaderName;
 import com.neophob.sematrix.core.visual.fader.IFader;
@@ -708,6 +708,11 @@ public class VisualState extends Observable {
 
         ret.addAll(getSystemState());
 
+        for(Effect e : pixelControllerEffect.getAllEffects()) {
+            //FIXME this should be a constant somewere
+            ret.add("EFFECT_OPTION " + e.getId() +  " " + e.getOptionState());
+        }
+
         return ret;
     }
 
@@ -716,8 +721,8 @@ public class VisualState extends Observable {
     {
         //FIXME dummy options
         ArrayList<IOption> temp = new ArrayList<IOption>();
-        temp.add(new SliderOption("test1", -1, 13, 5));
-        temp.add(new SliderOption("test123", 12, 42, 40));
+        temp.add(new FloatRangeOption("test1", -1, 13, 5));
+        temp.add(new FloatRangeOption("test123", 12, 42, 40));
 
         final int visNum = getCurrentVisual();
         final Visual vis = getVisual(visNum);

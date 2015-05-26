@@ -20,7 +20,7 @@ package com.neophob.sematrix.core.visual.effect;
 
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.MatrixData;
-import com.neophob.sematrix.core.visual.effect.Options.SliderOption;
+import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
 
 /**
  * create a strobo effect.
@@ -33,7 +33,7 @@ public class BpmStrobo extends Effect {
 	private int period; /**<The time of half a strobe cycle. I.e. how long the strobe should be on/off */
 	private long lastTime; /**<The time of the last update() call in millis*/
 	private int[] offBuffer; /**<buffer that is returned when the strobo is off */
-	private SliderOption bpmOption;
+	private FloatRangeOption bpmOption;
 
 	public BpmStrobo(MatrixData matrix) {
 		super(matrix, EffectName.BPM_STROBO, ResizeName.QUALITY_RESIZE);
@@ -41,8 +41,9 @@ public class BpmStrobo extends Effect {
 		setBpm(150);
 		offBuffer = new int[1];
 
-		bpmOption = new SliderOption("BPM", 1, 300, 150);
+		bpmOption = new FloatRangeOption("BPM", 1, 300, 150);
 		options.add(bpmOption);
+		options.add(new FloatRangeOption("test", 10, 44, 42));
 	}
 
 	/* (non-Javadoc)

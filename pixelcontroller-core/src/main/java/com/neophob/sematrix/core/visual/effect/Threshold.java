@@ -24,22 +24,18 @@ import com.neophob.sematrix.core.glue.ShufflerOffset;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.VisualState;
+import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
 
 /**
  * @author michu
  */
 public class Threshold extends Effect {
 
-	private int threshold;
-	
-	/**
-	 * Instantiates a new threshold.
-	 *
-	 * @param controller the controller
-	 */
+	private FloatRangeOption threshold;
 	public Threshold(MatrixData matrix) {
 		super(matrix, EffectName.THRESHOLD, ResizeName.QUALITY_RESIZE);
-		this.threshold = 128;
+		threshold = new FloatRangeOption("Threshold", 0, 255, 128);
+		options.add(threshold);
 	}
 
 	/* (non-Javadoc)
@@ -49,7 +45,7 @@ public class Threshold extends Effect {
 		int[] ret = new int[buffer.length];
 		
 		for (int i=0; i<buffer.length; i++){
-    		if (buffer[i] < this.threshold) {
+    		if (buffer[i] < this.threshold.getValue()) {
     		    ret[i]=128; 
     		} else {
     		    ret[i]=0;
@@ -64,23 +60,7 @@ public class Threshold extends Effect {
 	@Override
 	public void shuffle() {
 		if (VisualState.getInstance().getShufflerSelect(ShufflerOffset.THRESHOLD_VALUE)) {
-			this.threshold = (short)new Random().nextInt(255);
+			this.threshold.setValue((short)new Random().nextInt(255));
 		}		
 	}
-	
-	
-	/**
-	 * @param threshold the new threshold
-	 */
-	public void setThreshold(int threshold) {
-		this.threshold = threshold%0xff;
-	}	
-	
-	/**
-	 * @return the threshold
-	 */
-	public int getThreshold() {
-		return threshold;
-	}
-	
 }

@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.neophob.sematrix.core.glue.FileUtils;
@@ -129,6 +130,15 @@ public enum MessageProcessor {
         int msgLength = msg.length - 1;
         int tmp;
         VisualState col = VisualState.getInstance();
+
+        //FIXME a dirty quick hack to load options from presets
+        if(msg[0].trim().equals("EFFECT_OPTION") && msg.length > 2) {
+            final int effectNo = parseValue(msg[1]);
+            final Effect e = col.getPixelControllerEffect().getEffect(effectNo);
+            e.setOptionState(ArrayUtils.subarray(msg, 2, msg.length));
+            col.notifyGuiUpdate();
+            return;
+        }
 
         try {
             ValidCommand cmd = ValidCommand.valueOf(msg[0]);
@@ -380,32 +390,6 @@ public enum MessageProcessor {
                     try {
                         int a = parseValue(msg[1]);
                         presetService.setSelectedPreset(a);
-                    } catch (Exception e) {
-                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
-                    }
-                    break;
-
-                case CHANGE_THRESHOLD_VALUE:
-                    try {
-                        int a = parseValue(msg[1]);
-                        if (a > 255) {
-                            a = 255;
-                        }
-                        if (a < 0) {
-                            a = 0;
-                        }
-                        col.getPixelControllerEffect().setThresholdValue(a);
-                    } catch (Exception e) {
-                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
-                    }
-                    break;
-                case CHANGE_BPM_VALUE:
-                    try {
-                        int a = parseValue(msg[1]);
-                        if (a < 0) {
-                            a = 0;
-                        }
-                        col.getPixelControllerEffect().setBpm(a);
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
                     }

@@ -118,7 +118,6 @@ public class PixelControllerEffect implements PixelControllerElement {
 
         ret.add(ValidCommand.CHANGE_ROTOZOOM + " "
                 + ((RotoZoom) getEffect(EffectName.ROTOZOOM)).getAngle());
-        ret.add(ValidCommand.CHANGE_THRESHOLD_VALUE + " " + threshold.getThreshold());
         ret.add(ValidCommand.TEXTDEF + " " + textureDeformation.getLut());
         ret.add(ValidCommand.ZOOMOPT + " " + zoom.getZoomMode());
 
@@ -179,41 +178,6 @@ public class PixelControllerEffect implements PixelControllerElement {
         }
         LOG.log(Level.WARNING, "Invalid Effect index selected: {0}", index);
         return null;
-    }
-
-    /**
-     * Sets the threshold value.
-     * 
-     * @param val
-     *            the new threshold value
-     */
-    public void setThresholdValue(int val) {
-        this.threshold.setThreshold(val);
-    }
-
-    /**
-     * Gets the threshold value.
-     * 
-     * @return the threshold value
-     */
-    public int getThresholdValue() {
-        return this.threshold.getThreshold();
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public int getRotoZoomAngle() {
-        return this.rotoZoom.getAngle();
-    }
-
-    /**
-     * 
-     * @param angle
-     */
-    public void setRotoZoomAngle(int angle) {
-        this.rotoZoom.setAngle(angle);
     }
 
     /**
