@@ -25,53 +25,32 @@ package com.neophob.sematrix.core.resize;
  */
 class NearestNeighbourResize extends Resize {
 
-    /**
-     * Instantiates a new pixel resize.
-     * 
-     * @param controller
-     *            the controller
-     */
     public NearestNeighbourResize() {
         super(ResizeName.PIXEL_RESIZE);
     }
 
-    public int[] resizeImage(int[] buffer, int currentXSize, int currentYSize, int newX, int newY) {
-        int[] rawOutput = new int[newX * newY];
-
-        // YD compensates for the x loop by subtracting the width back out
-        int yDiff = (currentYSize / newY) * currentXSize - currentXSize;
-        int yr = currentYSize % newY;
-        int xDiff = currentXSize / newX;
-        int xr = currentXSize % newX;
-        int outOffset = 0;
-        int inOffset = 0;
-
-        // fix center shrinked images
-        if (currentXSize > newX) {
-            inOffset += (currentXSize / newX) / 2;
-        }
-        if (currentYSize > newY) {
-            inOffset += (currentXSize * ((currentYSize / newY) / 2));
-        }
-
-        for (int y = newY, ye = 0; y > 0; y--) {
-            for (int x = newX, xe = 0; x > 0; x--) {
-                rawOutput[outOffset++] = buffer[inOffset];
-                inOffset += xDiff;
-                xe += xr;
-                if (xe >= newX) {
-                    xe -= newX;
-                    inOffset++;
-                }
-            }
-            inOffset += yDiff;
-            ye += yr;
-            if (ye >= newY) {
-                ye -= newY;
-                inOffset += currentXSize;
+    /**
+     * @note copy&paste from http://tech-algorithm.com/articles/nearest-neighbor-image-scaling/
+     * @param buffer
+     * @param w1 current width
+     * @param h1 current height
+     * @param w2 new width
+     * @param h2 new height
+     * @return
+     */
+    public int[] resizeImage(final int[] buffer, final int w1, final int h1, final int w2, final int h2) {
+        int[] temp = new int[w2*h2] ;
+        final int x_ratio = (int)((w1<<16)/w2) +1;
+        final int y_ratio = (int)((h1<<16)/h2) +1;
+        int x2, y2;
+        for (int i=0;i<h2;i++) {
+            for (int j=0;j<w2;j++) {
+                x2 = ((j*x_ratio)>>16) ;
+                y2 = ((i*y_ratio)>>16) ;
+                temp[(i*w2)+j] = buffer[(y2*w1)+x2] ;
             }
         }
-        return rawOutput;
+        return temp;
     }
 
 }

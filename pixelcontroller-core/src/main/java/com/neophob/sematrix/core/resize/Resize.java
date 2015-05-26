@@ -23,7 +23,7 @@ import java.awt.image.DataBufferInt;
 import java.awt.image.WritableRaster;
 
 /**
- * resize a larger buffer for a smaller buffer.
+ * resize a larger buffer to smaller buffer.
  * 
  * @author michu
  */

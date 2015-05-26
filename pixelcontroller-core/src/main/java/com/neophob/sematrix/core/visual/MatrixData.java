@@ -91,12 +91,6 @@ public class MatrixData implements Serializable {
         return getBufferXSize() * getBufferYSize() * 3;
     }
 
-    /**
-     * ========[ getter/setter
-     * ]======================================================================.
-     * 
-     * @return the device x size
-     */
 
     /**
      * return effective device pixel size
