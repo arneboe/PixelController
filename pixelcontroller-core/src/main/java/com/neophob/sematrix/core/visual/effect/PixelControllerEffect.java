@@ -97,7 +97,6 @@ public class PixelControllerEffect implements PixelControllerElement {
         allEffects.add(new FlipX(matrix));
         bpmStrobo = new BpmStrobo(matrix);
         allEffects.add(bpmStrobo);
-        allEffects.add(new BeatStrobo(matrix, sound));
         allEffects.add(new Rotate90(matrix, resize));
         allEffects.add(new Posterize(matrix));
         allEffects.add(new Darken(matrix));

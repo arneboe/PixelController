@@ -52,7 +52,6 @@ public abstract class Effect implements IShuffleState {
         FLIP_X(9),
         FLIP_Y(10),
         BPM_STROBO(11),
-        BEAT_STROBO(12),
         ROTATE90(13),
         POSTERIZE(14),
         DARKEN(15);
