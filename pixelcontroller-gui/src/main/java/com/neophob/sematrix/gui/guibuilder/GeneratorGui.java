@@ -456,6 +456,12 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         colorScrollList.setGroup(generatorTab);
         colorScrollList.setHeight(Theme.DROPBOXLIST_HEIGHT);
 
+
+        passThroughMode = cp5
+                .addTextlabel("passThroughMode", "", genFxXOfs, yPosStartDrowdown + 50)
+                .moveTo(generatorTab).getValueLabel();
+        passThroughMode.setColor(0xffff0000);
+
         // -----------------
         // Single Output tab
         // -----------------
