@@ -271,7 +271,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
         if (applicationConfig.isAudioAware()) {
             try {
                 sound = new SoundMinimKctess5();
-              //  sound = new SoundMinim(0.00001f);
+               // sound = new SoundMinim(0.00001f);
                 sound.start();
                 return;
             } catch (Exception e) {
