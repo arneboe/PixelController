@@ -51,8 +51,6 @@ public enum ValidCommand {
             15,
             "<INT>, parameter contains 15 nibbles to enable or disable the shuffler option (gets changed in the random mode), 0=OFF, 1=ON, example: 0 0 0 0 0 1 1 1 1 1 0 0 0 0 0"),
 
-    CHANGE_ROTOZOOM(CommandGroup.EFFECT, 1, "<INT> select angle for the rotozoom effect, -127-127"),
-
     SAVE_PRESET(CommandGroup.MISC, 1, "<NAME> save current preset settings with name NAME"),
 
     LOAD_PRESET(CommandGroup.MISC, 0, "<NO PARAM> load current preset settings"),

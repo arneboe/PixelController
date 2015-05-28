@@ -33,9 +33,6 @@ public enum GuiElement {
 
     GENERATOR_SPEED, BEAT_WORKMODE,
 
-    // effects
-    FX_ROTOZOOMER,
-
     RANDOM_ELEMENT,
 
     BLINKENLIGHTS_DROPDOWN, IMAGE_DROPDOWN,

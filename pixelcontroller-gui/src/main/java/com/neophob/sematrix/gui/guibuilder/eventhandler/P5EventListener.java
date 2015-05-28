@@ -185,11 +185,6 @@ public final class P5EventListener implements ControlListener {
                 createMessage(ValidCommand.CURRENT_OUTPUT, value);
                 break;
 
-            case FX_ROTOZOOMER:
-                LOG.log(Level.INFO, selection + ": " + intVal);
-                createMessage(ValidCommand.CHANGE_ROTOZOOM, intVal);
-                break;
-
             case BLINKENLIGHTS_DROPDOWN:
                 name = getTextFromCaptionLabel(theEvent);
                 LOG.log(Level.INFO, selection + " " + name);

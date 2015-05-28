@@ -357,17 +357,6 @@ public enum MessageProcessor {
                     }
                     break;
 
-                case CHANGE_ROTOZOOM:
-                    try {
-                        int val = parseValue(msg[1]);
-                        RotoZoom r = (RotoZoom) col.getPixelControllerEffect().getEffect(
-                                EffectName.ROTOZOOM);
-                        r.setAngle(val);
-                    } catch (Exception e) {
-                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
-                    }
-                    break;
-
                 case SAVE_PRESET:
                     try {
                         presetService.saveActivePreset(msg[1], col.getCurrentStatus());

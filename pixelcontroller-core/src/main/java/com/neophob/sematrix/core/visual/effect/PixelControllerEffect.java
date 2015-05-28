@@ -114,8 +114,6 @@ public class PixelControllerEffect implements PixelControllerElement {
     public List<String> getCurrentState() {
         List<String> ret = new ArrayList<String>();
 
-        ret.add(ValidCommand.CHANGE_ROTOZOOM + " "
-                + ((RotoZoom) getEffect(EffectName.ROTOZOOM)).getAngle());
         ret.add(ValidCommand.TEXTDEF + " " + textureDeformation.getLut());
         ret.add(ValidCommand.ZOOMOPT + " " + zoom.getZoomMode());
 

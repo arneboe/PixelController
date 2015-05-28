@@ -29,12 +29,6 @@ public class Rotate90 extends Effect {
 
     private IResize r;
 
-    /**
-     * Instantiates a new inverter.
-     * 
-     * @param controller
-     *            the controller
-     */
     public Rotate90(MatrixData matrix, IResize r) {
         super(matrix, EffectName.ROTATE90, ResizeName.QUALITY_RESIZE);
         this.r = r;

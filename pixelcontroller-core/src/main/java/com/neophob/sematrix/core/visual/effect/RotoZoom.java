@@ -24,6 +24,7 @@ import com.neophob.sematrix.core.glue.ShufflerOffset;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.VisualState;
+import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
 import com.neophob.sematrix.core.visual.fader.CrossfaderHelper;
 
 /**
@@ -36,47 +37,23 @@ import com.neophob.sematrix.core.visual.fader.CrossfaderHelper;
 public class RotoZoom extends RotoZoomEffect {
 
     // endless zooming or zoomin-zoomout...
-    /**
-     * The Enum WORKMODE.
-     */
     public enum WORKMODE {
-
-        /** The PINGPONG. */
         PINGPONG,
-
-        /** The ZOOM. */
         ZOOM
     }
 
-    /** The angle. */
     private float angle;
-
-    /** The angle orig. */
     private int angleOrig;
-
-    /** The angle diff. */
     private float angleDiff;
-
-    /** The scale2. */
     private float scale, scale2;
-
-    /** The scale orig. */
     private float scaleOrig;
-
-    /** The fader pos. */
     private float faderPos;
-
-    /** The dscalee. */
     private float dscalee = 0.01f;
-
-    /** The workmode. */
     private WORKMODE workmode = WORKMODE.ZOOM;
-
+    private FloatRangeOption angleOption = new FloatRangeOption("Speed", 0, 359, 2.5f);
     /**
      * Instantiates a new roto zoom.
-     * 
-     * @param controller
-     *            the controller
+     *
      * @param scale
      *            the scale
      * @param angle
@@ -89,6 +66,7 @@ public class RotoZoom extends RotoZoomEffect {
         this.angle = angle;
         this.faderPos = 0.0f;
         this.angleDiff = 0.02f;
+        options.add(angleOption);
     }
 
     /**
@@ -107,7 +85,7 @@ public class RotoZoom extends RotoZoomEffect {
      *            from -127 to 127
      * @return the int
      */
-    public int setAngle(int angle) {
+    public void setAngle(int angle) {
         if (angle > 127) {
             angle = 127;
         }
@@ -131,18 +109,6 @@ public class RotoZoom extends RotoZoomEffect {
         } else {
             this.angleDiff = 0.0f;
         }
-        return angle;
-    }
-
-    /**
-     * Sets the zoom.
-     * 
-     * @param zoom
-     *            the zoom
-     * @return the int
-     */
-    public int setZoom(int zoom) {
-        return 0;
     }
 
     /*
@@ -168,6 +134,10 @@ public class RotoZoom extends RotoZoomEffect {
      */
     @Override
     public void update() {
+        if(angleOrig != angleOption.getValue()) {
+            setAngle((int)angleOption.getValue());
+        }
+
         angle += this.angleDiff;
         scale -= dscalee;
 
