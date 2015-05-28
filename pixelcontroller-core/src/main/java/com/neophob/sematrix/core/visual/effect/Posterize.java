@@ -27,7 +27,7 @@ import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
  */
 public class Posterize extends Effect {
 
-    FloatRangeOption posterizeLevel = new FloatRangeOption("Level", 1, 20, 5);
+    FloatRangeOption posterizeLevel = new FloatRangeOption("Level", 1, 7, 5);
     public Posterize(MatrixData matrix) {
         super(matrix, EffectName.POSTERIZE, ResizeName.QUALITY_RESIZE);
         options.add(posterizeLevel);

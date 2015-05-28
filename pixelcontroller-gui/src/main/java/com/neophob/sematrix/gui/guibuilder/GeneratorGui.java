@@ -104,7 +104,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private RadioButton selectedOutputs;
     private Button randomSelection, randomPresets;
     private RadioButton randomButtons;
-    private Textfield textGenerator;
 
     private Slider brightnessControll;
     private Toggle freeze;
@@ -1169,8 +1168,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         if (!initialized) {
             return false;
         }
-
-        return textGenerator.isFocus() || presetName.isFocus();
+        return presetName.isFocus();
     }
 
     public void selectPreviousTab() {
