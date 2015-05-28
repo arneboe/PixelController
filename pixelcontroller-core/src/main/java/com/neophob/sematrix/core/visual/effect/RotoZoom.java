@@ -69,12 +69,12 @@ public class RotoZoom extends RotoZoomEffect {
         this.faderPos = 0.0f;
         this.angleDiff = 0.02f;
         options.add(angleOption);
+
         for(WORKMODE mode : WORKMODE.values()) {
             workmodeOption.addEntry(mode.toString());
         }
         workmodeOption.select(0);
         options.add(workmodeOption);
-        options.add(new FloatRangeOption("teswt", 1, 2, 1));
     }
 
     /**
@@ -93,7 +93,7 @@ public class RotoZoom extends RotoZoomEffect {
      *            from -127 to 127
      * @return the int
      */
-    public void setAngle(int angle) {
+    private void setAngle(int angle) {
         if (angle > 127) {
             angle = 127;
         }
@@ -146,7 +146,6 @@ public class RotoZoom extends RotoZoomEffect {
             setAngle((int)angleOption.getValue());
         }
         workmode = WORKMODE.values()[(int) workmodeOption.getValue()];
-        System.out.println(workmode);
 
         angle += this.angleDiff;
         scale -= dscalee;

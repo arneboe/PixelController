@@ -77,14 +77,6 @@ public class GenerateAllResolutionEffectTest {
             eff.getBuffer(v.getBuffer());
             eff.update();
 
-            if (eff.getId() == EffectName.ROTOZOOM.getId()) {
-                RotoZoom roto = (RotoZoom) eff;
-                roto.setAngle(50);
-                eff.getBuffer(v.getBuffer());
-                eff.update();
-                roto.setAngle(5000);
-            }
-
             if (eff.getId() == EffectName.ZOOM.getId()) {
                 Zoom zoom = (Zoom) eff;
                 zoom.setZoomMode(ZoomMode.ZOOM_OUT.ordinal());
