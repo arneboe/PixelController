@@ -53,8 +53,7 @@ public abstract class Effect implements IShuffleState {
         FLIP_Y(10),
         BPM_STROBO(11),
         ROTATE90(13),
-        POSTERIZE(14),
-        DARKEN(15);
+        POSTERIZE(14);
 
         /** The id. */
         private int id;
