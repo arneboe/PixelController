@@ -23,20 +23,11 @@ import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.mixer.Multiply;
 
-/**
- * The Class Voluminize.
- */
 public class Voluminize extends Effect {
 
     private float volume = 0;
     private ISound sound;
 
-    /**
-     * Instantiates a new voluminize.
-     * 
-     * @param controller
-     *            the controller
-     */
     public Voluminize(MatrixData matrix, ISound sound) {
         super(matrix, EffectName.VOLUMINIZE, ResizeName.QUALITY_RESIZE);
         this.sound = sound;

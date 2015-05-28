@@ -34,7 +34,6 @@ public abstract class RotoZoomEffect extends Effect {
 	/**
 	 * Instantiates a new effect.
 	 *
-	 * @param controller the controller
 	 * @param effectName the effect name
 	 * @param resizeOption the resize option
 	 */
@@ -44,7 +43,6 @@ public abstract class RotoZoomEffect extends Effect {
 	
 	/**
 	 * 
-	 * @param scale
 	 * @param angleP
 	 * @param bufferSrc
 	 * @return
