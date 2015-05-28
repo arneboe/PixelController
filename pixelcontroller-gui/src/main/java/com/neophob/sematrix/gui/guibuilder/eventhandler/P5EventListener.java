@@ -81,14 +81,6 @@ public final class P5EventListener implements ControlListener {
         int intVal;
         String name;
 
-        //always bring the controller to front that is clicked right now
-
-        if(theEvent.isController()) {
-            theEvent.getController().bringToFront();
-        }
-        else if(theEvent.isGroup()) {
-            theEvent.getGroup().bringToFront();
-        }
 
         if (theEvent.isGroup()) {
                        // check if the Event was triggered from a ControlGroup
