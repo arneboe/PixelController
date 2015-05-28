@@ -456,28 +456,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         colorScrollList.setGroup(generatorTab);
         colorScrollList.setHeight(Theme.DROPBOXLIST_HEIGHT);
 
-        // add textfield options
-        cp5.addTextlabel(
-                "genTextwriterOpt", messages.getString("GeneratorGui.TEXTWRITER_OPTION"), genFxXOfs + 3 + 3 * Theme.DROPBOX_XOFS, genElYOfs + 16).moveTo(generatorTab).getValueLabel();  //$NON-NLS-2$        
-        textwriterOption = cp5.addDropdownList(GuiElement.TEXTWR_OPTION.guiText(), genFxXOfs + 3
-                * Theme.DROPBOX_XOFS, genElYOfs + 11, Theme.DROPBOXLIST_LENGTH, 140);
-        Theme.themeDropdownList(textwriterOption);
-        textwriterOption.addItem(messages.getString("GeneratorGui.TEXTWRITER_PINGPONG"), 0); 
-        textwriterOption.addItem(messages.getString("GeneratorGui.TEXTWRITER_LEFT"), 1); 
-        textwriterOption.setLabel(textwriterOption.getItem(0).getName());
-        textwriterOption.setGroup(generatorTab);
-        textwriterOption.setHeight(Theme.DROPBOXLIST_HEIGHT);
-
-        // add textfield
-        textGenerator = cp5.addTextfield(GuiElement.TEXTFIELD, GuiElement.TEXTFIELD.guiText(),
-                GuiElement.TEXTFIELD.guiText(), genFxXOfs + 3 + 4 * Theme.DROPBOX_XOFS,
-                genElYOfs - 6, Theme.DROPBOXLIST_LENGTH, 16);  //$NON-NLS-2$ //$NON-NLS-3$
-
-        passThroughMode = cp5
-                .addTextlabel("passThroughMode", "", genFxXOfs, yPosStartDrowdown + 50)
-                .moveTo(generatorTab).getValueLabel();
-        passThroughMode.setColor(0xffff0000);
-
         // -----------------
         // Single Output tab
         // -----------------
@@ -1140,9 +1118,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             dropdownOutputVisual.setOpen(false);
         }
 
-        if (!clickedOn.contains(GuiElement.TEXTWR_OPTION)) {
-            textwriterOption.setOpen(false);
-        }
         if (!clickedOn.contains(GuiElement.COLORSCROLL_OPTIONS)) {
             colorScrollList.setOpen(false);
         }
@@ -1313,12 +1288,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                                 Integer.parseInt(s.getValue())).getName());
                         break;
 
-
-                    case TEXTWR_OPTION:
-                        textwriterOption.setLabel(textwriterOption.getItem(
-                                Integer.parseInt(s.getValue())).getName());
-                        break;
-
                     case CHANGE_BRIGHTNESS:
                         brightnessControll.changeValue(Float.parseFloat(s.getValue()));
                         break;
@@ -1331,10 +1300,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                     case CHANGE_OUTPUT_VISUAL:
                         dropdownOutputVisual.setLabel(dropdownOutputVisual.getItem(
                                 Integer.parseInt(s.getValue())).getName());
-                        break;
-
-                    case TEXTWR:
-                        textGenerator.setText(s.getValue());
                         break;
 
                     case GENERATOR_SPEED:

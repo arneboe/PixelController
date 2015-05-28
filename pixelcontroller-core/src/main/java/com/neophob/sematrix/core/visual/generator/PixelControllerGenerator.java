@@ -61,7 +61,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
     private OscListener oscListener1;
     private OscListener oscListener2;
 
-    private Textwriter textwriter;
 
     BeatToAnimation bta = BeatToAnimation.MODERATE;
 
@@ -115,10 +114,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
         allGenerators.add(new Metaballs(matrix));
         allGenerators.add(new PixelImage(matrix, sound, fps));
 
-        textwriter = new Textwriter(matrix, ph.getProperty(Textwriter.FONT_FILENAME, DEFAULT_TTF),
-                Integer.parseInt(ph.getProperty(Textwriter.FONT_SIZE, DEFAULT_TTF_SIZE)), fileUtils);
-        allGenerators.add(textwriter);
-
         allGenerators.add(new Cell(matrix));
         //allGenerators.add(new FFTSpectrum(matrix, sound));
         allGenerators.add(new Geometrics(matrix, sound));
@@ -156,8 +151,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
 
         ret.add(ValidCommand.BLINKEN + " " + blinkenlights.getFilename());
         ret.add(ValidCommand.IMAGE + " " + image.getFilename());
-        ret.add(ValidCommand.TEXTWR + " " + textwriter.getText());
-        ret.add(ValidCommand.TEXTWR_OPTION + " " + textwriter.getTextscroller());
         ret.add(ValidCommand.COLOR_SCROLL_OPT + " " + colorScroll.getScrollMode().getMode());
         ret.add(ValidCommand.BEAT_WORKMODE + " " + bta.getId());
         return ret;
@@ -363,39 +356,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
         colorScroll.setScrollMode(colorScrollDir);
     }
 
-    /**
-     * Gets the text.
-     * 
-     * @return the text
-     */
-    public String getText() {
-        return textwriter.getText();
-    }
-
-    /**
-     * Sets the text.
-     * 
-     * @param text
-     *            the new text
-     */
-    public void setText(String text) {
-        if (text == null || text.isEmpty()) {
-            text = " ";
-        }
-        textwriter.createTextImage(text);
-    }
-
-    /**
-     * 
-     * @param scollerNr
-     */
-    public void setTextOption(int scollerNr) {
-        textwriter.setTextscroller(scollerNr);
-    }
-
-    public int getTextOption() {
-        return textwriter.getTextscroller();
-    }
 
     /**
      * 

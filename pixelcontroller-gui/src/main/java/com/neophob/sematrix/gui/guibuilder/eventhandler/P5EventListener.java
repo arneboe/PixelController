@@ -237,17 +237,6 @@ public final class P5EventListener implements ControlListener {
                 createMessage(ValidCommand.COLOR_SCROLL_OPT, value);
                 break;
 
-            case TEXTFIELD:
-                name = theEvent.getStringValue();
-                LOG.log(Level.INFO, selection + " " + name);
-                createMessage(ValidCommand.TEXTWR, name);
-                break;
-
-            case TEXTWR_OPTION:
-                LOG.log(Level.INFO, selection + " " + value);
-                createMessage(ValidCommand.TEXTWR_OPTION, value);
-                break;
-
             case RANDOM_ELEMENT:
                 if (theEvent.getGroup().getArrayValue() == null) {
                     LOG.log(Level.WARNING, "no array data provided");

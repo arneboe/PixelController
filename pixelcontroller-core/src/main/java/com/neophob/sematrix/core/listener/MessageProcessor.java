@@ -440,27 +440,6 @@ public enum MessageProcessor {
                     }
                     break;
 
-                case TEXTWR:
-                    try {
-                        if (msg.length < 2 || msg[1] == null) {
-                            col.getPixelControllerGenerator().setText("");
-                        } else {
-                            col.getPixelControllerGenerator().setText(msg[1]);
-                        }
-                    } catch (Exception e) {
-                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
-                    }
-                    break;
-
-                case TEXTWR_OPTION:
-                    try {
-                        int scollerNr = parseValue(msg[1]);
-                        col.getPixelControllerGenerator().setTextOption(scollerNr);
-                    } catch (Exception e) {
-                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
-                    }
-                    break;
-
                 case RANDOM: // enable or disable random mode
                     try {
                         String onOrOff = msg[1];

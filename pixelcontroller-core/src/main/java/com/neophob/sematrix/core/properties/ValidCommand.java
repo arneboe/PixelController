@@ -67,11 +67,6 @@ public enum ValidCommand {
 
     COLOR_SCROLL_OPT(CommandGroup.GENERATOR, 1, "<INT> select color scroll fading direction, 1-14"),
 
-    TEXTWR(CommandGroup.GENERATOR, 1, "<STRING> update text for textwriter generator"),
-
-    TEXTWR_OPTION(CommandGroup.GENERATOR, 1,
-            "<INT> set mode textwriter (pingpong scroller, left scroller)"),
-
     RANDOM(CommandGroup.MISC, 1, "<ON|OFF> enable/disable random mode"),
 
     RANDOM_PRESET_MODE(CommandGroup.MISC, 1, "<ON|OFF> enable/disable random preset mode"),
