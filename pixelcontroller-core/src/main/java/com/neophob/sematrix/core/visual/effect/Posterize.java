@@ -20,22 +20,17 @@ package com.neophob.sematrix.core.visual.effect;
 
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.MatrixData;
+import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
 
 /**
  * compress color information
  */
 public class Posterize extends Effect {
 
-    private static final int POSTERIZE_LEVEL = 5;
-
-    /**
-     * Instantiates a new posterize.
-     * 
-     * @param controller
-     *            the controller
-     */
+    FloatRangeOption posterizeLevel = new FloatRangeOption("Level", 1, 20, 5);
     public Posterize(MatrixData matrix) {
         super(matrix, EffectName.POSTERIZE, ResizeName.QUALITY_RESIZE);
+        options.add(posterizeLevel);
     }
 
     /*
@@ -44,9 +39,10 @@ public class Posterize extends Effect {
      * @see com.neophob.sematrix.core.effect.Effect#getBuffer(int[])
      */
     public int[] getBuffer(int[] buffer) {
+        final int level = (int) posterizeLevel.getValue();
         int[] ret = new int[buffer.length];
         for (int i = 0; i < buffer.length; i++) {
-            ret[i] = (buffer[i] >> POSTERIZE_LEVEL) << POSTERIZE_LEVEL;
+            ret[i] = (buffer[i] >> level) << level;
         }
         return ret;
     }

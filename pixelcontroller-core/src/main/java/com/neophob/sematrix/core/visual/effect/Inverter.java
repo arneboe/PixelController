@@ -27,11 +27,6 @@ import com.neophob.sematrix.core.visual.MatrixData;
  */
 public class Inverter extends Effect {
 
-	/**
-	 * Instantiates a new inverter.
-	 *
-	 * @param controller the controller
-	 */
 	public Inverter(MatrixData matrix) {
 		super(matrix, EffectName.INVERTER, ResizeName.QUALITY_RESIZE);
 	}

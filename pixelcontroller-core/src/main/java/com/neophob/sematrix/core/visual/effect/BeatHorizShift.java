@@ -27,16 +27,9 @@ import com.neophob.sematrix.core.visual.MatrixData;
  */
 public class BeatHorizShift extends Effect {
 
-	/** The ammount. */
 	private int ammount=0;
-	
 	private ISound sound;
-	
-	/**
-	 * Instantiates a new beat horiz shift.
-	 *
-	 * @param controller the controller
-	 */
+
 	public BeatHorizShift(MatrixData matrix, ISound sound) {
 		super(matrix, EffectName.BEAT_HORIZONTAL_SHIFT, ResizeName.QUALITY_RESIZE);
 		this.sound = sound;

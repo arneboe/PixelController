@@ -27,17 +27,9 @@ import com.neophob.sematrix.core.visual.MatrixData;
  */
 public class BeatVerticalShift extends Effect {
 
-	/** The ammount. */
 	private int ammount=0;
-	
 	private ISound sound;
 	
-	
-	/**
-	 * Instantiates a new beat vertical shift.
-	 *
-	 * @param controller the controller
-	 */
 	public BeatVerticalShift(MatrixData matrix, ISound sound) {
 		super(matrix, EffectName.BEAT_VERTICAL_SHIFT, ResizeName.QUALITY_RESIZE);
 		this.sound = sound;

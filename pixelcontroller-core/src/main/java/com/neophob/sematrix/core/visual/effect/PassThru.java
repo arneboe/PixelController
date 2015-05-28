@@ -27,11 +27,6 @@ import com.neophob.sematrix.core.visual.MatrixData;
  */
 public class PassThru extends Effect {
 
-	/**
-	 * Instantiates a new pass thru.
-	 *
-	 * @param controller the controller
-	 */
 	public PassThru(MatrixData matrix) {
 		super(matrix, EffectName.PASSTHRU, ResizeName.QUALITY_RESIZE);
 	}

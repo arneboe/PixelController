@@ -27,11 +27,7 @@ import com.neophob.sematrix.core.visual.MatrixData;
  */
 public class FlipX extends Effect {
 
-	/**
-	 * Instantiates a new inverter.
-	 *
-	 * @param controller the controller
-	 */
+
 	public FlipX(MatrixData matrix) {
 		super(matrix, EffectName.FLIP_X, ResizeName.QUALITY_RESIZE);
 	}
