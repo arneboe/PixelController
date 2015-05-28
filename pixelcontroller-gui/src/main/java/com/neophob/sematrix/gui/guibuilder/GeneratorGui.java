@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import com.neophob.sematrix.core.visual.effect.Options.IOption;
 import com.neophob.sematrix.core.visual.effect.Options.Options;
 import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
+import com.neophob.sematrix.core.visual.effect.Options.SelectionListOption;
 import controlP5.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
@@ -1399,10 +1400,57 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         {
             addSliderOption((FloatRangeOption)opt, target);
         }
-        else
+        else if(opt instanceof SelectionListOption)
         {
+            addSelectionListOption((SelectionListOption) opt, target);
+        }
+        else {
             throw new NotImplementedException();
         }
+    }
+
+    private void addSelectionListOption(final SelectionListOption opt, final Options.Target target) {
+        //FIXME copy&paste code
+        int x = 0;
+        int y = 0;
+        int labelX = 0;
+        int labelY = 0;
+        String name = "";
+        switch (target) {
+            case EFFECT_A:
+                x = 43;
+                labelX = x + 142;//FIXME use dropdownlist width
+                y = effectANextYOffset + 12; //FIXME no idea why i need this +12
+                labelY = y - 10;
+                effectANextYOffset += 20;
+                name = "OPTION_EFFECT_A_" + opt.getName();
+                break;
+            case EFFECT_B:
+                x = EFFECT_B_OPTIONS_X_OFFSET + 20;
+                labelX = x + 142; //FIXME use dropdownlist width
+                y = effectBNextYOffset + 12;
+                labelY = y - 10;
+                effectBNextYOffset += 20;
+                name = "OPTION_EFFECT_B_" + opt.getName();
+                break;
+            case GEN_A:
+                throw new NotImplementedException();
+                //break;
+            case GEN_B:
+                throw new NotImplementedException();
+                //break;
+            default:
+                throw new RuntimeException("default case");
+        }
+        HashMap<String, IOption> activeOptions = getActiveOptions(target);
+        activeOptions.put(name, opt);
+        DropdownList dl = cp5.addDropdownList(name, x, y, 140, 140);
+        dl.setGroup(effectOptionGroup);
+        dl.addItems(opt.getEntries());
+        dl.setValue(opt.getValue());
+        cp5.addTextlabel(name + "LABEL", opt.getName(), labelX, labelY).setGroup(effectOptionGroup);
+        activeOptions.put(name, opt);
+        activeOptions.put(name + "LABEL", opt); //FIXME this is a crude hack to get the label removed
     }
 
     private void addSliderOption(final FloatRangeOption opt, final Options.Target target) {

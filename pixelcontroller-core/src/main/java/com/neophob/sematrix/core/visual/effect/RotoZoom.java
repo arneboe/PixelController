@@ -25,6 +25,7 @@ import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.VisualState;
 import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
+import com.neophob.sematrix.core.visual.effect.Options.SelectionListOption;
 import com.neophob.sematrix.core.visual.fader.CrossfaderHelper;
 
 /**
@@ -51,6 +52,7 @@ public class RotoZoom extends RotoZoomEffect {
     private float dscalee = 0.01f;
     private WORKMODE workmode = WORKMODE.ZOOM;
     private FloatRangeOption angleOption = new FloatRangeOption("Speed", 0, 359, 2.5f);
+    private SelectionListOption workmodeOption = new SelectionListOption("Mode");
     /**
      * Instantiates a new roto zoom.
      *
@@ -67,6 +69,12 @@ public class RotoZoom extends RotoZoomEffect {
         this.faderPos = 0.0f;
         this.angleDiff = 0.02f;
         options.add(angleOption);
+        for(WORKMODE mode : WORKMODE.values()) {
+            workmodeOption.addEntry(mode.toString());
+        }
+        workmodeOption.select(0);
+        options.add(workmodeOption);
+        options.add(new FloatRangeOption("teswt", 1, 2, 1));
     }
 
     /**
@@ -137,6 +145,8 @@ public class RotoZoom extends RotoZoomEffect {
         if(angleOrig != angleOption.getValue()) {
             setAngle((int)angleOption.getValue());
         }
+        workmode = WORKMODE.values()[(int) workmodeOption.getValue()];
+        System.out.println(workmode);
 
         angle += this.angleDiff;
         scale -= dscalee;
