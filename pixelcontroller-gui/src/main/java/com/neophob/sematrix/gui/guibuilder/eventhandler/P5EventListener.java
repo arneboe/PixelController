@@ -32,6 +32,7 @@ import com.neophob.sematrix.gui.service.PixConServer;
 
 import controlP5.ControlEvent;
 import controlP5.ControlListener;
+import controlP5.ControlP5;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -80,8 +81,17 @@ public final class P5EventListener implements ControlListener {
         int intVal;
         String name;
 
+        //always bring the controller to front that is clicked right now
+
+        if(theEvent.isController()) {
+            theEvent.getController().bringToFront();
+        }
+        else if(theEvent.isGroup()) {
+            theEvent.getGroup().bringToFront();
+        }
+
         if (theEvent.isGroup()) {
-            // check if the Event was triggered from a ControlGroup
+                       // check if the Event was triggered from a ControlGroup
             // LOG.log(Level.INFO,
             // theEvent.getGroup().getValue()+" from "+theEvent.getGroup());
             value = theEvent.getGroup().getValue();
