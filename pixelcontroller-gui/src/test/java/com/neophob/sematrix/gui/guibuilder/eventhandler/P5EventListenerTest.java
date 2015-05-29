@@ -66,9 +66,6 @@ public class P5EventListenerTest {
         when(theEvent.getName()).thenReturn(GuiElement.CURRENT_OUTPUT.toString());
         event.controlEvent(theEvent);
 
-        when(theEvent.getName()).thenReturn(GuiElement.BLINKENLIGHTS_DROPDOWN.toString());
-        event.controlEvent(theEvent);
-
         when(theEvent.isGroup()).thenReturn(false);
         event.controlEvent(theEvent);
     }

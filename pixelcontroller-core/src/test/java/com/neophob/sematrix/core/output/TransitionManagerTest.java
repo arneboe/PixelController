@@ -72,8 +72,6 @@ public class TransitionManagerTest {
                 "2" }, false, null);
         MessageProcessor.INSTANCE.processMsg(
                 new String[] { ValidCommand.CHANGE_EFFECT_A + "", "0" }, false, null);
-        MessageProcessor.INSTANCE.processMsg(new String[] { ValidCommand.IMAGE + "", "half.jpg" },
-                false, null);
         MessageProcessor.INSTANCE.processMsg(new String[] { ValidCommand.CHANGE_MIXER + "", "0" },
                 false, null);
         MessageProcessor.INSTANCE.processMsg(new String[] { ValidCommand.CHANGE_BRIGHTNESS + "",

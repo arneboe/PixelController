@@ -149,17 +149,10 @@ public class PixelControllerGenerator implements PixelControllerElement {
     public List<String> getCurrentState() {
         List<String> ret = new ArrayList<String>();
 
-        ret.add(ValidCommand.BLINKEN + " " + blinkenlights.getFilename());
-        ret.add(ValidCommand.IMAGE + " " + image.getFilename());
-        ret.add(ValidCommand.COLOR_SCROLL_OPT + " " + colorScroll.getScrollMode().getMode());
         ret.add(ValidCommand.BEAT_WORKMODE + " " + bta.getId());
         return ret;
     }
 
-    /**
-     * 
-     * @return
-     */
     private int getKickValues() {
         int updateAmount = 0;
 
@@ -170,11 +163,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
         return updateAmount;
     }
 
-    /**
-     * 
-     * @param bta
-     * @return
-     */
     private int calculateAnimationSteps(BeatToAnimation bta) {
         float beatSteps = sound.getVolumeNormalized();
         int val;
@@ -299,52 +287,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
         return allGenerators.size();
     }
 
-    /**
-     * Gets the file blinken.
-     * 
-     * @return the file blinken
-     */
-    public String getFileBlinken() {
-        return blinkenlights.getFilename();
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public ScrollMode getScrollMode() {
-        return colorScroll.getScrollMode();
-    }
-
-    /**
-     * Sets the file blinken.
-     * 
-     * @param fileBlinken
-     *            the new file blinken
-     */
-    public void setFileBlinken(String fileBlinken) {
-        blinkenlights.loadFile(fileBlinken);
-    }
-
-    /**
-     * Gets the file image simple.
-     * 
-     * @return the file image simple
-     */
-    public String getFileImageSimple() {
-        return image.getFilename();
-    }
-
-    /**
-     * Sets the file image simple.
-     * 
-     * @param fileImageSimple
-     *            the new file image simple
-     */
-    public void setFileImageSimple(String fileImageSimple) {
-        image.loadFile(fileImageSimple);
-
-    }
 
     /**
      * Sets the color scroll direction.

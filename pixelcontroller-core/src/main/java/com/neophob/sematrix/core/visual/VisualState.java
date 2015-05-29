@@ -709,41 +709,34 @@ public class VisualState extends Observable {
         ret.addAll(getSystemState());
 
         for(Effect e : pixelControllerEffect.getAllEffects()) {
-            //FIXME this should be a constant somewere
+            //FIXME this should be a constant
             ret.add("EFFECT_OPTION " + e.getId() +  " " + e.getOptionState());
+        }
+
+        for(Generator g : pixelControllerGenerator.getAllGenerators()) {
+            //FIXME this string should be a constant
+            ret.add("GENERATOR_OPTION " + g.getId() + " " + g.getOptionState());
         }
 
         return ret;
     }
 
-
     public Options getCurrentOptions(final Options.Target target)
     {
-        //FIXME dummy options
-        ArrayList<IOption> temp = new ArrayList<IOption>();
-        temp.add(new FloatRangeOption("test1", -1, 13, 5));
-        temp.add(new FloatRangeOption("test123", 12, 42, 40));
-
         final int visNum = getCurrentVisual();
         final Visual vis = getVisual(visNum);
-        Effect effect = null;
         switch(target) {
             case EFFECT_A:
-                effect = vis.getEffect1();
-                break;
+                return new Options(vis.getEffect1().getOptions(), target);
             case EFFECT_B:
-                effect = vis.getEffect2();
-                break;
+                return new Options(vis.getEffect2().getOptions(), target);
             case GEN_A:
-                throw new NotImplementedException();
-                // break;
+                return new Options(vis.getGenerator1().getOptions(), target);
             case GEN_B:
-                throw new NotImplementedException();
-               // break;
+                return new Options(vis.getGenerator2().getOptions(), target);
             default:
                 throw new RuntimeException("default case");
         }
-        return new Options(effect.getOptions(), target);
     }
 
     /**
@@ -779,5 +772,9 @@ public class VisualState extends Observable {
         notifyObservers(getCurrentOptions(Options.Target.EFFECT_A));
         setChanged();
         notifyObservers(getCurrentOptions(Options.Target.EFFECT_B));
+        setChanged();
+        notifyObservers(getCurrentOptions(Options.Target.GEN_A));
+        setChanged();
+        notifyObservers(getCurrentOptions(Options.Target.GEN_B));
     }
 }

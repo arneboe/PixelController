@@ -55,15 +55,9 @@ public enum ValidCommand {
 
     LOAD_PRESET(CommandGroup.MISC, 0, "<NO PARAM> load current preset settings"),
 
-    BLINKEN(CommandGroup.GENERATOR, 1, "<STRING> file to load for the blinkenlights generator"),
-
-    IMAGE(CommandGroup.GENERATOR, 1, "<STRING> image to load for the simple image generator"),
-
     TEXTDEF(CommandGroup.GENERATOR, 1, "<INT> select texture deformation option, 1-11"),
 
     ZOOMOPT(CommandGroup.GENERATOR, 1, "<INT> select zoom options 1-4"),
-
-    COLOR_SCROLL_OPT(CommandGroup.GENERATOR, 1, "<INT> select color scroll fading direction, 1-14"),
 
     RANDOM(CommandGroup.MISC, 1, "<ON|OFF> enable/disable random mode"),
 

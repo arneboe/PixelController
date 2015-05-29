@@ -384,33 +384,6 @@ public enum MessageProcessor {
                     }
                     break;
 
-                case BLINKEN:
-                    try {
-                        String fileToLoad = msg[1];
-                        col.getPixelControllerGenerator().setFileBlinken(fileToLoad);
-                    } catch (Exception e) {
-                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
-                    }
-                    break;
-
-                case IMAGE:
-                    try {
-                        String fileToLoad = msg[1];
-                        col.getPixelControllerGenerator().setFileImageSimple(fileToLoad);
-                    } catch (Exception e) {
-                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
-                    }
-                    break;
-
-                case COLOR_SCROLL_OPT:
-                    try {
-                        int dir = parseValue(msg[1]);
-                        col.getPixelControllerGenerator().setColorScrollingDirection(dir);
-                    } catch (Exception e) {
-                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
-                    }
-                    break;
-
                 case TEXTDEF:
                     try {
                         int lut = parseValue(msg[1]);

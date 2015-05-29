@@ -185,18 +185,6 @@ public final class P5EventListener implements ControlListener {
                 createMessage(ValidCommand.CURRENT_OUTPUT, value);
                 break;
 
-            case BLINKENLIGHTS_DROPDOWN:
-                name = getTextFromCaptionLabel(theEvent);
-                LOG.log(Level.INFO, selection + " " + name);
-                createMessage(ValidCommand.BLINKEN, name);
-                break;
-
-            case IMAGE_DROPDOWN:
-                name = getTextFromCaptionLabel(theEvent);
-                LOG.log(Level.INFO, selection + " " + name);
-                createMessage(ValidCommand.IMAGE, name);
-                break;
-
             case OUTPUT_FADER_DROPDOWN:
                 LOG.log(Level.INFO, selection + " " + value);
                 createMessage(ValidCommand.CHANGE_OUTPUT_FADER, value);
@@ -227,10 +215,6 @@ public final class P5EventListener implements ControlListener {
                 createMessage(ValidCommand.ZOOMOPT, value);
                 break;
 
-            case COLORSCROLL_OPTIONS:
-                LOG.log(Level.INFO, selection + " " + value);
-                createMessage(ValidCommand.COLOR_SCROLL_OPT, value);
-                break;
 
             case RANDOM_ELEMENT:
                 if (theEvent.getGroup().getArrayValue() == null) {

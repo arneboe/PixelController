@@ -67,8 +67,6 @@ public class OutputWiringTest {
                 false, null);
         MessageProcessor.INSTANCE.processMsg(
                 new String[] { ValidCommand.CHANGE_EFFECT_A + "", "0" }, false, null);
-        MessageProcessor.INSTANCE.processMsg(new String[] { ValidCommand.IMAGE + "", "half.png" },
-                false, null);
         MessageProcessor.INSTANCE.processMsg(new String[] { ValidCommand.CHANGE_BRIGHTNESS + "",
                 "100" }, false, null);
 

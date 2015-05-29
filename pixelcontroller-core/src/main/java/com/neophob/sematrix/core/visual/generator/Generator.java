@@ -18,9 +18,12 @@
  */
 package com.neophob.sematrix.core.visual.generator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.core.visual.effect.Options.IOption;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -117,11 +120,11 @@ public abstract class Generator implements IShuffleState {
     /** is the generator selected and thus active? */
     protected boolean active;
 
+    /**options of this generator */
+    protected List<IOption> options = new ArrayList<IOption>(5);
+
     /**
      * Instantiates a new generator.
-     * 
-     * @param controller
-     *            the controller
      * @param name
      *            the name
      * @param resizeOption
@@ -288,6 +291,37 @@ public abstract class Generator implements IShuffleState {
         return String
                 .format("Generator [name=%s, resizeOption=%s, internalBufferXSize=%s, internalBufferYSize=%s, active=%s]",
                         name, resizeOption, internalBufferXSize, internalBufferYSize, active);
+    }
+
+
+    //FIXME copy&paste code from effect
+    /**
+     * @return the current state of all options. Used for saving
+     */
+    public String getOptionState() {
+        String ret = "";
+        for(IOption opt : options) {
+            ret += opt.getName() + " " + opt.getValue() + " ";
+        }
+        return ret;
+    }
+
+    public void setOptionState(final String[] opts){
+        for(int i = 0; i < opts.length; i += 2) {
+            final String name = opts[i];
+            final float value = Float.parseFloat(opts[i + 1]);
+            for(IOption o :options) {
+                if(o.getName().equals(name)) {
+                    o.setValue(value);
+                    break;
+                }
+            }
+        }
+    }
+
+    public List<IOption> getOptions()
+    {
+        return options;
     }
 
 }

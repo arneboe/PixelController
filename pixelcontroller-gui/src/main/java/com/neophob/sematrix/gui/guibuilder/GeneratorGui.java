@@ -110,7 +110,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private Toggle freeze;
 
       // Generator Tab
-    private DropdownList blinkenLightsList, imageList, textwriterOption, beatWorkmode;
+    private DropdownList beatWorkmode;
     private Label passThroughMode;
     private Slider generatorSpeedSlider;
 
@@ -121,7 +121,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     // All Output Tab
     private DropdownList allOutputTabVis;
     private DropdownList allOutputTabFader;
-    private DropdownList colorScrollList;
     private DropdownList colorSetList;
 
     // preset tab
@@ -351,7 +350,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         // -------------
         // generator speed slider
         generatorSpeedSlider = cp5.addSlider(GuiElement.GENERATOR_SPEED.guiText(), 0f, 2.0f, 1f,
-                38 + GENERIC_X_OFS, p5GuiYOffset + 97, 140, 14);
+                38 + GENERIC_X_OFS, p5GuiYOffset + 80, 140, 14);
         generatorSpeedSlider.setSliderMode(Slider.FIX);
         generatorSpeedSlider.setGroup(generatorTab);
         generatorSpeedSlider.setDecimalPrecision(0);
@@ -361,10 +360,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
         // beat animation
         cp5.addTextlabel("beatWorkmode", messages.getString("GeneratorGui.BEAT_WORKMODE"),
-                38 + GENERIC_X_OFS + 2 * Theme.DROPBOX_XOFS, p5GuiYOffset + 113 + 5)
+                38 + GENERIC_X_OFS + Theme.DROPBOX_XOFS - 15,  p5GuiYOffset + 55)
                 .moveTo(generatorTab).getValueLabel();
         beatWorkmode = cp5.addDropdownList(GuiElement.BEAT_WORKMODE.guiText(), 38 + GENERIC_X_OFS
-                + 2 * Theme.DROPBOX_XOFS, p5GuiYOffset + 113, Theme.DROPBOXLIST_LENGTH, 140);
+                , p5GuiYOffset + 67, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(beatWorkmode);
         for (BeatToAnimation bta : BeatToAnimation.values()) {
             beatWorkmode.addItem(bta.guiText(), bta.getId());
@@ -416,6 +415,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
         genElYOfs = yPosStartLabel + 5;
 
+        /*
         // blinkenlights
         cp5.addTextlabel(
                 "genBlinken", messages.getString("GeneratorGui.BLINKENLIGHT_LOAD"), genFxXOfs + 3, genElYOfs + 16).moveTo(generatorTab).getValueLabel();  //$NON-NLS-2$
@@ -442,21 +442,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         }
         imageList.setGroup(generatorTab);
         imageList.setHeight(Theme.DROPBOXLIST_HEIGHT);
-
-        // colorscroll options
-        cp5.addTextlabel(
-                "genColorScroll", messages.getString("GeneratorGui.COLORSCROLL_OPTIONS"), genFxXOfs + 3 + 2 * Theme.DROPBOX_XOFS, genElYOfs + 16).moveTo(generatorTab).getValueLabel();  //$NON-NLS-2$        
-        colorScrollList = cp5.addDropdownList(GuiElement.COLORSCROLL_OPTIONS.guiText(), genFxXOfs
-                + 2 * Theme.DROPBOX_XOFS, genElYOfs + 11, Theme.DROPBOXLIST_LENGTH, 140);
-        Theme.themeDropdownList(colorScrollList);
-
-        for (ScrollMode sm : ScrollMode.values()) {
-            colorScrollList.addItem(sm.getDisplayName(), sm.getMode());  //$NON-NLS-2$
-        }
-        colorScrollList.setGroup(generatorTab);
-        colorScrollList.setHeight(Theme.DROPBOXLIST_HEIGHT);
-
-
+*/
         passThroughMode = cp5
                 .addTextlabel("passThroughMode", "", genFxXOfs, yPosStartDrowdown + 50)
                 .moveTo(generatorTab).getValueLabel();
@@ -1111,21 +1097,11 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             colorSetList.setOpen(false);
         }
 
-        if (!clickedOn.contains(GuiElement.BLINKENLIGHTS_DROPDOWN)) {
-            blinkenLightsList.setOpen(false);
-        }
-        if (!clickedOn.contains(GuiElement.IMAGE_DROPDOWN)) {
-            imageList.setOpen(false);
-        }
         if (!clickedOn.contains(GuiElement.OUTPUT_FADER_DROPDOWN)) {
             dropdownOutputFader.setOpen(false);
         }
         if (!clickedOn.contains(GuiElement.OUTPUT_SELECTED_VISUAL_DROPDOWN)) {
             dropdownOutputVisual.setOpen(false);
-        }
-
-        if (!clickedOn.contains(GuiElement.COLORSCROLL_OPTIONS)) {
-            colorScrollList.setOpen(false);
         }
 
         if (allOutputTabVis != null
@@ -1270,14 +1246,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                                 .getName());
                         break;
 
-                    case BLINKEN:
-                        blinkenLightsList.setLabel(s.getValue());
-                        break;
-
-                    case IMAGE:
-                        imageList.setLabel(s.getValue());
-                        break;
-
                     case CURRENT_COLORSET:
                         colorSetList.setLabel(s.getValue());
                         break;
@@ -1287,11 +1255,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                         updateCurrentPresetState();
                         break;
 
-
-                    case COLOR_SCROLL_OPT:
-                        colorScrollList.setLabel(colorScrollList.getItem(
-                                Integer.parseInt(s.getValue())).getName());
-                        break;
 
                     case CHANGE_BRIGHTNESS:
                         brightnessControll.changeValue(Float.parseFloat(s.getValue()));
@@ -1367,8 +1330,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                 break;
             case GEN_A:
             case GEN_B:
-                throw new NotImplementedException();
-                //break;
+//                throw new NotImplementedException();
+                break;
             default:
                 throw new RuntimeException("DEFAULT CASE!!!");
         }
