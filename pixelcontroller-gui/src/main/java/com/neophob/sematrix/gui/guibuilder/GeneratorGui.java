@@ -36,7 +36,6 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 import com.neophob.PixelControllerP5;
-import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.ShufflerOffset;
 import com.neophob.sematrix.core.glue.impl.FileUtilsLocalImpl;
 import com.neophob.sematrix.core.output.IOutput;
@@ -53,7 +52,6 @@ import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.OutputMapping;
 import com.neophob.sematrix.core.visual.color.IColorSet;
 import com.neophob.sematrix.core.visual.effect.Effect.EffectName;
-import com.neophob.sematrix.core.visual.generator.ColorScroll.ScrollMode;
 import com.neophob.sematrix.core.visual.generator.Generator.GeneratorName;
 import com.neophob.sematrix.core.visual.mixer.Mixer.MixerName;
 import com.neophob.sematrix.gui.callback.GuiUpdateFeedback;
@@ -81,6 +79,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
     private static final int GENERIC_X_OFS = 5;
     private static final int GENERIC_Y_OFS = 8;
+
+    private static final int GEN_A_OPTIONS_X_OFS = 270;
 
     private static final int NR_OF_WIDGETS = 4;
     private static final int WIDGET_BOARDER = 10;
@@ -160,13 +160,20 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private int nrOfVisuals;
     private P5EventListener listener;
 
+    /**Options of current generators */
+    private HashMap<String, IOption> generatorAOptions = new HashMap<String, IOption>();
+    private HashMap<String,IOption> generatorBOptions = new HashMap<String, IOption>();
+
     /**currently active options for the effects A and B */
-    private HashMap<String, IOption> effectAOptions = new HashMap<String, IOption>();
-    private HashMap<String, IOption> effectBOptions = new HashMap<String, IOption>();
+    private HashMap<String,IOption> effectAOptions = new HashMap<String, IOption>();
+    private HashMap<String,IOption> effectBOptions = new HashMap<String, IOption>();
     /**y coordinate of the next gui item that will be added to the options */
     private int effectANextYOffset = 0;
     private int effectBNextYOffset = 0;
     private Group effectOptionGroup;
+    private int generatorANextYOffset = 0;
+    private int generatorBNextYOffset = 0;
+
 
     public GeneratorGui(PixConServer pixelController, WindowSizeCalculator wsc) {
         super();
@@ -412,6 +419,11 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         genElYOfs = p5GuiYOffset + 35;
         cp5.addTextlabel(
                 "genOptionsGen", messages.getString("GeneratorGui.GENERATOR_OPTIONS"), GENERIC_X_OFS, genElYOfs).moveTo(generatorTab).getValueLabel();  //$NON-NLS-2$
+
+        cp5.addTextlabel(
+                "genOptionsGenA", messages.getString("GeneratorGui.GENERATOR_OPTIONS_A"), GEN_A_OPTIONS_X_OFS, genElYOfs).moveTo(generatorTab).getValueLabel();  //$NON-NLS-2$
+
+
 
         genElYOfs = yPosStartLabel + 5;
 
@@ -1326,11 +1338,14 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             case EFFECT_B:
                 clearEffectOptions(opts.getTarget());
                 for(IOption o : opts.getOptions())
-                    addEffectOption(o, opts.getTarget(), "TODO");
+                    addOption(o, opts.getTarget());
                 break;
             case GEN_A:
             case GEN_B:
-//                throw new NotImplementedException();
+                clearGeneratorOptions(opts.getTarget());
+                for(IOption o : opts.getOptions()) {
+                    addOption(o, opts.getTarget());
+                }
                 break;
             default:
                 throw new RuntimeException("DEFAULT CASE!!!");
@@ -1338,17 +1353,23 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     }
 
     private HashMap<String, IOption> getActiveOptions(final Options.Target target) {
-        if(target == Options.Target.EFFECT_A) {
-            return effectAOptions;
-        }
-        else {
-            return effectBOptions;
+        switch(target) {
+            case EFFECT_A:
+                return effectAOptions;
+            case EFFECT_B:
+                return effectBOptions;
+            case GEN_A:
+                return generatorAOptions;
+            case GEN_B:
+                return generatorBOptions;
+            default:
+                throw new RuntimeException("DEFAULT CASE!");
         }
     }
 
     private void clearEffectOptions(final Options.Target target) {
         HashMap<String, IOption> activeOptions = getActiveOptions(target);
-        for(final String optName : activeOptions.keySet()) {
+        for(final String optName :activeOptions.keySet()) {
             cp5.remove(optName);
         }
         activeOptions.clear();
@@ -1362,8 +1383,23 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         }
     }
 
+    private void clearGeneratorOptions(final Options.Target target) {
+        HashMap<String,IOption> activeOptions = getActiveOptions(target);
+        for(final String name : activeOptions.keySet()) {
+            cp5.remove(name);
+        }
+        activeOptions.clear();
+
+        if(target == Options.Target.GEN_A) {
+            generatorANextYOffset = p5GuiYOffset + 45;
+        }
+        else {
+            generatorBNextYOffset = p5GuiYOffset + 45;
+        }
+    }
+
     /**only call this method if the options have been cleared before */
-    private void addEffectOption(final IOption opt, final Options.Target target, final String effectName)
+    private void addOption(final IOption opt, final Options.Target target)
     {
         if(opt instanceof FloatRangeOption)
         {
@@ -1403,8 +1439,12 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                 name = "OPTION_EFFECT_B_" + opt.getName();
                 break;
             case GEN_A:
-                throw new NotImplementedException();
-                //break;
+                x = GEN_A_OPTIONS_X_OFS;
+                labelX = x + Theme.DROPBOX_XOFS;
+                y = generatorANextYOffset + 12;
+                generatorANextYOffset += 20;
+                name = "OPTION_GENERATOR_B_" + opt.getName();
+                break;
             case GEN_B:
                 throw new NotImplementedException();
                 //break;
@@ -1440,8 +1480,11 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                 name = "OPTION_EFFECT_B_" + opt.getName();
                 break;
             case GEN_A:
-                throw new NotImplementedException();
-                //break;
+                x = GEN_A_OPTIONS_X_OFS;
+                y = generatorANextYOffset + 12;
+                generatorANextYOffset += 20;
+                name = "OPTION_GENERATOR_B_" + opt.getName();
+                break;
             case GEN_B:
                 throw new NotImplementedException();
                 //break;
