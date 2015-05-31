@@ -34,9 +34,6 @@ import com.neophob.sematrix.core.visual.effect.Options.SelectionListOption;
  */
 public class Cell extends Generator {
 
-    /** The Constant BUBBLES. */
-    private static final int NR_OF_CELLS = 5;
-
     /** The Constant RENDERSIZE. */
     private static final int RENDERSIZE = 2;
 
@@ -54,6 +51,9 @@ public class Cell extends Generator {
     private int lowXRes, lowYRes;
     private int hsize;
 
+    private FloatRangeOption nrOfCells = new FloatRangeOption("Cells", 2, 10, 5);
+    private int oldNrCells = 5;
+
     public Cell(MatrixData matrix) {
         super(matrix, GeneratorName.CELL, ResizeName.QUALITY_RESIZE);
 
@@ -69,14 +69,11 @@ public class Cell extends Generator {
         lowXRes = (int) Math.floor(internalBufferXSize / (float) RENDERSIZE);
         lowYRes = (int) Math.floor(internalBufferYSize / (float) RENDERSIZE);
 
-        for (int i = 0; i < NR_OF_CELLS; i++) {
+        for (int i = 0; i < oldNrCells; i++) {
             points.add(new Attractor(lowXRes, lowYRes));
         }
-        options.add(new FloatRangeOption("test", 0,10, 8));
-        SelectionListOption opt = new SelectionListOption("aa");
-        opt.addEntry("AAAA");
-        opt.addEntry("BBBBB");
-        options.add(opt);
+        options.add(nrOfCells);
+
     }
 
     /*
@@ -86,6 +83,19 @@ public class Cell extends Generator {
      */
     @Override
     public void update(int amount) {
+
+        //re-create points if number of cells changes
+        if(oldNrCells != (int)nrOfCells.getValue()) {
+            oldNrCells = (int)nrOfCells.getValue();
+            points.clear();
+            lowXRes = (int) Math.floor(internalBufferXSize / (float) RENDERSIZE);
+            lowYRes = (int) Math.floor(internalBufferYSize / (float) RENDERSIZE);
+
+            for (int i = 0; i < oldNrCells; i++) {
+                points.add(new Attractor(lowXRes, lowYRes));
+            }
+        }
+
         for (int x = 0; x < lowXRes; x += RENDERSIZE) {
             for (int y = 0; y < lowYRes; y += RENDERSIZE) {
 
@@ -93,7 +103,7 @@ public class Cell extends Generator {
                 float closest = 1000.0f;
 
                 for (int p = 0; p < points.size(); p++) {
-                    Attractor a = (Attractor) points.get(p);
+                    Attractor a = points.get(p);
                     float dist = a.distanceTo(x, y);
                     if (dist < closest) {
                         nearest = p;

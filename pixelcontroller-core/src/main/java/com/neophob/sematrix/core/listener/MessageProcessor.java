@@ -157,6 +157,7 @@ public enum MessageProcessor {
                         // silly check of generator exists
                         g.getId();
                         col.getVisual(nr).setGenerator1(g);
+                        col.nofityGeneratorChanged();
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
                     }
@@ -170,6 +171,7 @@ public enum MessageProcessor {
                         Generator g = col.getPixelControllerGenerator().getGenerator(tmp);
                         g.getId();
                         col.getVisual(nr).setGenerator2(g);
+                        col.nofityGeneratorChanged();
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
                     }
@@ -182,6 +184,7 @@ public enum MessageProcessor {
                         Effect e = col.getPixelControllerEffect().getEffect(tmp);
                         e.getId();
                         col.getVisual(nr).setEffect1(e);
+                        col.notifyEffectChanged();
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
                     }
@@ -194,6 +197,7 @@ public enum MessageProcessor {
                         Effect e = col.getPixelControllerEffect().getEffect(tmp);
                         e.getId();
                         col.getVisual(nr).setEffect2(e);
+                        col.notifyEffectChanged();
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
                     }

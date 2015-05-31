@@ -20,6 +20,8 @@ package com.neophob.sematrix.gui.guibuilder;
 
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -81,6 +83,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private static final int GENERIC_Y_OFS = 8;
 
     private static final int GEN_A_OPTIONS_X_OFS = 270;
+    private static final int GEN_B_OPTIONS_X_OFS = 580;
 
     private static final int NR_OF_WIDGETS = 4;
     private static final int WIDGET_BOARDER = 10;
@@ -173,7 +176,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private Group effectOptionGroup;
     private int generatorANextYOffset = 0;
     private int generatorBNextYOffset = 0;
-
 
     public GeneratorGui(PixConServer pixelController, WindowSizeCalculator wsc) {
         super();
@@ -423,6 +425,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         cp5.addTextlabel(
                 "genOptionsGenA", messages.getString("GeneratorGui.GENERATOR_OPTIONS_A"), GEN_A_OPTIONS_X_OFS, genElYOfs).moveTo(generatorTab).getValueLabel();  //$NON-NLS-2$
 
+        cp5.addTextlabel(
+                "genOptionsGenB", messages.getString("GeneratorGui.GENERATOR_OPTIONS_B"), GEN_B_OPTIONS_X_OFS, genElYOfs).moveTo(generatorTab).getValueLabel();  //$NON-NLS-2$
 
 
         genElYOfs = yPosStartLabel + 5;
@@ -871,8 +875,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
      * draw the whole internal buffer on screen. this method is quite cpu
      * intensive
      */
-    public void draw() {
-        // background(0);
+    public synchronized void draw() {
+
         long l = System.currentTimeMillis();
         int localX = getVisualCenter();
         int localY = 40;
@@ -969,8 +973,11 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             oscStatistic.setText(oscStat);
         }
 
-        // update gui
-        cp5.draw();
+        //sometimes concurrent modification exceptions occur when calling draw.
+        //I have no idea why but synchronizing seems to fix it :)
+        synchronized (this) {
+            cp5.draw();
+        }
 
         // track used time
         pixConServer.updateNeededTimeForInternalWindow(System.currentTimeMillis() - l);
@@ -1331,7 +1338,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     }
 
     @Override
-    public void updateGuiOptions(Options opts) {
+    /**Is syncronizd with draw() to avoid concurrent gui modifications */
+    public synchronized void updateGuiOptions(Options opts) {
         switch(opts.getTarget())
         {
             case EFFECT_A:
@@ -1440,20 +1448,27 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                 break;
             case GEN_A:
                 x = GEN_A_OPTIONS_X_OFS;
-                labelX = x + Theme.DROPBOX_XOFS;
-                y = generatorANextYOffset + 12;
+                labelX = x + 142;
+                y = generatorANextYOffset + 25; //FIXME wtf do i need +20?
+                labelY = y -15;
                 generatorANextYOffset += 20;
-                name = "OPTION_GENERATOR_B_" + opt.getName();
+                name = "OPTION_GENERATOR_A_" + opt.getName();
                 break;
             case GEN_B:
-                throw new NotImplementedException();
-                //break;
+                x = GEN_B_OPTIONS_X_OFS;
+                labelX = x + 142;
+                y = generatorBNextYOffset + 25; //FIXME wtf do i need +20?
+                labelY = y -15;
+                generatorBNextYOffset += 20;
+                name = "OPTION_GENERATOR_B_" + opt.getName();
+                break;
             default:
                 throw new RuntimeException("default case");
         }
         HashMap<String, IOption> activeOptions = getActiveOptions(target);
         activeOptions.put(name, opt);
         DropdownList dl = cp5.addDropdownList(name, x, y, 140, 140);
+        Theme.themeDropdownList(dl);
         dl.setGroup(effectOptionGroup);
         dl.addItems(opt.getEntries());
         dl.setValue(opt.getValue());
@@ -1483,10 +1498,14 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                 x = GEN_A_OPTIONS_X_OFS;
                 y = generatorANextYOffset + 12;
                 generatorANextYOffset += 20;
-                name = "OPTION_GENERATOR_B_" + opt.getName();
+                name = "OPTION_GENERATOR_A_" + opt.getName();
                 break;
             case GEN_B:
-                throw new NotImplementedException();
+                x = GEN_B_OPTIONS_X_OFS;
+                y = generatorBNextYOffset + 12;
+                generatorBNextYOffset += 20;
+                name = "OPTION_GENERATOR_B_" + opt.getName();
+                break;
                 //break;
             default:
                 throw new RuntimeException("default case");

@@ -768,13 +768,19 @@ public class VisualState extends Observable {
     public void notifyGuiUpdate() {
         setChanged();
         notifyObservers(getGuiState());
-        setChanged();
-        notifyObservers(getCurrentOptions(Options.Target.EFFECT_A));
-        setChanged();
-        notifyObservers(getCurrentOptions(Options.Target.EFFECT_B));
+    }
+
+    public void nofityGeneratorChanged() {
         setChanged();
         notifyObservers(getCurrentOptions(Options.Target.GEN_A));
         setChanged();
         notifyObservers(getCurrentOptions(Options.Target.GEN_B));
+    }
+
+    public void notifyEffectChanged() {
+        setChanged();
+        notifyObservers(getCurrentOptions(Options.Target.EFFECT_A));
+        setChanged();
+        notifyObservers(getCurrentOptions(Options.Target.EFFECT_B));
     }
 }

@@ -47,9 +47,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
 
     private static final Logger LOG = Logger.getLogger(PixelControllerGenerator.class.getName());
 
-    private static final String DEFAULT_TTF = "04B_03__.TTF";
-    private static final String DEFAULT_TTF_SIZE = "82";
-
     private List<Generator> allGenerators;
 
     private Blinkenlights blinkenlights;
@@ -289,17 +286,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
 
 
     /**
-     * Sets the color scroll direction.
-     * 
-     * @param colorScrollDir
-     *            the newcolor scroll direction
-     */
-    public void setColorScrollingDirection(int colorScrollDir) {
-        colorScroll.setScrollMode(colorScrollDir);
-    }
-
-
-    /**
      * 
      * @return
      */
@@ -313,13 +299,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
      */
     public OscListener getOscListener2() {
         return oscListener2;
-    }
-
-    /**
-     * @return the isCaptureGeneratorActive
-     */
-    public boolean isCaptureGeneratorActive() {
-        return isCaptureGeneratorActive;
     }
 
     /**

@@ -118,10 +118,11 @@ public final class P5EventListener implements ControlListener {
             else if(theEvent.getName().contains("EFFECT_B")) {
                 opt = callback.getActiveOption(theEvent.getName(), Options.Target.EFFECT_B);
             }
-            else
-            {
-                throw new NotImplementedException();
-            }
+            else if(theEvent.getName().contains("OPTION_GENERATOR_A")) {
+                opt = callback.getActiveOption(theEvent.getName(), Options.Target.GEN_A);
+            } else if(theEvent.getName().contains("OPTION_GENERATOR_B")) {
+                opt = callback.getActiveOption(theEvent.getName(), Options.Target.GEN_B);
+                }
             if(null != opt) {
                 opt.setValue(value);
             }
