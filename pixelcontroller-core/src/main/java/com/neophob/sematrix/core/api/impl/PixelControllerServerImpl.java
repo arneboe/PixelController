@@ -264,6 +264,8 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
         MessageProcessor.INSTANCE.processMsg(new String[] { ValidCommand.LOAD_PRESET.toString() },
                 false, null);
         visualState.notifyGuiUpdate();
+        visualState.nofityGeneratorChanged();
+        visualState.notifyEffectChanged();
     }
 
     private void initSound() {
@@ -345,6 +347,8 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
     @Override
     public void refreshGuiState() {
         VisualState.getInstance().notifyGuiUpdate();
+        VisualState.getInstance().nofityGeneratorChanged();
+        VisualState.getInstance().notifyEffectChanged();
     }
 
     @Override

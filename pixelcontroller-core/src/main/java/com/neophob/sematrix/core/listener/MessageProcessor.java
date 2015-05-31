@@ -659,10 +659,6 @@ public enum MessageProcessor {
                     v.setMixer(currentMixer % nrOfMixerss);
                     break;
 
-                case ROTATE_BLINKEN:
-                    col.getPixelControllerGenerator().loadNextBlinkenfile();
-                    break;
-
                 case ROTATE_IMAGE:
                     col.getPixelControllerGenerator().loadNextImage();
                     break;

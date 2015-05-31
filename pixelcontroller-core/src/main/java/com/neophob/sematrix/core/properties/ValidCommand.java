@@ -107,8 +107,6 @@ public enum ValidCommand {
 
     ROTATE_IMAGE(CommandGroup.VISUAL, 0, "Select next Image"),
 
-    ROTATE_BLINKEN(CommandGroup.VISUAL, 0, "Select next Blinkenlight file"),
-
     DUMMY(CommandGroup.VISUAL, 0, "Do nothing"),
 
     /* INTERNAL COMMANDS, USED BY INTENRAL API */

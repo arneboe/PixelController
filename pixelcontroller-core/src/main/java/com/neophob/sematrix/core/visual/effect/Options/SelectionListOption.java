@@ -48,4 +48,10 @@ public class SelectionListOption implements IOption {
     public float getValue() {
         return selection;
     }
+
+    public String getSelected() {
+        assert(selection >= 0);
+        assert(selection < entries.size());
+        return entries.get(selection);
+    }
 }

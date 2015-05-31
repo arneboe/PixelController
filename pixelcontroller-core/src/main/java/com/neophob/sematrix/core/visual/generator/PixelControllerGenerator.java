@@ -98,7 +98,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
 
         allGenerators = new CopyOnWriteArrayList<Generator>();
 
-        blinkenlights = new Blinkenlights(matrix, fileUtils, resize);
+        blinkenlights = new Blinkenlights(matrix, fileUtils, resize, ph.getProperty("initial.blinken", ""));
         allGenerators.add(blinkenlights);
 
         image = new Image(matrix, fileUtils, resize);
@@ -325,10 +325,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
 
     public void loadNextImage() {
         image.loadNextFile();
-    }
-
-    public void loadNextBlinkenfile() {
-        blinkenlights.loadNextFile();
     }
 
 }

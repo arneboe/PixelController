@@ -24,6 +24,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.core.visual.effect.Options.SelectionListOption;
 import org.apache.commons.lang3.StringUtils;
 
 import com.neophob.sematrix.core.glue.FileUtils;
@@ -67,16 +68,9 @@ public class Blinkenlights extends Generator {
     private IResize resize;
 
     private FileUtils fu;
+    private SelectionListOption files = new SelectionListOption("File");
 
-    /**
-     * Instantiates a new blinkenlights.
-     * 
-     * @param controller
-     *            the controller
-     * @param filename
-     *            the filename
-     */
-    public Blinkenlights(MatrixData matrix, FileUtils fu, IResize resize) {
+    public Blinkenlights(MatrixData matrix, FileUtils fu, IResize resize, final String initialFile) {
         super(matrix, GeneratorName.BLINKENLIGHTS, ResizeName.QUALITY_RESIZE);
         this.filename = null;
         this.resize = resize;
@@ -101,12 +95,20 @@ public class Blinkenlights extends Generator {
         LOG.log(Level.INFO, "Blinkenlights, found " + movieFiles.size() + " movie files");
 
         blinken = new BlinkenLibrary();
-        this.loadFile(movieFiles.get(0));
-    }
 
-    public void loadNextFile() {
-        loadedPosition = (loadedPosition + 1) % movieFiles.size();
-        this.loadFile(movieFiles.get(loadedPosition));
+        for(final String file : movieFiles) {
+            files.addEntry(file);
+        }
+        if(initialFile.isEmpty()) {
+            this.loadFile(movieFiles.get(0));
+            files.select(0);
+        }
+        else {
+            final int idx = movieFiles.indexOf(initialFile);
+            this.loadFile(movieFiles.get(idx));
+            files.select(idx);
+        }
+        options.add(files);
     }
 
     /**
@@ -155,9 +157,14 @@ public class Blinkenlights extends Generator {
      */
     @Override
     public void update(int amount) {
+        //FIXME why is every second call ignored?
         frameNr++;
         if (frameNr % 2 == 0) {
             return;
+        }
+
+        if(!filename.equals(files.getSelected())) {
+            loadFile(files.getSelected());
         }
 
         BlinkenImage img = blinken.getFrame(currentFrame);
@@ -185,6 +192,7 @@ public class Blinkenlights extends Generator {
         if (VisualState.getInstance().getShufflerSelect(ShufflerOffset.BLINKEN)) {
             int nr = rand.nextInt(movieFiles.size());
             loadFile(movieFiles.get(nr));
+            files.select(nr);
         }
     }
 
