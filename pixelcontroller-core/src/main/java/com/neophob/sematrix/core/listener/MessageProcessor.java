@@ -136,7 +136,12 @@ public enum MessageProcessor {
             final int effectNo = parseValue(msg[1]);
             final Effect e = col.getPixelControllerEffect().getEffect(effectNo);
             e.setOptionState(ArrayUtils.subarray(msg, 2, msg.length));
-            col.notifyGuiUpdate();
+            return;
+        }
+        else if(msg[0].trim().equals("GENERATOR_OPTION") && msg.length > 2) {
+            final int generatorNo = parseValue(msg[1]);
+            final Generator g = col.getPixelControllerGenerator().getGenerator(generatorNo);
+            g.setOptionState(ArrayUtils.subarray(msg, 2, msg.length));
             return;
         }
 
@@ -734,5 +739,7 @@ public enum MessageProcessor {
         transitionManager.startCrossfader();
 
         visualState.notifyGuiUpdate();
+        visualState.nofityGeneratorChanged();
+        visualState.notifyEffectChanged();
     }
 }
