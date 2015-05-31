@@ -33,17 +33,14 @@ public class BpmStrobo extends Effect {
 	private int period; /**<The time of half a strobe cycle. I.e. how long the strobe should be on/off */
 	private long lastTime; /**<The time of the last update() call in millis*/
 	private int[] offBuffer; /**<buffer that is returned when the strobo is off */
-	private FloatRangeOption bpmOption;
+	private FloatRangeOption bpmOption = new FloatRangeOption("BPM", 1, 300, 150);
 
 	public BpmStrobo(MatrixData matrix) {
 		super(matrix, EffectName.BPM_STROBO, ResizeName.QUALITY_RESIZE);
 		lastTime = System.currentTimeMillis();
-		setBpm(150);
-		offBuffer = new int[1];
-
-		bpmOption = new FloatRangeOption("BPM", 1, 300, 150);
+		setBpm((int)bpmOption.getValue());
+		offBuffer = new int[1]; //will be resized later!
 		options.add(bpmOption);
-		options.add(new FloatRangeOption("test", 10, 44, 42));
 	}
 
 	/* (non-Javadoc)
