@@ -30,10 +30,14 @@ import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
 public class BpmStrobo extends Effect {
 
 	private boolean on; /**< Whether the strobe is on or off*/
-	private int period; /**<The time of half a strobe cycle. I.e. how long the strobe should be on/off */
+	private int offTime; /**<The time of half a strobe cycle. I.e. how long the strobe should be off */
+	private int cycleTime; /**<The time between two flashes */
+	private int flashTime; /**<How long a flash takes */
 	private long lastTime; /**<The time of the last update() call in millis*/
+	private long lastFlashTime; /**<Timestamp of the time that the flash was enabled */
 	private int[] offBuffer; /**<buffer that is returned when the strobo is off */
 	private FloatRangeOption bpmOption = new FloatRangeOption("BPM", 1, 300, 150);
+	private FloatRangeOption flashTimeOption = new FloatRangeOption("Flash Len", 0.01f, 1, 0.01f);
 
 	public BpmStrobo(MatrixData matrix) {
 		super(matrix, EffectName.BPM_STROBO, ResizeName.QUALITY_RESIZE);
@@ -41,6 +45,7 @@ public class BpmStrobo extends Effect {
 		setBpm((int)bpmOption.getValue());
 		offBuffer = new int[1]; //will be resized later!
 		options.add(bpmOption);
+		options.add(flashTimeOption);
 	}
 
 	/* (non-Javadoc)
@@ -64,16 +69,22 @@ public class BpmStrobo extends Effect {
      */
     @Override
 	public void update() {
-		final long currentTime = System.currentTimeMillis();
 		setBpm((int)bpmOption.getValue());
-		if(currentTime - lastTime >= period) {
+		flashTime = (int)(flashTimeOption.getValue() * 1000.0f);
+		final long currentTime = System.currentTimeMillis();
+		if(currentTime - lastFlashTime >= flashTime) {
+			on = false;
+		}
+
+		if(currentTime - lastTime >= cycleTime) {
 			lastTime = currentTime;
-			on = !on;
+			lastFlashTime = currentTime;
+			on = true;
 		}
 	}
 
 	public void setBpm(int bpm) {
 		final double bpms = bpm / 60.0 / 1000.0;
-		period = (int)(1.0/bpms / 2.0);
+		cycleTime = (int)(1.0/bpms);
 	}
 }
