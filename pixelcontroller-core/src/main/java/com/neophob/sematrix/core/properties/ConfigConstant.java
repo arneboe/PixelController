@@ -112,11 +112,6 @@ public final class ConfigConstant {
     public static final String DEBUG_WINDOW_MAX_X_SIZE = "gui.window.maximal.width";
     public static final String DEBUG_WINDOW_MAX_Y_SIZE = "gui.window.maximal.height";
 
-    public static final String CAPTURE_OFFSET = "screen.capture.offset";
-
-    public static final String CAPTURE_WINDOW_SIZE_X = "screen.capture.window.size.x";
-    public static final String CAPTURE_WINDOW_SIZE_Y = "screen.capture.window.size.y";
-
     public static final String FPS = "fps";
 
     public static final String TPM2NET_IP = "tpm2net.ip";

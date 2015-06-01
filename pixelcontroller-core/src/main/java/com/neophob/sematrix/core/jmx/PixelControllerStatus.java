@@ -235,6 +235,7 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 			this.timeMeasureMapOutput.get(output).put(timeMeasureItem, new CircularFifoBuffer(this.configuredFps * SECONDS));
 		}
 		// add time to internal buffer instance
+		//FIXME NullPointerException can happen here
 		this.timeMeasureMapOutput.get(output).get(timeMeasureItem).add(time);
 	}
 	

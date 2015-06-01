@@ -65,8 +65,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
 
     private FileUtils fileUtils;
 
-    private boolean isCaptureGeneratorActive = false;
-
     private MatrixData matrix;
 
     private float fps;
@@ -115,12 +113,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
         //allGenerators.add(new FFTSpectrum(matrix, sound));
         allGenerators.add(new Geometrics(matrix, sound));
 
-        int screenCapureXSize = ph.parseScreenCaptureWindowSizeX();
-        if (screenCapureXSize > 0 && !GraphicsEnvironment.isHeadless()) {
-            allGenerators.add(new ScreenCapture(matrix, this.resize, ph.parseScreenCaptureOffset(),
-                    screenCapureXSize, ph.parseScreenCaptureWindowSizeY()));
-            isCaptureGeneratorActive = true;
-        }
         colorScroll = new ColorScroll(matrix);
         allGenerators.add(colorScroll);
 

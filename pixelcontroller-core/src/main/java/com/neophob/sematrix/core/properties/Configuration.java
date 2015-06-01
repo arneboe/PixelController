@@ -1127,35 +1127,6 @@ public class Configuration implements Serializable {
     }
 
     /**
-     * x and y offset for screen capture
-     * 
-     * @return
-     */
-    public int parseScreenCaptureOffset() {
-        return parseInt(ConfigConstant.CAPTURE_OFFSET);
-    }
-
-    /**
-     * the width of the capturing window
-     * 
-     * @return
-     */
-    public int parseScreenCaptureWindowSizeX() {
-        return parseInt(ConfigConstant.CAPTURE_WINDOW_SIZE_X,
-                ConfigDefault.DEFAULT_CAPTURE_WINDOW_SIZE_X);
-    }
-
-    /**
-     * the height of the capturing window
-     * 
-     * @return
-     */
-    public int parseScreenCaptureWindowSizeY() {
-        return parseInt(ConfigConstant.CAPTURE_WINDOW_SIZE_Y,
-                ConfigDefault.DEFAULT_CAPTURE_WINDOW_SIZE_Y);
-    }
-
-    /**
      * 
      * @return
      */
