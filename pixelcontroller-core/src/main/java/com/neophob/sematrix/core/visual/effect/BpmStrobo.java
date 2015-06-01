@@ -22,6 +22,8 @@ import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
 
+import java.util.Random;
+
 /**
  * create a strobo effect.
  *
@@ -38,6 +40,7 @@ public class BpmStrobo extends Effect {
 	private int[] offBuffer; /**<buffer that is returned when the strobo is off */
 	private FloatRangeOption bpmOption = new FloatRangeOption("BPM", 1, 300, 150);
 	private FloatRangeOption flashTimeOption = new FloatRangeOption("Flash Len", 0.01f, 1, 0.01f);
+	Random random = new Random();
 
 	public BpmStrobo(MatrixData matrix) {
 		super(matrix, EffectName.BPM_STROBO, ResizeName.QUALITY_RESIZE);
@@ -86,5 +89,10 @@ public class BpmStrobo extends Effect {
 	public void setBpm(int bpm) {
 		final double bpms = bpm / 60.0 / 1000.0;
 		cycleTime = (int)(1.0/bpms);
+	}
+
+	@Override
+	public void shuffle() {
+		bpmOption.setValue(random.nextInt((int)(bpmOption.getValue() - bpmOption.getLower()) + 1) + bpmOption.getUpper());
 	}
 }

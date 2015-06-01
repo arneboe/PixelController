@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
+import com.neophob.sematrix.core.visual.effect.Options.SelectionListOption;
 import org.apache.commons.lang3.StringUtils;
 
 import com.neophob.sematrix.core.glue.FileUtils;
@@ -53,6 +54,8 @@ public class Image extends Generator {
     /** The Constant LOG. */
     private static final Logger LOG = Logger.getLogger(Image.class.getName());
 
+    private SelectionListOption files = new SelectionListOption("File");
+
     /** The currently loaded file */
     private String filename;
     private int loadedPosition;
@@ -61,14 +64,6 @@ public class Image extends Generator {
 
     private IResize resize;
 
-    /**
-     * Instantiates a new image viewer
-     * 
-     * @param controller
-     *            the controller
-     * @param filename
-     *            the filename
-     */
     public Image(MatrixData matrix, FileUtils fu, IResize resize) {
         super(matrix, GeneratorName.IMAGE, RESIZE_TYP);
         this.fileUtils = fu;
@@ -90,7 +85,12 @@ public class Image extends Generator {
                             + "' exist!");
         }
 
+        for(String file : imageFiles) {
+            files.addEntry(file);
+        }
         this.loadFile(imageFiles.get(0));
+        files.select(0);
+        options.add(files);
         LOG.log(Level.INFO, "Image, found " + imageFiles.size() + " image files");
     }
 
@@ -173,7 +173,9 @@ public class Image extends Generator {
      */
     @Override
     public void update(int amount) {
-
+        if(!files.getSelected().equals(filename)) {
+            loadFile(files.getSelected());
+        }
     }
 
     /*
@@ -186,6 +188,7 @@ public class Image extends Generator {
         if (VisualState.getInstance().getShufflerSelect(ShufflerOffset.IMAGE)) {
             int nr = new Random().nextInt(imageFiles.size());
             loadFile(imageFiles.get(nr));
+            files.select(nr);
         }
     }
 

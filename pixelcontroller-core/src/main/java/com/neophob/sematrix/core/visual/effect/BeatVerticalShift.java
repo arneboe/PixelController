@@ -66,6 +66,7 @@ public class BeatVerticalShift extends Effect {
 			ret[idx++] = buffer[i];	
 		}
 		for (int i=0; i<ofs; i++) {
+			//FIXME out of bounds can happen here
 			ret[idx++] = buffer[i];
 		}
 		
