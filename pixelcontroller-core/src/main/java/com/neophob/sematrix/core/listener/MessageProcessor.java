@@ -38,8 +38,6 @@ import com.neophob.sematrix.core.visual.Visual;
 import com.neophob.sematrix.core.visual.VisualState;
 import com.neophob.sematrix.core.visual.color.IColorSet;
 import com.neophob.sematrix.core.visual.effect.Effect;
-import com.neophob.sematrix.core.visual.effect.Effect.EffectName;
-import com.neophob.sematrix.core.visual.effect.RotoZoom;
 import com.neophob.sematrix.core.visual.fader.IFader;
 import com.neophob.sematrix.core.visual.fader.TransitionManager;
 import com.neophob.sematrix.core.visual.generator.Generator;
@@ -162,7 +160,7 @@ public enum MessageProcessor {
                         // silly check of generator exists
                         g.getId();
                         col.getVisual(nr).setGenerator1(g);
-                        col.nofityGeneratorChanged();
+                        col.notifyGeneratorChanged();
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
                     }
@@ -176,7 +174,7 @@ public enum MessageProcessor {
                         Generator g = col.getPixelControllerGenerator().getGenerator(tmp);
                         g.getId();
                         col.getVisual(nr).setGenerator2(g);
-                        col.nofityGeneratorChanged();
+                        col.notifyGeneratorChanged();
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
                     }
@@ -461,6 +459,8 @@ public enum MessageProcessor {
                         Shuffler.manualShuffleStuff(col);
                         transition.startCrossfader();
                         col.notifyGuiUpdate();
+                        col.notifyEffectChanged();
+                        col.notifyGeneratorChanged();
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
                     }
@@ -473,6 +473,8 @@ public enum MessageProcessor {
                         presetService.setSelectedPreset(currentPreset);
                         loadActivePreset(col);
                         col.notifyGuiUpdate();
+                        col.notifyEffectChanged();
+                        col.notifyGeneratorChanged();
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
                     }
@@ -485,6 +487,8 @@ public enum MessageProcessor {
                         int a = parseValue(msg[1]);
                         col.setCurrentVisual(a);
                         col.notifyGuiUpdate();
+                        col.notifyEffectChanged();
+                        col.notifyGeneratorChanged();
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
                     }
@@ -739,7 +743,7 @@ public enum MessageProcessor {
         transitionManager.startCrossfader();
 
         visualState.notifyGuiUpdate();
-        visualState.nofityGeneratorChanged();
+        visualState.notifyGeneratorChanged();
         visualState.notifyEffectChanged();
     }
 }

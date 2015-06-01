@@ -94,7 +94,7 @@ public class PixelControllerShufflerSelect implements PixelControllerElement {
                     sound.isSnare())) {
                 visualState.notifyGuiUpdate();
                 visualState.notifyEffectChanged();
-                visualState.nofityGeneratorChanged();
+                visualState.notifyGeneratorChanged();
             }
 
             long now = System.currentTimeMillis();

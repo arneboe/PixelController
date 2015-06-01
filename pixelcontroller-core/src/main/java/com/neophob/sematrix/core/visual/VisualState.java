@@ -770,7 +770,7 @@ public class VisualState extends Observable {
         notifyObservers(getGuiState());
     }
 
-    public void nofityGeneratorChanged() {
+    public void notifyGeneratorChanged() {
         setChanged();
         notifyObservers(getCurrentOptions(Options.Target.GEN_A));
         setChanged();
