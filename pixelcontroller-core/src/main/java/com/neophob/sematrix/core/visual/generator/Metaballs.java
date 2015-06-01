@@ -50,12 +50,6 @@ public class Metaballs extends Generator {
 
     private int resolutionAwareMul;
 
-    /**
-     * Instantiates a new metaballs.
-     * 
-     * @param controller
-     *            the controller
-     */
     public Metaballs(MatrixData matrix) {
         super(matrix, GeneratorName.METABALLS, ResizeName.QUALITY_RESIZE);
         vy = new int[NUM_BLOBS][getInternalBufferYSize()];

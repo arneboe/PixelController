@@ -38,14 +38,6 @@ public class Noise extends Generator {
 
     private float walk;
 
-    /**
-     * Instantiates a new image viewer
-     * 
-     * @param controller
-     *            the controller
-     * @param filename
-     *            the filename
-     */
     public Noise(MatrixData matrix) {
         super(matrix, GeneratorName.NOISE, RESIZE_TYP);
         walk = 0;

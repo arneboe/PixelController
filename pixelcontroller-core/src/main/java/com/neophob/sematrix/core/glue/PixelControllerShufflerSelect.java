@@ -93,6 +93,8 @@ public class PixelControllerShufflerSelect implements PixelControllerElement {
             if (RandomModeShuffler.shuffleStuff(shufflerSelect, sound.isKick(), sound.isHat(),
                     sound.isSnare())) {
                 visualState.notifyGuiUpdate();
+                visualState.notifyEffectChanged();
+                visualState.nofityGeneratorChanged();
             }
 
             long now = System.currentTimeMillis();

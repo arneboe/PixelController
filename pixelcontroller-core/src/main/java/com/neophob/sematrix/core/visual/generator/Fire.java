@@ -40,12 +40,6 @@ public class Fire extends Generator {
     /** The buffer. */
     private int[] buffer;
 
-    /**
-     * Instantiates a new fire.
-     * 
-     * @param controller
-     *            the controller
-     */
     public Fire(MatrixData matrix) {
         super(matrix, GeneratorName.FIRE, ResizeName.QUALITY_RESIZE);
 

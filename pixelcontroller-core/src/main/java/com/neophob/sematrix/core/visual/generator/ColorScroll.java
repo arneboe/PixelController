@@ -24,6 +24,7 @@ import com.neophob.sematrix.core.glue.ShufflerOffset;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.VisualState;
+import com.neophob.sematrix.core.visual.effect.Options.SelectionListOption;
 
 /**
  * The Class ColorScroll.
@@ -43,6 +44,8 @@ public class ColorScroll extends Generator {
 
     /** The internal buffer y size2. */
     private int internalBufferYSize2;
+
+    private SelectionListOption modes = new SelectionListOption("Mode");
 
     /**
      * The Enum ScrollMode.
@@ -97,14 +100,7 @@ public class ColorScroll extends Generator {
 
     }
 
-    /**
-     * Instantiates a new colorscroll.
-     * 
-     * @param controller
-     *            the controller
-     * @param colorList
-     *            the color list
-     */
+
     public ColorScroll(MatrixData matrix) {
         super(matrix, GeneratorName.COLOR_SCROLL, ResizeName.QUALITY_RESIZE);
 
@@ -112,6 +108,12 @@ public class ColorScroll extends Generator {
 
         internalBufferXSize2 = internalBufferXSize / 2;
         internalBufferYSize2 = internalBufferYSize / 2;
+
+        for(ScrollMode mode : ScrollMode.values()) {
+            modes.addEntry(mode.toString());
+        }
+        modes.select(12);
+        options.add(modes);
     }
 
     /*
@@ -125,6 +127,10 @@ public class ColorScroll extends Generator {
         // do not remove, sanity check
         if (scrollMode == null) {
             scrollMode = ScrollMode.EXPLODE_CIRCLE;
+        }
+
+        if(scrollMode != ScrollMode.values()[(int)modes.getValue()]) {
+            scrollMode = ScrollMode.values()[(int)modes.getValue()];
         }
 
         // scroll colors on x axis
