@@ -106,28 +106,7 @@ public class PresetServiceImpl implements PresetService {
             }
             preset.remove(ofs);
         }
-        if (!preset.contains("CHANGE_GENERATOR_B 1") && !preset.contains("CHANGE_GENERATOR_A 1")) {
-            LOG.log(Level.INFO, "No Blinkengenerator found, remove loading blinken resource");
-            int ofs = 0;
-            for (String s : preset) {
-                if (s.startsWith("BLINKEN")) {
-                    break;
-                }
-                ofs++;
-            }
-            preset.remove(ofs);
-        }
-        if (!preset.contains("CHANGE_GENERATOR_B 2") && !preset.contains("CHANGE_GENERATOR_A 2")) {
-            LOG.log(Level.INFO, "No Imagegenerator found, remove loading image resource");
-            int ofs = 0;
-            for (String s : preset) {
-                if (s.startsWith("IMAGE")) {
-                    break;
-                }
-                ofs++;
-            }
-            preset.remove(ofs);
-        }
+
         return preset;
     }
 

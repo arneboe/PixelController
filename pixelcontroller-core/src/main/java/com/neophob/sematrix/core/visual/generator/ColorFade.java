@@ -31,12 +31,6 @@ public class ColorFade extends Generator {
 
     private int frameCount;
 
-    /**
-     * Instantiates a new colorscroll
-     * 
-     * @param controller
-     *            the controller
-     */
     public ColorFade(MatrixData matrix) {
         super(matrix, GeneratorName.COLOR_FADE, ResizeName.QUALITY_RESIZE);
     }

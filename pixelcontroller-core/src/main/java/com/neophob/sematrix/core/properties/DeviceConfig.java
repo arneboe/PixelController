@@ -30,6 +30,8 @@ public enum DeviceConfig {
 
     FLIPPEDY,
 
+    FLIPPEDX,
+
     /** The ROTATE 90. */
     ROTATE_90,
 

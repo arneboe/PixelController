@@ -170,11 +170,28 @@ public final class RotateBuffer {
 
             case ROTATE_270:
                 return rotate270(buffer, deviceXSize, deviceYSize);
+            
+            case FLIPPEDX:
+                return flipX(buffer, deviceXSize, deviceYSize);
 
             default:
                 LOG.log(Level.SEVERE, "Invalid device config: {0}", deviceConfig);
                 break;
         }
         return null;
+    }
+
+    private static int[] flipX(int[] buffer, int deviceXSize, int deviceYSize) {
+        int[] ret = new int[deviceXSize * deviceYSize];
+        int ofs = 0;
+        for (int y = 0; y < deviceYSize; y++) {
+            for (int x = 0; x < deviceXSize; x++) {
+                ret[ofs + x] = buffer[ofs + deviceXSize - 1 - x];
+               // ret[ofs + x] = buffer[ofs + deviceXSize - x - 1];
+            }
+            ofs += deviceXSize;
+        }
+        return ret;
+
     }
 }
