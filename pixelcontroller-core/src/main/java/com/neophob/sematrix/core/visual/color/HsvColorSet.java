@@ -37,18 +37,24 @@ public class HsvColorSet implements IColorSet
         else
         {
             //FIXME use the rainbow color map from fastled instead of the spectrum one
-            final int blockSize = 255 / (colors.size() - 1);
+            final int blockSize = 127 / (colors.size() - 1);
             int startIdx = 0;
             for (int i = 0; i < colors.size() - 1; ++i) {
                 final HsvColor currentColor = colors.get(i);
                 final HsvColor nextColor = colors.get(i + 1);
                 int endIdx = startIdx + blockSize;
-                if (i == colors.size() - 2) {//if 255 is not divisable by colors.size() we ll compensate for that by making the last block larger
-                    endIdx = 256; //is exclusive, therefore 256 is correct
+                if (i == colors.size() - 2) {//if 127 is not divisable by colors.size() we ll compensate for that by making the last block larger
+                    endIdx = 128; //is exclusive, therefore 128 is correct
                 }
                 interpolateColors(currentColor, nextColor, startIdx, endIdx, lut);
                 startIdx = endIdx;
             }
+            //copy inverted colors
+            int j = 127;
+            for(int i = 128; i < 256; ++i, --j) {
+                lut[i] = lut[j];
+            }
+
         }
     }
 

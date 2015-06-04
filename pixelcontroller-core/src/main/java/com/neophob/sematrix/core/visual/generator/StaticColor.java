@@ -27,7 +27,7 @@ import java.util.Arrays;
 public class StaticColor extends Generator {
 
     private int frameCount;
-    private FloatRangeOption colorOption = new FloatRangeOption("Color", 0, 255, 128);
+    private FloatRangeOption colorOption = new FloatRangeOption("Color", 0, 128, 64);
 
     public StaticColor(MatrixData matrix) {
         super(matrix, GeneratorName.STATIC_COLOR, ResizeName.PIXEL_RESIZE);

@@ -29,7 +29,7 @@ import java.util.Random;
  */
 public class Binning extends Effect {
 
-	private FloatRangeOption numBins = new FloatRangeOption("Bins", 2, 40, 3);
+	private FloatRangeOption numBins = new FloatRangeOption("Bins", 3, 60, 3);
 	private int binCount = 3;
 	private int binColors[] = new int[3];
 	private Random random = new Random();
