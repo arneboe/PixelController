@@ -93,6 +93,8 @@ public class BpmStrobo extends Effect {
 
 	@Override
 	public void shuffle() {
-		bpmOption.setValue(random.nextInt((int)(bpmOption.getValue() - bpmOption.getLower()) + 1) + bpmOption.getUpper());
+		final int max = (int)bpmOption.getUpper();
+		final int min = (int)bpmOption.getLower();
+		bpmOption.setValue(random.nextInt((max - min) + 1) + min);
 	}
 }

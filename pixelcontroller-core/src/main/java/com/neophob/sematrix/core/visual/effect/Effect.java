@@ -54,7 +54,8 @@ public abstract class Effect implements IShuffleState {
         BPM_STROBO(11),
         ROTATE90(12),
         POSTERIZE(13),
-        MOVING_WINDOW(14);
+        MOVING_WINDOW(14),
+        BINNING(15);
 
         /** The id. */
         private int id;

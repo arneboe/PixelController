@@ -103,6 +103,7 @@ public class PixelControllerEffect implements PixelControllerElement {
         textureDeformation = new TextureDeformation(matrix);
         allEffects.add(textureDeformation);
         allEffects.add(new MovingWindow(matrix));
+        allEffects.add(new Binning(matrix));
     }
 
     /*

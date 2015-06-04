@@ -18,24 +18,27 @@
  */
 package com.neophob.sematrix.core.visual.effect;
 
-import java.util.Random;
-
-import com.neophob.sematrix.core.glue.ShufflerOffset;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.MatrixData;
-import com.neophob.sematrix.core.visual.VisualState;
 import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
+
+import java.util.Random;
 
 /**
  * @author michu
  */
-public class Threshold extends Effect {
+public class Binning extends Effect {
 
-	private FloatRangeOption threshold;
-	public Threshold(MatrixData matrix) {
-		super(matrix, EffectName.THRESHOLD, ResizeName.QUALITY_RESIZE);
-		threshold = new FloatRangeOption("Threshold", 0, 255, 128);
-		options.add(threshold);
+	private FloatRangeOption numBins = new FloatRangeOption("Bins", 2, 40, 3);
+	private int binCount = 3;
+	private int binColors[] = new int[3];
+	private Random random = new Random();
+	public Binning(MatrixData matrix) {
+		super(matrix, EffectName.BINNING, ResizeName.PIXEL_RESIZE);
+		options.add(numBins);
+		binColors[0] = 0;
+		binColors[1] = 128;
+		binColors[2] = 255;
 	}
 
 	/* (non-Javadoc)
@@ -43,13 +46,24 @@ public class Threshold extends Effect {
 	 */
 	public int[] getBuffer(int[] buffer) {
 		int[] ret = new int[buffer.length];
-		
-		for (int i=0; i<buffer.length; i++){
-    		if (buffer[i] >= this.threshold.getValue()) {
-    		    ret[i]=buffer[i];
-    		} else {
-    		    ret[i]=0;
-    		}
+		int colorDistance = 256 / binCount + 1;
+		if(binCount != (int) numBins.getValue()) {
+			binCount = (int) numBins.getValue();
+			binColors = new int[binCount];
+			colorDistance = 256 / binCount  + 1;
+			final int dist = 256 / (binCount - 1) - 1;
+			for(int i = 0; i < binColors.length; ++i) {
+				binColors[i] = dist * i;
+			}
+		}
+		for (int i=0; i<buffer.length; i++) {
+			try {
+
+				ret[i] = binColors[(buffer[i] / colorDistance)];
+
+			} catch (ArrayIndexOutOfBoundsException e) {
+				System.out.print("b");
+			}
 		}
 		return ret;
 	}
@@ -59,6 +73,8 @@ public class Threshold extends Effect {
 	 */
 	@Override
 	public void shuffle() {
-		this.threshold.setValue((short)new Random().nextInt(255));
+		final int max = (int)numBins.getUpper();
+		final int min = (int)numBins.getLower();
+		numBins.setValue(random.nextInt((max - min) + 1) + min);
 	}
 }
