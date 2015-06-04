@@ -114,6 +114,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
         allGenerators.add(colorScroll);
 
         allGenerators.add(new ColorFade(matrix));
+        allGenerators.add(new StaticColor(matrix));
 
         allGenerators.add(new VisualZero(matrix));
         allGenerators.add(new Noise(matrix));

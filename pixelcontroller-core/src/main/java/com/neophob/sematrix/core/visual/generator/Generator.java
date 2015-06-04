@@ -59,10 +59,7 @@ public abstract class Generator implements IShuffleState {
         DROPS(10),
         CELL(11),
         PLASMA_ADVANCED(12),
-        SCREEN_CAPTURE(14),
-        /** external OSC Generator */
-        OSC_GEN1(15),
-        OSC_GEN2(16),
+        STATIC_COLOR(13),
         /* use the visual 0 as generator */
         VISUAL_ZERO(17),
         NOISE(18);
