@@ -55,14 +55,13 @@ public abstract class Generator implements IShuffleState {
         METABALLS(6),
         PIXELIMAGE(7),
         COLOR_FADE(8),
-        TEXTWRITER(9),
-        DROPS(10),
-        CELL(11),
-        PLASMA_ADVANCED(12),
-        STATIC_COLOR(13),
+        DROPS(9),
+        CELL(10),
+        PLASMA_ADVANCED(11),
+        STATIC_COLOR(12),
         /* use the visual 0 as generator */
-        VISUAL_ZERO(17),
-        NOISE(18);
+        VISUAL_ZERO(13),
+        NOISE(14);
 
         /** The id. */
         private int id;

@@ -38,8 +38,8 @@ public class BpmStrobo extends Effect {
 	private long lastTime; /**<The time of the last update() call in millis*/
 	private long lastFlashTime; /**<Timestamp of the time that the flash was enabled */
 	private int[] offBuffer; /**<buffer that is returned when the strobo is off */
-	private FloatRangeOption bpmOption = new FloatRangeOption("BPM", 1, 300, 150);
-	private FloatRangeOption flashTimeOption = new FloatRangeOption("LENGTH", 0.01f, 1, 0.01f);
+	private FloatRangeOption bpmOption = new FloatRangeOption("BPM", 1, 600, 150);
+	private FloatRangeOption flashTimeOption = new FloatRangeOption("LENGTH", 0.01f, 1, 0.05f);
 	Random random = new Random();
 
 	public BpmStrobo(MatrixData matrix) {
