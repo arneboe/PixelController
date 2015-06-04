@@ -61,7 +61,8 @@ public abstract class Generator implements IShuffleState {
         STATIC_COLOR(12),
         /* use the visual 0 as generator */
         VISUAL_ZERO(13),
-        NOISE(14);
+        NOISE(14),
+        LINES(15);
 
         /** The id. */
         private int id;

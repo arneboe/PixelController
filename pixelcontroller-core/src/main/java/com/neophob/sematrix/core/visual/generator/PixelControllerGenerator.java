@@ -32,6 +32,7 @@ import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.resize.IResize;
+import com.neophob.sematrix.core.resize.Resize;
 import com.neophob.sematrix.core.sound.BeatToAnimation;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.visual.MatrixData;
@@ -118,6 +119,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
 
         allGenerators.add(new VisualZero(matrix));
         allGenerators.add(new Noise(matrix));
+        allGenerators.add(new Lines(matrix, GeneratorName.LINES, Resize.ResizeName.QUALITY_RESIZE));
 
         LOG.log(Level.INFO, "Init finished");
     }
