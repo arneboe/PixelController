@@ -66,7 +66,6 @@ abstract class AbstractPixelControllerP5 extends PApplet implements
         try {
             LOG.log(Level.INFO, "Initialize...");
             LOG.log(Level.INFO, "\n\nPixelController Setup - http://www.pixelinvaders.ch\n\n");
-
             size(SETUP_WINDOW_WIDTH, SETUP_WINDOW_HEIGHT);
             background(0);
             noStroke();

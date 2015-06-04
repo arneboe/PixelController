@@ -80,6 +80,7 @@ public class MatrixSimulatorGui {
 		if (this.parent.frame.isAlwaysOnTopSupported()) {
 			this.parent.frame.setAlwaysOnTop(true);			
 		}
+		this.parent.frame.setLocation(821, 0);
 		
 		this.parent.background(0);
 		
