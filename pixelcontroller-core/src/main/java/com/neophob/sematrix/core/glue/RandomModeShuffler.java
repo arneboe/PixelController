@@ -58,7 +58,7 @@ public final class RandomModeShuffler {
         VisualState col = VisualState.getInstance();
 
         Random rand = new Random();
-        int blah = rand.nextInt(18);
+        int blah = rand.nextInt(14);
 
         if (snare) {
             if (blah == 1 && shufflerSelect.get(ShufflerOffset.GENERATOR_A.getOffset())) {
@@ -100,12 +100,6 @@ public final class RandomModeShuffler {
                 }
                 changed = true;
             }
-
-            if (blah == 6) {
-                col.getPixelControllerEffect().getEffect(EffectName.THRESHOLD).shuffle();
-                changed = true;
-            }
-
         }
 
         if (hat) {
@@ -134,13 +128,15 @@ public final class RandomModeShuffler {
                 changed = true;
             }
 
-            if (blah == 9) {
-                col.getPixelControllerEffect().getEffect(EffectName.ROTOZOOM).shuffle();
+            if (blah == 9 && shufflerSelect.get(ShufflerOffset.GENERATOR_OPTIONS.getOffset())) {
+                col.getVisual(col.getCurrentVisual()).getGenerator1().shuffle();
+                col.getVisual(col.getCurrentVisual()).getGenerator2().shuffle();
                 changed = true;
             }
 
-            if (blah == 10) {
-                col.getPixelControllerEffect().getEffect(EffectName.ZOOM).shuffle();
+            if (blah == 10 && shufflerSelect.get(ShufflerOffset.EFFECT_OPTIONS.getOffset())) {
+                col.getVisual(col.getCurrentVisual()).getEffect1().shuffle();
+                col.getVisual(col.getCurrentVisual()).getEffect2().shuffle();
                 changed = true;
             }
 
@@ -172,31 +168,7 @@ public final class RandomModeShuffler {
                 }
                 changed = true;
             }
-
-            if (blah == 14) {
-                col.getPixelControllerGenerator().getGenerator(GeneratorName.IMAGE).shuffle();
-                changed = true;
-            }
-
-            if (blah == 15) {
-                col.getPixelControllerGenerator().getGenerator(GeneratorName.BLINKENLIGHTS)
-                        .shuffle();
-                changed = true;
-            }
-
-            if (blah == 16) {
-                col.getPixelControllerEffect().getEffect(EffectName.TEXTURE_DEFORMATION).shuffle();
-                changed = true;
-            }
-
-            if (blah == 17) {
-                col.getPixelControllerGenerator().getGenerator(GeneratorName.COLOR_SCROLL)
-                        .shuffle();
-                changed = true;
-            }
-
         }
-
         return changed;
     }
 }

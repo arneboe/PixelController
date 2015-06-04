@@ -177,10 +177,8 @@ public class RotoZoom extends RotoZoomEffect {
      */
     @Override
     public void shuffle() {
-        if (VisualState.getInstance().getShufflerSelect(ShufflerOffset.ROTOZOOMER)) {
-            int tmpAngle = (new Random().nextInt(255)) - 128;
-            this.setAngle(tmpAngle);
-        }
+       int tmpAngle = (new Random().nextInt(255)) - 128;
+       this.setAngle(tmpAngle);
     }
 
 }

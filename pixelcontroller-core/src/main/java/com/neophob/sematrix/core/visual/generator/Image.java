@@ -185,11 +185,9 @@ public class Image extends Generator {
      */
     @Override
     public void shuffle() {
-        if (VisualState.getInstance().getShufflerSelect(ShufflerOffset.IMAGE)) {
-            int nr = new Random().nextInt(imageFiles.size());
-            loadFile(imageFiles.get(nr));
-            files.select(nr);
-        }
+        int nr = new Random().nextInt(imageFiles.size());
+        loadFile(imageFiles.get(nr));
+        files.select(nr);
     }
 
     /**

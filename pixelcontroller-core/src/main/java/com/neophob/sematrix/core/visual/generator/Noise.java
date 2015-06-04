@@ -80,18 +80,4 @@ public class Noise extends Generator {
         float f = (float) SimplexNoise.noise(x, y, walk);
         return (f * SN + f * SN / 2 + f * SN / 4) / 2;
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.neophob.sematrix.core.generator.Generator#shuffle()
-     */
-    @Override
-    public void shuffle() {
-        if (VisualState.getInstance().getShufflerSelect(ShufflerOffset.IMAGE)) {
-            // int nr = new Random().nextInt(imageFiles.size());
-            // loadFile(imageFiles.get(nr));
-        }
-    }
-
 }

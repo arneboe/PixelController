@@ -109,10 +109,8 @@ public class Zoom extends RotoZoomEffect {
 	
 	@Override
 	public void shuffle() {
-		if (VisualState.getInstance().getShufflerSelect(ShufflerOffset.ZOOM_EFFECT)) {
-			int newMode = new Random().nextInt(ZoomMode.values().length);
-			setZoomMode(newMode);					
-		}
+		int newMode = new Random().nextInt(ZoomMode.values().length);
+		setZoomMode(newMode);
 	}
 
 }

@@ -189,11 +189,8 @@ public class Blinkenlights extends Generator {
      */
     @Override
     public void shuffle() {
-        if (VisualState.getInstance().getShufflerSelect(ShufflerOffset.BLINKEN)) {
-            int nr = rand.nextInt(movieFiles.size());
-            loadFile(movieFiles.get(nr));
-            files.select(nr);
-        }
+        int nr = rand.nextInt(movieFiles.size());
+        loadFile(movieFiles.get(nr));
+        files.select(nr);
     }
-
 }

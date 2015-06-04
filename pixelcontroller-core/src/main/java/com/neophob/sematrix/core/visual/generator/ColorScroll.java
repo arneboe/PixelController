@@ -209,13 +209,10 @@ public class ColorScroll extends Generator {
      */
     @Override
     public void shuffle() {
-        if (VisualState.getInstance().getShufflerSelect(ShufflerOffset.COLOR_SCROLL)) {
-            Random rand = new Random();
-            int nr = rand.nextInt(ScrollMode.values().length);
-            this.setScrollMode(nr);
-        }
+        Random rand = new Random();
+        int nr = rand.nextInt(ScrollMode.values().length);
+        this.setScrollMode(nr);
     }
-
     /**
      * Gets the color.
      * 

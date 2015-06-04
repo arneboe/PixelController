@@ -151,6 +151,16 @@ public final class Shuffler {
             }
         }
 
+        if(vs.getShufflerSelect(ShufflerOffset.EFFECT_OPTIONS)) {
+            vs.getVisual(vs.getCurrentVisual()).getEffect1().shuffle();
+            vs.getVisual(vs.getCurrentVisual()).getEffect2().shuffle();
+        }
+
+        if(vs.getShufflerSelect(ShufflerOffset.GENERATOR_OPTIONS)) {
+            vs.getVisual(vs.getCurrentVisual()).getGenerator1().shuffle();
+            vs.getVisual(vs.getCurrentVisual()).getGenerator2().shuffle();
+        }
+
         // set used to find out if visual is on screen
         Set<Integer> activeGeneratorIds = new HashSet<Integer>();
         Set<Integer> activeEffectIds = new HashSet<Integer>();

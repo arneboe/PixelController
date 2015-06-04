@@ -59,8 +59,6 @@ public class Threshold extends Effect {
 	 */
 	@Override
 	public void shuffle() {
-		if (VisualState.getInstance().getShufflerSelect(ShufflerOffset.THRESHOLD_VALUE)) {
-			this.threshold.setValue((short)new Random().nextInt(255));
-		}		
+		this.threshold.setValue((short)new Random().nextInt(255));
 	}
 }
