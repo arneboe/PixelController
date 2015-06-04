@@ -55,9 +55,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
 
     private ColorScroll colorScroll;
 
-    private OscListener oscListener1;
-    private OscListener oscListener2;
-
 
     BeatToAnimation bta = BeatToAnimation.MODERATE;
 
@@ -117,11 +114,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
         allGenerators.add(colorScroll);
 
         allGenerators.add(new ColorFade(matrix));
-
-        this.oscListener1 = new OscListener(matrix, GeneratorName.OSC_GEN1);
-        this.oscListener2 = new OscListener(matrix, GeneratorName.OSC_GEN2);
-        allGenerators.add(oscListener1);
-        allGenerators.add(oscListener2);
 
         allGenerators.add(new VisualZero(matrix));
         allGenerators.add(new Noise(matrix));
@@ -274,23 +266,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
      */
     public int getSize() {
         return allGenerators.size();
-    }
-
-
-    /**
-     * 
-     * @return
-     */
-    public OscListener getOscListener1() {
-        return oscListener1;
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public OscListener getOscListener2() {
-        return oscListener2;
     }
 
     /**

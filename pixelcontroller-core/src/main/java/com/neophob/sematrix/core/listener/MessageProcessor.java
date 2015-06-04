@@ -586,14 +586,6 @@ public enum MessageProcessor {
                     col.togglePauseMode();
                     break;
 
-                case OSC_GENERATOR1:
-                    col.getPixelControllerGenerator().getOscListener1().updateBuffer(blob);
-                    break;
-
-                case OSC_GENERATOR2:
-                    col.getPixelControllerGenerator().getOscListener2().updateBuffer(blob);
-                    break;
-
                 case ROTATE_COLORSET:
                     v = col.getVisual(col.getCurrentVisual());
                     String colorSetName = v.getColorSet().getName();
