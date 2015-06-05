@@ -99,6 +99,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
     private PImage pImage = null;
     private PImage logo;
+    private PImage colorSetImg = this.createImage(128, 10, PApplet.RGB);
+    private int colorSetId = -1;
+    private List<IColorSet> colorSets = new ArrayList<IColorSet>();
 
     private ControlP5 cp5;
     private DropdownList generatorListOne, effectListOne;
@@ -554,6 +557,13 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         colorSetList.moveTo(ALWAYS_VISIBLE_TAB);
         cp5.getTooltip().register("colSet", messages.getString("GeneratorGui.TOOLTIP_COLORSET"));  //$NON-NLS-2$
 
+        colorSetImg.loadPixels();
+        for(int y = 0; y < colorSetImg.height; ++y) {
+            for(int x = 0; x < colorSetImg.width; ++x) {
+                colorSetImg.set(x, y, this.color(255, 255, 255));
+            }
+        }
+
         // ----------
         // RANDOM Tab
         // ----------
@@ -803,6 +813,13 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             LOG.log(Level.INFO, "Failed to load gui logo!", e);
         }
 
+        //color sets
+        try {
+            colorSets = pixConServer.getColorSets();
+        } catch (Exception e) {
+            LOG.log(Level.INFO, "Failed to load color sets!", e);
+        }
+
         // ----------
         // MISC
         // ----------
@@ -889,6 +906,11 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             if (logo != null) {
                 image(logo, width - logo.width, height - logo.height);
             }
+            if(colorSetId != (int)colorSetList.getValue()) {
+                colorSetId = (int)colorSetList.getValue();
+                updateColorSet(colorSetId);
+            }
+            image(colorSetImg, GENERIC_X_OFS + 5 * Theme.DROPBOX_XOFS, 250);
         }
 
         // draw internal buffer only if enabled
@@ -1266,7 +1288,16 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                         break;
 
                     case CURRENT_COLORSET:
-                        colorSetList.setLabel(s.getValue());
+                        //colorSetList.setLabel(s.getValue());
+                        int index = -1;
+                        final String name = s.getValue();
+                        for(int i = 0; i < colorSets.size(); ++i) {
+                            if(colorSets.get(i).getName().equals(name)) {
+                                index = i;
+                                break;
+                            }
+                        }
+                        colorSetList.setValue(index);
                         break;
 
                     case CHANGE_PRESET:
@@ -1358,6 +1389,19 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             default:
                 throw new RuntimeException("DEFAULT CASE!!!");
         }
+    }
+
+    public void updateColorSet(final int id) {
+        colorSetImg.loadPixels();
+        for(int y = 0; y < colorSetImg.height; ++y) {
+            for(int x = 0; x < colorSetImg.width; ++x) {
+                final int i = y * colorSetImg.width + x;
+                colorSetImg.pixels[i] = x * 2;
+            }
+        }
+        IColorSet colorSet = colorSets.get(id);
+        colorSetImg.pixels = colorSet.convertToColorSetImage(colorSetImg.pixels);
+        colorSetImg.updatePixels();
     }
 
     private HashMap<String, IOption> getActiveOptions(final Options.Target target) {
