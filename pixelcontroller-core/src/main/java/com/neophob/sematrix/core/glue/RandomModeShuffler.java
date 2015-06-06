@@ -153,7 +153,7 @@ public final class RandomModeShuffler {
             }
 
         }
-
+        /*
         if (kick) {
             if (blah == 13 && shufflerSelect.get(ShufflerOffset.OUTPUT.getOffset())) {
                 int nrOfVisuals = col.getAllVisuals().size();
@@ -169,6 +169,7 @@ public final class RandomModeShuffler {
                 changed = true;
             }
         }
+        */
         return changed;
     }
 }
