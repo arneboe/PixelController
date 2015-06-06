@@ -37,12 +37,17 @@ public class HsvColorSet implements IColorSet
         else
         {
             //FIXME use the rainbow color map from fastled instead of the spectrum one
-            final int blockSize = 127 / (colors.size() - 1);
+            int size = colors.size() - 1;
+            for(HsvColor c : colors) {
+                if(c.skip()) --size;
+            }
+
+            final int blockSize = 127 / size;
             int startIdx = 0;
             for (int i = 0; i < colors.size() - 1; ++i) {
                 final HsvColor currentColor = colors.get(i);
                 final HsvColor nextColor = colors.get(i + 1);
-                if(currentColor.skip()) {
+                if(nextColor.skip() || currentColor.skip()) {
                     continue;
                 }
                 int endIdx = startIdx + blockSize;
