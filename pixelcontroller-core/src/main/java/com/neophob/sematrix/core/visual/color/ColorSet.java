@@ -159,21 +159,27 @@ public class ColorSet implements Serializable, IColorSet {
     private static IColorSet parseHSVEntry(final String name, final Scanner scn) throws Exception
     {
         ArrayList<HsvColor> colors = new ArrayList<HsvColor>();
-        while(scn.hasNext("[0-9]{1,3},[0-9]{1,3},[0-9]{1,3};"))
+        while(scn.hasNext("[0-9]{1,3},[0-9]{1,3},[0-9]{1,3};|SKIP;"))
         {
-            final String color = scn.next().replace(";","");
-            final String[] values = color.split(",");
-            if(values.length != 3)
-            {
-                throw new Exception("A hsv color has to consist of 3 values");
+            final String next = scn.next();
+            if(next.equals("SKIP;")) {
+                colors.add(new HsvColor(true));
             }
-            final int h = Integer.decode(values[0].trim());
-            final int s = Integer.decode(values[1].trim());
-            final int v = Integer.decode(values[2].trim());
-            if(h < 0 || h > 360) throw new Exception("h has to be in [0..360]");
-            if(s < 0 || s > 100) throw new Exception("s has to be in [0..100]");
-            if(v < 0 || v > 100) throw new Exception("v has to be in [0..100]");
-            colors.add(new HsvColor(h, s, v));
+            else {
+                final String color = next.replace(";","");
+                final String[] values = color.split(",");
+                if(values.length != 3)
+                {
+                    throw new Exception("A hsv color has to consist of 3 values");
+                }
+                final int h = Integer.decode(values[0].trim());
+                final int s = Integer.decode(values[1].trim());
+                final int v = Integer.decode(values[2].trim());
+                if(h < 0 || h > 360) throw new Exception("h has to be in [0..360]");
+                if(s < 0 || s > 100) throw new Exception("s has to be in [0..100]");
+                if(v < 0 || v > 100) throw new Exception("v has to be in [0..100]");
+                colors.add(new HsvColor(h, s, v));
+            }
         }
         return new HsvColorSet(name, colors);
     }

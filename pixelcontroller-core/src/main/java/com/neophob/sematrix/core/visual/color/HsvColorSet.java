@@ -42,6 +42,9 @@ public class HsvColorSet implements IColorSet
             for (int i = 0; i < colors.size() - 1; ++i) {
                 final HsvColor currentColor = colors.get(i);
                 final HsvColor nextColor = colors.get(i + 1);
+                if(currentColor.skip()) {
+                    continue;
+                }
                 int endIdx = startIdx + blockSize;
                 if (i == colors.size() - 2) {//if 127 is not divisable by colors.size() we ll compensate for that by making the last block larger
                     endIdx = 128; //is exclusive, therefore 128 is correct
