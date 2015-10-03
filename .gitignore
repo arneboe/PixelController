@@ -20,3 +20,5 @@ data/.DS_Store
 data/ArduinoFw/.DS_Store
 /.settings
 /target
+/.idea/
+*.iml
