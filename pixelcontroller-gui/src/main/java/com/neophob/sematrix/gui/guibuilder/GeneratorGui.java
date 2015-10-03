@@ -128,6 +128,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private DropdownList allOutputTabVis;
     private DropdownList allOutputTabFader;
     private DropdownList colorSetList;
+    private boolean mouseWasOverColorList = false;
 
     // preset tab
     private RadioButton presetButtons;
@@ -900,18 +901,40 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
         frames++;
 
-        // clear screen each 2nd frame and put logo on it
         if (frames % 2 == 1) {
             background(0);
             if (logo != null) {
                 image(logo, width - logo.width, height - logo.height);
             }
-            if(colorSetId != (int)colorSetList.getValue()) {
-                colorSetId = (int)colorSetList.getValue();
-                updateColorSet(colorSetId);
+            //if the mouse is over the colorSetList, display the item that
+            //is under the mouse, otherwise display the current selection
+            if(colorSetList.isMouseOver())
+            {
+                for (Object o : cp5.getMouseOverList()) //The list we get is not of a particular class, we get Objects
+                {
+                    if (o instanceof Button)   //Check if it's a Button
+                    {
+                        Button button = (Button) o;    //cast the Object to a Button
+                        final String currentId = button.getLabel();
+                        final int id = colorSetList.getItem(currentId).getValue();
+                        updateColorSet(id);
+                        mouseWasOverColorList = true;
+                    }
+                }
             }
-            image(colorSetImg, GENERIC_X_OFS + 5 * Theme.DROPBOX_XOFS, 250);
+            else
+            {
+                if(colorSetId != (int)colorSetList.getValue() ||
+                        mouseWasOverColorList) {
+                    mouseWasOverColorList = false;
+                    colorSetId = (int)colorSetList.getValue();
+                    updateColorSet(colorSetId);
+                }
+            }
         }
+        // clear screen each 2nd frame and put logo on it
+
+            image(colorSetImg, GENERIC_X_OFS + 5 * Theme.DROPBOX_XOFS, 250);
 
         // draw internal buffer only if enabled
         if (listener.isInternalVisualVisible()) {
