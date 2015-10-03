@@ -579,8 +579,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                 .setColorLabel(color(255)).setItemsPerRow(5).setSpacingColumn(90);
 
         for (ShufflerOffset so : ShufflerOffset.values()) {
-            //FIXME event day quick hack
-            if(!so.guiText().equals("Output"))
                 randomCheckbox.addItem(so.guiText(), i);
         }
         randomCheckbox.activateAll();
