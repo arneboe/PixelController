@@ -1,3 +1,10 @@
+# About this fork
+This fork is used in my personal led projects. It diverged extremly far from neophob/PixelController.
+I added lots of new features, removed lots of stuff that I didn't need for my project.
+Introducted a ton of bugs and fixed a few.
+
+This fork is probably not useable by anyone else.
+
 # PixelController
 **PixelController** - a matrix control project by Michael Vogt <michu at neophob.com>, (c) 2010-2014. The main goal of this application is to create an easy to use matrix controller software which creates stunning visuals!
 
