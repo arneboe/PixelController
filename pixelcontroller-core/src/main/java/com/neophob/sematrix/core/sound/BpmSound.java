@@ -11,8 +11,8 @@ public class BpmSound implements ISound {
     private long lastBeatTime;//in milliseconds
     private int timeBetweenBeats; //in milliseconds
     private int timeTillNextBeat;
-    private int beatVolume = 100;
-    private int nonBeatVolume = 20;
+    private int beatVolume = 3;
+    private int nonBeatVolume = 1;
     private boolean beatDetected = false;
 
     public BpmSound() {
@@ -109,7 +109,7 @@ public class BpmSound implements ISound {
 
     @Override
     public void reset() {
-
+        update();
     }
 
     public int getBpm() {

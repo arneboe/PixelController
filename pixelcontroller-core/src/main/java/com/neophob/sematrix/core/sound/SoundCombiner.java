@@ -1,0 +1,109 @@
+package com.neophob.sematrix.core.sound;
+
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+/**
+ * Created by arne on 10.10.2015.
+ */
+public class SoundCombiner implements ISound
+{
+    private BpmSound bpmSound = new BpmSound();
+    private SoundMinimKctess5 audioSound = new SoundMinimKctess5();
+
+    private ISound currentSound;
+
+    public SoundCombiner()
+    {
+        currentSound = bpmSound;
+    }
+
+
+    public enum SoundSource
+    {
+        BPM,
+        AUDIO
+    }
+    public void selectSound(SoundSource source)
+    {
+        switch(source)
+        {
+            case BPM:
+                currentSound = bpmSound;
+                break;
+            case AUDIO:
+                currentSound = audioSound;
+                break;
+            default:
+                throw new NotImplementedException();
+        }
+    }
+
+
+    @Override
+    public String getImplementationName() {
+        return currentSound.getImplementationName();
+    }
+
+    @Override
+    public float getVolume() {
+        return currentSound.getVolume();
+    }
+
+    @Override
+    public float getVolumeNormalized() {
+        return currentSound.getVolumeNormalized();
+    }
+
+    @Override
+    public boolean isKick() {
+        return currentSound.isKick();
+    }
+
+    @Override
+    public boolean isSnare() {
+        return currentSound.isSnare();
+    }
+
+    @Override
+    public boolean isHat() {
+        return currentSound.isHat();
+    }
+
+    @Override
+    public boolean isPang() {
+        return currentSound.isPang();
+    }
+
+    @Override
+    public boolean isBeat() {
+        return currentSound.isBeat();
+    }
+
+    @Override
+    public void shutdown() {
+        bpmSound.shutdown();
+        audioSound.shutdown();
+    }
+
+    @Override
+    public int getFftAvg() {
+        return currentSound.getFftAvg();
+    }
+
+    @Override
+    public float getFftAvg(int i) {
+        return currentSound.getFftAvg(i);
+    }
+
+    @Override
+    public void start() {
+        bpmSound.start();
+        audioSound.start();
+    }
+
+    @Override
+    public void reset() {
+        bpmSound.reset();
+        audioSound.reset();
+    }
+}

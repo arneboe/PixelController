@@ -41,6 +41,7 @@ import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.sound.ISound;
+import com.neophob.sematrix.core.sound.SoundCombiner;
 import com.neophob.sematrix.core.sound.SoundDummy;
 import com.neophob.sematrix.core.sound.SoundMinimKctess5;
 import com.neophob.sematrix.core.visual.MatrixData;
@@ -62,7 +63,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
     private PresetService presetService;
 
     private IOutput output;
-    private ISound sound;
+    private SoundCombiner sound;
 
     private Configuration applicationConfig;
     private List<IColorSet> colorSets;
@@ -269,24 +270,16 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
     }
 
     private void initSound() {
-        // choose sound implementation
-        if (applicationConfig.isAudioAware()) {
-            try {
-                sound = new SoundMinimKctess5();
-               // sound = new SoundMinim(0.00001f);
-                sound.start();
-                return;
-            } catch (Exception e) {
-                LOG.log(Level.WARNING, "FAILED TO INITIALIZE SOUND INSTANCE. Disable sound input.",
-                        e);
-            } catch (Error e) {
-                LOG.log(Level.WARNING,
-                        "FAILED TO INITIALIZE SOUND INSTANCE (Error). Disable sound input.", e);
-            }
+        try {
+            sound = new SoundCombiner();
+            sound.start();
+        } catch (Exception e) {
+            LOG.log(Level.WARNING, "FAILED TO INITIALIZE SOUND INSTANCE. Disable sound input.",
+                    e);
+        } catch (Error e) {
+            LOG.log(Level.WARNING,
+                    "FAILED TO INITIALIZE SOUND INSTANCE (Error). Disable sound input.", e);
         }
-
-        LOG.log(Level.INFO, "Initialize dummy sound.");
-        sound = new SoundDummy();
     }
 
     @Override
