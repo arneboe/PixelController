@@ -76,7 +76,6 @@ public class ApplicationConfigurationHelper {
     
     private List<String> rainbowduinoV3SerialDevices = null;
 
-
     private String fastSerialDevice = null;
 
     /** The lpd device. */
@@ -1371,7 +1370,4 @@ public class ApplicationConfigurationHelper {
     	return parseInt(ConfigConstant.VISUAL_FADE_TIME, 1500);
     }
 
-    public String getFastSerialDevice() {
-        return fastSerialDevice;
-    }
 }
