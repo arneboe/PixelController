@@ -27,10 +27,21 @@ package com.neophob.sematrix.core.properties;
  */
 public enum ColorFormat {
 
+	/** The RGB. */
 	RGB,
+
+	/** The RBG. */
 	RBG,
+
+	/** The BRG. */
 	BRG,
+
+	/** The BGR. */
 	BGR,
+
+	/** The GBR. */
 	GBR,
+
+	/** The GRB. */
 	GRB
 }
