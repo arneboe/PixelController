@@ -22,21 +22,42 @@ package com.neophob.sematrix.core.output;
  * The Enum OutputDeviceEnum.
  */
 public enum OutputDeviceEnum {
+	
 	/** The PIXELINVADERS (LPD6803 Based) PANELS. */
 	PIXELINVADERS(PixelInvadersSerialDevice.class, true),
+	
 	/** The Element STEALTH LED PANELS. */
 	STEALTH(StealthDevice.class, true),
+
+	/** The RAINBOWDUINO_V2. */
 	RAINBOWDUINO_V2(RainbowduinoV2Device.class, true),
+	
+	/** The RAINBOWDUINO_V3. */
 	RAINBOWDUINO_V3(RainbowduinoV3Device.class, true),
+
+	/** The ARTNET. */
 	ARTNET(ArtnetDevice.class, true),
+
+	/** The E1.31 output. */
 	E1_31(E1_31Device.class, true),
+
+	/** The MINIDMX. */
 	MINIDMX(MiniDmxDevice.class, true),
+
+	/** The TPM2. */
 	TPM2(Tpm2.class, true),
+
+	/** The TPM2Net. */
 	TPM2NET(Tpm2Net.class, true),
+
+	/** The UDP. */
 	UDP(UdpDevice.class, true),
+	
 	PIXELINVADERS_NET(PixelInvadersNetDevice.class, true),
+
 	/** The NULL Output. */
 	NULL(NullDevice.class, true),
+
 	FASTSERIAL(FastSerialDevice.class, true);
 	
 	/** The implementing class. */

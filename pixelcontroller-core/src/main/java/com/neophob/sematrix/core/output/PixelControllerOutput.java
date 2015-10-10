@@ -37,14 +37,19 @@ import com.neophob.sematrix.core.jmx.TimeMeasureItemOutput;
  */
 public class PixelControllerOutput implements PixelControllerElement {
 	
+	/** The Constant LOG. */
 	private static final Logger LOG = Logger.getLogger(PixelControllerOutput.class.getName());
 
+	/** The all outputs. */
 	private List<Output> allOutputs;
 	
+	/** The executor service. */
 	private ExecutorService executorService;
 	
+	/** The update end gate. */
 	private CountDownLatch updateEndGate;
 	
+	/** The prepare end gate. */
 	private CountDownLatch prepareEndGate;
 	
 	/**

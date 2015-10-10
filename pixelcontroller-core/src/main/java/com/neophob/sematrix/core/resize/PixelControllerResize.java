@@ -36,8 +36,10 @@ import com.neophob.sematrix.core.resize.Resize.ResizeName;
  */
 public class PixelControllerResize implements PixelControllerElement {
 
+	/** The Constant LOG. */
 	private static final Logger LOG = Logger.getLogger(PixelControllerResize.class.getName());
 	
+	/** The all resizers. */
 	private List<IResize> allResizers;
 	
 	/**

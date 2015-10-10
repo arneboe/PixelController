@@ -26,50 +26,116 @@ import java.util.List;
  */
 public enum ValidCommands {
 	
+	/** The CHANGE generator a. */
 	CHANGE_GENERATOR_A(CommandGroup.VISUAL, 1, "<INT> change first generator for current visual"),
+	
+	/** The CHANGE generator b. */
 	CHANGE_GENERATOR_B(CommandGroup.VISUAL, 1, "<INT> change first generator for current visual"),
+	
+	/** The CHANGE effect a. */
 	CHANGE_EFFECT_A(CommandGroup.VISUAL, 1, "<INT> change first effect for current visual"),
+	
+	/** The CHANGE effect b. */
 	CHANGE_EFFECT_B(CommandGroup.VISUAL, 1, "<INT> change second effect for current visual"),
+	
+	/** The CHANGE mixer. */
 	CHANGE_MIXER(CommandGroup.VISUAL, 1, "<INT> change mixer for current visual"),
+	
+	/** The CHANGE output. */
 	CHANGE_OUTPUT_VISUAL(CommandGroup.OUTPUT, 1, "<INT> change visual for current output"),
+	
+	/** The CHANGE fader. */
 	CHANGE_OUTPUT_FADER(CommandGroup.OUTPUT, 1, "<INT> change fader for current output"),
+
+	/** The CHANGE output. */
 	CHANGE_ALL_OUTPUT_VISUAL(CommandGroup.OUTPUT, 1, "<INT> change visual for all outputs"),
+	
+	/** The CHANGE fader. */
 	CHANGE_ALL_OUTPUT_FADER(CommandGroup.OUTPUT, 1, "<INT> change fader for all outputs"),
+
+	/** The CHANGE preset. */
 	CHANGE_PRESET(CommandGroup.MISC, 1, "<INT> select current preset id"),
+	
+	/** The CHANGE shuffler select. */
 	CHANGE_SHUFFLER_SELECT(CommandGroup.MISC, 15, "<INT>, parameter contains 15 nibbles to enable or disable the shuffler option (gets changed in the random mode), 0=OFF, 1=ON, example: 0 0 0 0 0 1 1 1 1 1 0 0 0 0 0"),
+	
+	/** The CHANGE threshold value. */
 	CHANGE_THRESHOLD_VALUE(CommandGroup.EFFECT, 1, "<INT> select current threshold for the threshold effect, 0-255"),
+	
+	/** The CHANG e_ rotozoom. */
 	CHANGE_ROTOZOOM(CommandGroup.EFFECT, 1, "<INT> select angle for the rotozoom effect, -127-127"),
+	
+	/** The SAVE preset. */
 	SAVE_PRESET(CommandGroup.MISC, 0, "<NO PARAM> save current preset settings"),
+	
+	/** The LOAD present. */
 	LOAD_PRESET(CommandGroup.MISC, 0, "<NO PARAM> load current preset settings"),
+	
+	/** The BLINKEN. */
 	BLINKEN(CommandGroup.GENERATOR, 1, "<STRING> file to load for the blinkenlights generator"),
+	
+	/** The IMAGE. */
 	IMAGE(CommandGroup.GENERATOR, 1, "<STRING> image to load for the simple image generator"),
+	
+	/** The TEXTDEF. */
 	TEXTDEF(CommandGroup.GENERATOR, 1, "<INT> select texture deformation option, 1-11"),
+	
 	ZOOMOPT(CommandGroup.GENERATOR, 1, "<INT> select zoom options 1-4"),
+	
+	/** The COLOR_SCROLL_OPT. */
 	COLOR_SCROLL_OPT(CommandGroup.GENERATOR, 1, "<INT> select color scroll fading direction, 1-14"),
+		
+	/** The TEXTWRITER. */
 	TEXTWR(CommandGroup.GENERATOR, 1, "<STRING> update text for textwriter generator"),
+	
 	TEXTWR_OPTION(CommandGroup.GENERATOR, 1, "<INT> set mode textwriter (pingpong scroller, left scroller)"),
+
+	/** The RANDOM. */
 	RANDOM(CommandGroup.MISC, 1, "<ON|OFF> enable/disable random mode" ),
+
+	/** The RANDOM preset. */
 	RANDOM_PRESET_MODE(CommandGroup.MISC, 1, "<ON|OFF> enable/disable random preset mode" ),
+
+	/** The RANDOMIZE. */
 	RANDOMIZE(CommandGroup.MISC, 0, "<NO PARAM> one shot randomizer"),
+	
+	/** The PRESET random. */
 	PRESET_RANDOM(CommandGroup.MISC, 0, "<NO PARAM> one shot randomizer, use a pre-stored present"),
+	
+	/** The CURRENT visual. */
 	CURRENT_VISUAL(CommandGroup.VISUAL, 1, "<INT> select actual visual"),
+
 	CURRENT_COLORSET(CommandGroup.VISUAL, 1, "<INT> select actual ColorSet"),
+
+	/** The CURRENT output. */
 	CURRENT_OUTPUT(CommandGroup.OUTPUT, 1, "<INT> select current output"),
+
+	/** The CURRENT output. */
 	JMX_STAT(CommandGroup.MISC, 0, "<NO PARAM> show JMX runtime statistic, default port: 1337 (use the -p switch)"),
+
 	SCREENSHOT(CommandGroup.MISC, 0, "<NO PARAM> save screenhot"),
+	
 	FREEZE(CommandGroup.MISC, 0, "<NO PARAM> toggle pause mode"),
+
 	TOGGLE_INTERNAL_VISUAL(CommandGroup.MISC, 0, "<NO PARAM> show/hide internal visual to save CPU"),
+	
 	CHANGE_BRIGHTNESS(CommandGroup.GENERATOR, 1, "<INT> output brightness 0 .. 100"),
+	
 	GENERATOR_SPEED(CommandGroup.GENERATOR, 1, "<INT> generator speed 0 .. 200 (default speed is 100)"),
+	
 	BEAT_WORKMODE(CommandGroup.GENERATOR, 1, "<INT> change beat workmode"),
+	
 	OSC_GENERATOR1(CommandGroup.GENERATOR, 1, "<BLOB> contains Xres*Yres*8bpp bytes or Xres*Yres*24bpp bytes raw imagedata"),
 	OSC_GENERATOR2(CommandGroup.GENERATOR, 1, "<BLOB> contains Xres*Yres*8bpp bytes or Xres*Yres*24bpp bytes raw imagedata"),
 	;
 	
+	/** The nr of params. */
 	private int nrOfParams;
 	
+	/** The desc. */
 	private String desc;
 	
+	/** The group. */
 	private CommandGroup group;
 	
 	/**
@@ -96,6 +162,8 @@ public enum ValidCommands {
 
 	/**
 	 * Gets the desc.
+	 *
+	 * @return the desc
 	 */
 	public String getDesc() {
 		return desc;

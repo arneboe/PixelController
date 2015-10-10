@@ -35,6 +35,7 @@ import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
  */
 public class Tpm2 extends OnePanelResolutionAwareOutput {
 
+	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Tpm2.class.getName());
 			
 	private static final String VERSION = "1.1";

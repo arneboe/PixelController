@@ -27,19 +27,26 @@ import com.neophob.sematrix.core.resize.Resize.ResizeName;
  */
 public class Metaballs extends Generator {	
 
+	/** The Constant NUM_BLOBS. */
 	private static final int NUM_BLOBS = 5;
 
+	/** The blob px. */
 	private int[] blobPx = { 10, 40, 36, 33, 44,32, 22 };
 	
+	/** The blob py. */
 	private int[] blobPy = { 4, 60, 45, 21, 13, 41, 32 };
 
 	// Movement vector for each blob
+	/** The blob dx. */
 	private int[] blobDx = { 1, 1, 1, 1, 1, 1, 1 };
 	
+	/** The blob dy. */
 	private int[] blobDy = { 1, 1, 1, 1, 1, 1, 1  };
 	
-	private int[][] vy,vx;
+	/** The vx. */
+	private int[][] vy,vx; 
 
+	/** The a. */
 	private int a=1;
 	
 	private int resolutionAwareMul;

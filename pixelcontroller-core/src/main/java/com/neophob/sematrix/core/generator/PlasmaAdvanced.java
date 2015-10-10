@@ -32,32 +32,45 @@ import com.neophob.sematrix.core.resize.Resize.ResizeName;
  */
 public class PlasmaAdvanced extends Generator {
 
+	/** The Constant TWO_PI. */
 	private static final float TWO_PI = 6.283185307f;
 
+	/** The Constant GRADIENTLEN. */
 	private static final int GRADIENTLEN = 900;//1500;
 	// use this factor to make things faster, esp. for high resolutions
+	/** The Constant SPEEDUP. */
 	private static final int SPEEDUP = 3;
 
+	/** The Constant FADE_STEPS. */
 	private static final int FADE_STEPS = 50;
 
 	// swing/wave function parameters
+	/** The Constant SWINGLEN. */
 	private static final int SWINGLEN = GRADIENTLEN*3;
 
+	/** The Constant SWINGMAX. */
 	private static final int SWINGMAX = GRADIENTLEN / 2 - 1;
 
 	//TODO make them configable
+	/** The Constant MIN_FACTOR. */
 	private static final int MIN_FACTOR = 4;
 
+	/** The Constant MAX_FACTOR. */
 	private static final int MAX_FACTOR = 10;
 
+	/** The fade swing steps. */
 	private int fadeSwingSteps = 0;
 
+	/** The swing curve. */
 	private int[] swingCurve = new int[SWINGLEN];
 
+	/** The swing curve tmp. */
 	private int[] swingCurveTmp = new int[SWINGLEN];
 
+	/** The frame count. */
 	private int frameCount;
 
+	/** The random. */
 	private Random random;
 
 	/**

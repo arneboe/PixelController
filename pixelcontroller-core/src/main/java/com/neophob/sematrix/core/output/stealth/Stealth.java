@@ -62,6 +62,7 @@ import com.neophob.sematrix.core.properties.ColorFormat;
  */
 public class Stealth {
 		
+	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Stealth.class.getName());
 
 	/** number of leds horizontal<br> TODO: should be dynamic, someday. */
@@ -70,6 +71,7 @@ public class Stealth {
 	/** number of leds vertical<br> TODO: should be dynamic, someday. */
 	public static final int NR_OF_LED_VERTICAL = NR_OF_LED_HORIZONTAL;
 
+	/** The Constant BUFFERSIZE. */
 	private static final int PANELBUFFERSIZE = NR_OF_LED_HORIZONTAL*NR_OF_LED_VERTICAL;
 
 	// payload buffer is 96 bytes for 24 bit color
@@ -78,30 +80,42 @@ public class Stealth {
 	/** internal lib version. */
 	public static final String VERSION = "1.1";
 
+	/** The Constant START_OF_CMD. */
 	private static final byte START_OF_CMD = 0x01;
 	
+	/** The Constant CMD_SENDFRAME. */
 	private static final byte CMD_SENDFRAME = 0x03;
 	
+	/** The Constant CMD_PING. */
 	private static final byte CMD_PING = 0x04;
 
+	/** The Constant START_OF_DATA. */
 	private static final byte START_OF_DATA = 0x10;
 	
+	/** The Constant END_OF_DATA. */
 	private static final byte END_OF_DATA = 0x20;
 
+	/** The baud. */
 	private int baud = 115200;
 	
+	/** The port. */
 	private Serial port;
 	
+	/** The arduino heartbeat. */
 	private long arduinoHeartbeat;
 	
+	/** The ack errors. */
 	private long ackErrors = 0;
 	
+	/** The arduino buffer size. */
 	private int arduinoBufferSize;
 	
 	//logical errors reported by arduino, TODO: rename to lastErrorCode
+	/** The arduino last error. */
 	private int arduinoLastError;
 	
 	//connection errors to arduino, TODO: use it!
+	/** The connection error counter. */
 	private int connectionErrorCounter;
 		
 	/** map to store checksum of image. */	

@@ -36,6 +36,7 @@ public class PixelControllerMixer implements PixelControllerElement {
 
     private static final Logger LOG = Logger.getLogger(PixelControllerMixer.class.getName());
 
+	/** The all mixer. */
 	private List<Mixer> allMixer;
 	private MatrixData matrix;
 	private ISound sound;

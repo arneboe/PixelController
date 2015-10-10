@@ -32,8 +32,10 @@ import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
  */
 public class PixelInvadersSerialDevice extends PixelInvadersDevice {
 
+	/** The log. */
 	private static final Logger LOG = Logger.getLogger(PixelInvadersSerialDevice.class.getName());
 		
+	/** The lpd6803. */
 	private Lpd6803Serial lpd6803 = null;
 
 			

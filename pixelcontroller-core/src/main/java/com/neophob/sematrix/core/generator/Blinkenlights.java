@@ -48,14 +48,19 @@ public class Blinkenlights extends Generator {
     //list to store movie files used by shuffler
     private List<String> movieFiles;
 
+    /** The log. */
     private static final Logger LOG = Logger.getLogger(Blinkenlights.class.getName());
 
+    /** The blinken. */
     private BlinkenLibrary blinken;
 
+    /** The random. */
     private boolean random;
 
+    /** The rand. */
     private Random rand = new Random();
 
+    /** The filename. */
     private String filename="";
 
     private int currentFrame;

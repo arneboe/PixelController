@@ -59,6 +59,7 @@ import com.neophob.sematrix.core.output.gamma.RGBAdjust;
  */
 public class Lpd6803Serial extends Lpd6803Common {
 		
+	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Lpd6803Serial.class.getName());
 	
 	/** internal lib version. */
@@ -70,18 +71,24 @@ public class Lpd6803Serial extends Lpd6803Common {
 	//wait TIMEOUT_SLEEP ms, until next loop
 	private static final int TIMEOUT_SLEEP = 16;
 
+	/** The baud. */
 	private int baud = 115200;
 	
+	/** The port. */
 	private Serial port;
-
+	
+	/** The arduino heartbeat. */
 	private long arduinoHeartbeat;
 	
+	/** The arduino buffer size. */
 	private int arduinoBufferSize;
 	
 	//logical errors reported by arduino, TODO: rename to lastErrorCode
+	/** The arduino last error. */
 	private int arduinoLastError;
 	
 	//connection errors to arduino, TODO: use it!
+	/** The connection error counter. */
 	private int connectionErrorCounter;
 	
 	private String serialPortName;

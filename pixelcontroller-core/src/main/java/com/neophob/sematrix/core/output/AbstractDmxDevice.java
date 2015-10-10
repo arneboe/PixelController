@@ -45,8 +45,10 @@ public abstract class AbstractDmxDevice extends Output {
 	/** define how the panels are arranged */
 	private List<Integer> panelOrder;
 
+	/** The x size. */
 	private int xResolution;
  
+ 	/** The y size. */
 	private int yResolution;
  
 	//dmx specific settings

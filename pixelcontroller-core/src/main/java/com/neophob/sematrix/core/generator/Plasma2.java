@@ -31,6 +31,7 @@ public class Plasma2 extends Generator {
 
 	private static final float DEG_TO_RAD = (float)Math.PI/180.0f;
 
+	/** The frame count. */
 	private int frameCount;
 
 	/**

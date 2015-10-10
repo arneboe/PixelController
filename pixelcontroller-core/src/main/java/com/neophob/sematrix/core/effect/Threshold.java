@@ -32,6 +32,7 @@ import com.neophob.sematrix.core.resize.Resize.ResizeName;
  */
 public class Threshold extends Effect {
 
+	/** The threshold. */
 	private int threshold;
 	
 	/**

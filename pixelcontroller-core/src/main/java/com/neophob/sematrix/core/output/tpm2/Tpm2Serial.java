@@ -38,6 +38,7 @@ import com.neophob.sematrix.core.properties.ColorFormat;
  */
 public class Tpm2Serial {
 	
+    /** The log. */
     private static final Logger LOG = Logger.getLogger(Tpm2Serial.class.getName());
 
     /** internal lib version. */
@@ -45,8 +46,10 @@ public class Tpm2Serial {
 
 	private static Adler32 adler = new Adler32();
 	
+	/** The baud. */
 	private int baud;
 	
+	/** The port. */
 	private Serial port;
 
 	/** map to store checksum of image. */

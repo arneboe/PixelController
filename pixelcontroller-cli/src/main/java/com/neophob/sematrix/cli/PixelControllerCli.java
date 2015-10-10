@@ -37,13 +37,15 @@ import com.neophob.sematrix.core.setup.InitApplication;
  *
  */
 public class PixelControllerCli {
-
+	/** The log. */
 	private static final Logger LOG = Logger.getLogger(PixelControllerCli.class.getName());
 
+	/** The Constant FPS. */
 	public static final int FPS = 25;
 
 	private Collector collector;
 
+	/** The output. */
 	private Output output;
 
 	private ApplicationConfigurationHelper applicationConfig;

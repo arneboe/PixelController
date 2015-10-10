@@ -25,9 +25,17 @@ import com.neophob.sematrix.osc.model.OscMessage;
  * The Class ParsedArgument.
  */
 public class ParsedArgument {
+	
+	/** The hostname. */
 	private String hostname;
+	
+	/** The port. */
 	private int port;
+	
+	/** The command. */
 	private ValidCommands command;
+	
+	/** The parameter. */
 	private String parameter;
 
 	/**

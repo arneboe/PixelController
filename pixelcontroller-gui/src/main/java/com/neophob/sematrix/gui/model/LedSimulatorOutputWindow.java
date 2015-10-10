@@ -38,8 +38,10 @@ public class LedSimulatorOutputWindow {
 	
 	private static final Logger LOG = Logger.getLogger(LedSimulatorOutputWindow.class.getName());
 	
+	/** The Constant RAHMEN_SIZE. */
 	private static final int RAHMEN_SIZE = 2;
 
+	/** The led size. */
 	private int ledSize;
 	private int ledSizeX;
 	private int ledSizeY;

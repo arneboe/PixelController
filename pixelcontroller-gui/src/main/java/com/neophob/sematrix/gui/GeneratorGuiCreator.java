@@ -39,6 +39,7 @@ import com.neophob.sematrix.gui.model.WindowSizeCalculator;
  */
 public class GeneratorGuiCreator {
 
+	/** The log. */
 	private static final Logger LOG = Logger.getLogger(GeneratorGuiCreator.class.getName());
 
     private PApplet gui;

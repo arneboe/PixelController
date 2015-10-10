@@ -43,26 +43,62 @@ public abstract class Generator implements RandomizeState {
 	 * The Enum GeneratorName.
 	 */
 	public enum GeneratorName {
+		
+		/** The PASSTHRU. */
 		PASSTHRU(0),
+		
+		/** The BLINKENLIGHTS. */
 		BLINKENLIGHTS(1),
+		
+		/** The IMAGE. */
 		IMAGE(2),
+		
+		/** The PLASMA. */
 		PLASMA(3),
+		
+		/** The COLOR_SCROLL. */
 		COLOR_SCROLL(4),
+		
+		/** The FIRE. */
 		FIRE(5),
+		
+		/** The METABALLS. */
 		METABALLS(6),
+		
+		/** The PIXELIMAGE. */
 		PIXELIMAGE(7),
+		
 		COLOR_FADE(8),
+		
+		/** The TEXTWRITER. */
 		TEXTWRITER(9),
+		
+		/** The IMAGE zoomer. */
 		DROPS(10),
+		
+		/** The CELL. */
 		CELL(11),
+		
+		/** The PLASMA advanced. */
 		PLASMA_ADVANCED(12),
+		
+		/** The FFT. */
 		FFT(13),
+		
+		/** The SCREEN_CAPTURE. */
 		SCREEN_CAPTURE(14),
-		OSC_GEN1(15), /** external OSC Generator */
-		OSC_GEN2(16),
-		VISUAL_ZERO(17),/* use the visual 0 as generator */
+		
+		/** external OSC Generator */
+		OSC_GEN1(15),
+		
+		OSC_GEN2(16), 
+        
+		/* use the visual 0 as generator */
+		VISUAL_ZERO(17),
+		
 		;
 		
+		/** The id. */
 		private int id;
 		
 		/**

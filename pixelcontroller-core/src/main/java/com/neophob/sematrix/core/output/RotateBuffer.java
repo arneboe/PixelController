@@ -31,6 +31,7 @@ import com.neophob.sematrix.core.properties.DeviceConfig;
  */
 public final class RotateBuffer {
 
+	/** The Constant LOG. */
 	private static final Logger LOG = Logger.getLogger(RotateBuffer.class.getName());
 
 	/**

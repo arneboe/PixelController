@@ -31,8 +31,13 @@ import com.neophob.sematrix.core.sound.ISound;
  */
 public class FFTSpectrum extends Generator {
 
+	/** The sound. */
 	private ISound sound;
+	
+	/** The fft smooth. */
 	private float[] fftSmooth;
+	
+	/** The y block. */
 	private int yBlock;
 	
 	/**

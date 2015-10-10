@@ -62,6 +62,7 @@ import com.neophob.sematrix.core.properties.ColorFormat;
  */
 public class MiniDmxSerial {
 	
+    /** The log. */
     private static final Logger LOG = Logger.getLogger(MiniDmxSerial.class.getName());
 
     private static final String PADDING_BYTES = "paddingBytes {0}";
@@ -167,23 +168,31 @@ public class MiniDmxSerial {
 	/** internal lib version. */
 	public static final String VERSION = "1.2";
 
+	/** The Constant START_OF_BLOCK. */
 	private static final byte START_OF_BLOCK = (byte)0x5a;
 	
+	/** The Constant END_OF_BLOCK. */
 	private static final byte END_OF_BLOCK   = (byte)0xa5;
 
+	/** The Constant REPLY_SUCCESS. */
 	private static final byte REPLY_SUCCESS  = (byte)0xc1;
 	
+	/** The Constant REPLY_ERROR. */
 	private static final byte REPLY_ERROR    = (byte)0xc0;
 	
 	private MiniDmxPayloadEnum miniDmxPayload;
 	
 	//connection errors to arduino, TODO: use it!
+	/** The connection error counter. */
 	private int connectionErrorCounter;
 	
+	/** The ack errors. */
 	private long ackErrors = 0;
 
+	/** The baud. */
 	private int baud;
 	
+	/** The port. */
 	private Serial port;
 
 	/** map to store checksum of image. */

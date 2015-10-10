@@ -67,12 +67,14 @@ import com.neophob.sematrix.core.properties.DeviceConfig;
  */
 public class Tpm2Net extends Output {
 
+	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Tpm2Net.class.getName());
 
 	private static Adler32 adler = new Adler32();
 
 	private DatagramSocket outputSocket;
 
+	/** The initialized. */
 	protected boolean initialized;
 
 	/** The display options, does the buffer needs to be flipped? rotated? */

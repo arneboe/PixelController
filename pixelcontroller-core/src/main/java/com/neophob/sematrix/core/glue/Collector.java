@@ -68,48 +68,67 @@ public class Collector extends Observable {
 
 	private static final Logger LOG = Logger.getLogger(Collector.class.getName());
 
+	/** The Constant EMPTY_CHAR. */
 	private static final String EMPTY_CHAR = " ";
 
+	/** The Constant NR_OF_PRESENT_SLOTS. */
 	public static final int NR_OF_PRESET_SLOTS = 144;
 
+	/** The singleton instance. */
 	private static Collector instance = new Collector();
 
+	/** The random mode. */
 	private boolean randomMode = false;
 
+	/** The random mode. */
 	private boolean randomPresetMode = false;
 
+	/** The initialized. */
 	private boolean initialized;
 
+	/** The matrix. */
 	private MatrixData matrix;
 
-	/** all input elements. */
+	/** all input elements. */	
 	private List<Visual> allVisuals;
 
 	/** fx to screen mapping. */
 	private List<OutputMapping> ioMapping;
 
+	/** The nr of screens. */
 	private int nrOfScreens;
 
+	/** The fps. */
 	private int fps;
 
+	/** The current visual. */
 	private int currentVisual;
 
+	/** The current output. */
 	private int currentOutput;
 
+	/** present settings. */
 	private int selectedPreset;
 
+	/** The present. */
 	private List<PresetSettings> presets;
 
+	/** The pixel controller generator. */
 	private PixelControllerGenerator pixelControllerGenerator;
 
+	/** The pixel controller mixer. */
 	private PixelControllerMixer pixelControllerMixer;
 
+	/** The pixel controller effect. */
 	private PixelControllerEffect pixelControllerEffect;
 
+	/** The pixel controller resize. */
 	private PixelControllerResize pixelControllerResize;
 
+	/** The pixel controller output. */
 	private PixelControllerOutput pixelControllerOutput;
 
+	/** The pixel controller shuffler select. */
 	private PixelControllerShufflerSelect pixelControllerShufflerSelect;
 
 	private PixelControllerFader pixelControllerFader;
@@ -118,6 +137,7 @@ public class Collector extends Observable {
 
 	private ApplicationConfigurationHelper ph;
 
+	/** The is loading present. */
 	private boolean isLoadingPresent=false;
 
 	private PixelControllerStatus pixConStat;

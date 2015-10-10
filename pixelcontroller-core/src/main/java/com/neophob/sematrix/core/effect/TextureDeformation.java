@@ -26,13 +26,18 @@ import com.neophob.sematrix.core.glue.ShufflerOffset;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 
 
+/**
+ * The Class Tint.
+ */
 public class TextureDeformation extends Effect {
 
     /** The m lut. */
     private int[] lookUpTable;
 
+    /** The time displacement. */
     private int timeDisplacement;
 
+    /** The lut. */
     private int selectedLut;
 
     private int cnt;

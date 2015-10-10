@@ -31,9 +31,11 @@ import com.neophob.sematrix.core.resize.Resize.ResizeName;
  */
 public class Fire extends Generator {
 
+	/** The r. */
 	private Random r;
 	
 	/* fire buffer, contains 0..255 */
+	/** The buffer. */
 	private int[] buffer;
 
 	/**

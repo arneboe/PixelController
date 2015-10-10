@@ -33,24 +33,33 @@ import ddf.minim.analysis.FFT;
 public final class SoundMinim implements ISound, Runnable {
 
 	//samples per 1/4s
+	/** The Constant SOUND_BUFFER_RESOLUTION. */
 	private static final int SOUND_BUFFER_RESOLUTION = 8;
 
+	/** The log. */
 	private static final Logger LOG = Logger.getLogger(SoundMinim.class.getName());
 
+	/** The minim. */
 	private Minim minim;
 	
+	/** The in. */
 	private AudioInput in;
 	
+	/** The beat. */
 	private BeatDetect beat;
 	
+	/** The bl. */
 	@SuppressWarnings("unused")
 	private BeatListener bl;
 
+	/** The fft. */
 	private FFT fft;
 
 	/* thread to collect volume information */
+	/** The runner. */
 	private Thread runner;
 
+	/** The snd volume max. */
 	private float sndVolumeMax=0;
 
 	private float silenceThreshold;

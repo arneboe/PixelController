@@ -33,10 +33,13 @@ import com.neophob.sematrix.core.properties.DeviceConfig;
  */
 public abstract class OnePanelResolutionAwareOutput extends Output {
 	
+	/** The log. */
 	private static final Logger LOG = Logger.getLogger(OnePanelResolutionAwareOutput.class.getName());
 
+	   /** The x size. */
     protected int xResolution;
     
+    /** The y size. */
     protected int yResolution;
     
     /** does the image needs to be rotated?*/

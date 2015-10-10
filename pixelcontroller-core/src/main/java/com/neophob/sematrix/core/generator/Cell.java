@@ -36,14 +36,18 @@ public class Cell extends Generator {
 	/** The Constant BUBBLES. */
 	private static final int NR_OF_CELLS=5;
 	
+	/** The Constant RENDERSIZE. */
 	private static final int RENDERSIZE=2;
 
 	private static final int RENDERSIZE_SQRT=RENDERSIZE*RENDERSIZE;
 
+	/** The random. */
 	private Random random=new Random();
 	
+	/** The points. */
 	private List<Attractor> points=new ArrayList<Attractor>();
 	
+	/** The distlookup. */
 	private float[][] distlookup;
 	
 	private int lowXRes, lowYRes;

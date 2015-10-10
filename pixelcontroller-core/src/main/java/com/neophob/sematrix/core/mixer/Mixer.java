@@ -35,23 +35,45 @@ public abstract class Mixer {
 	 * The Enum MixerName.
 	 */
 	public enum MixerName {
+		
+		/** The PASSTHRU. */
 		PASSTHRU(0),
-		ADDSAT(1),
+		
+		/** The ADDSAT. */
+		ADDSAT(1),		
+		
+		/** The MULTIPLY. */
 		MULTIPLY(2),
+		
+		/** The MIX. */
 		MIX(3),
+		
+		/** The NEGATIV e_ multiply. */
 		NEGATIVE_MULTIPLY(4),
+		
+		/** The CHECKBOX. */
 		CHECKBOX(5),
+		
+		/** The VOLUMINIZER. */
 		VOLUMINIZER(6),
+		
+		/** The EITHER. */
 		EITHER(7),
+		
 		SUBSAT(8),
+
 		HALFHALF(9),
+		
 		HALFHALFVERTICAL(10),
+		
 		/** Darken */
 		MINIMUM(11),
+		
 		/** Lighten */
 		MAXIMUM(12),
 		;
-
+		
+		/** The id. */
 		private int id;
 		
 		/**

@@ -25,9 +25,19 @@ package com.neophob.sematrix.core.properties;
  * @author michu
  */
 public enum CommandGroup {
+	
+	/** The VISUAL. */
 	VISUAL,
+	
+	/** The OUTPUT. */
 	OUTPUT,
+	
+	/** The GENERATOR. */
 	GENERATOR,
+	
+	/** The EFFECT. */
 	EFFECT,
+	
+	/** The MISC. */
 	MISC;
 }

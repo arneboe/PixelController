@@ -42,6 +42,7 @@ public abstract class PixelInvadersDevice extends Output {
 	/** The display options, does the buffer needs to be flipped? rotated? */
 	protected List<DeviceConfig> displayOptions;
 
+	/** The output color format. */
 	protected List<ColorFormat> colorFormat;
 
 	/** define how the panels are arranged */

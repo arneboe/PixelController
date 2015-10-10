@@ -27,6 +27,7 @@ import com.neophob.sematrix.core.sound.ISound;
  */
 public class BeatVerticalShift extends Effect {
 
+	/** The ammount. */
 	private int ammount=0;
 	
 	private ISound sound;

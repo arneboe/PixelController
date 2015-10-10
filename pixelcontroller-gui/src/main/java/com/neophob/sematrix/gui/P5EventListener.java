@@ -42,6 +42,7 @@ import controlP5.ControlListener;
  */
 public class P5EventListener implements ControlListener {
 
+    /** The log. */
     private static final Logger LOG = Logger.getLogger(P5EventListener.class.getName());
     
     private static final int CALLBACK_TIMEOUT = 100;
@@ -300,7 +301,11 @@ public class P5EventListener implements ControlListener {
     }
 
 
-
+    /**
+     * 
+     * @param newValue
+     * @param source
+     */
     private void createMessage(ValidCommands validCommand, float newValue) {
         String msg[] = new String[2];		
         msg[0] = ""+validCommand;
