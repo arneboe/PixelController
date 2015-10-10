@@ -1,4 +1,9 @@
-[![Build Status](https://secure.travis-ci.org/neophob/PixelController.png)](http://travis-ci.org/neophob/PixelController) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/neophob/PixelController/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+# About this fork
+
+This fork contains lots if changes that I need for my personal projects.
+I added a ton of features, removed a ton of features.
+Fixed some bugs and added a lot of new bugs.
+It is probably not save for anyone except me to use this fork.
 
 # PixelController
 **PixelController** - a matrix control project by Michael Vogt <michu at neophob.com>, (c) 2010-2013. The main goal of this application is to create an easy to use matrix controller software which creates stunning visuals!
