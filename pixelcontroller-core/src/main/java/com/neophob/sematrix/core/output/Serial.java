@@ -106,8 +106,6 @@ public class Serial implements SerialPortEventListener {
   static int ddatabits = 8;
   static float dstopbits = 1;
 
-  public static final int serialTimeout = 2000;
-
 
   public void setProperties(Properties props) {
     dname =
@@ -133,6 +131,28 @@ public class Serial implements SerialPortEventListener {
   }
   
   public Serial(String iname, int irate, char iparity, int idatabits, float istopbits) {
+    // On OS X, make sure the lock folder needed by RXTX is present
+ /* XXX  if (PApplet.platform == PConstants.MACOSX) {
+      File lockFolder = new File("/var/lock");
+      if (!lockFolder.exists() ||
+          !lockFolder.canRead() ||
+          !lockFolder.canWrite() ||
+          !lockFolder.canExecute()) {
+        final String MESSAGE =
+          "To use the serial library, first open\n" +
+          "Applications -> Utilities -> Terminal.app\n" +
+          "and enter the following:\n" +
+          "sudo mkdir -p /var/lock\n" +
+          "sudo chmod 777 /var/lock";
+        System.err.println(MESSAGE);
+        //throw new RuntimeException("Additional installation required to " +
+        //                           "use serial, read the console below.");
+        final String msg =
+          "Please use Tools \u2192 Fix the Serial Library.";
+        throw new RuntimeException(msg);
+      }
+    }*/
+
     this.rate = irate;
 
     parity = SerialPort.PARITY_NONE;
@@ -155,7 +175,7 @@ public class Serial implements SerialPortEventListener {
         if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
           //System.out.println("found " + portId.getName());
           if (portId.getName().equals(iname)) {
-            port = (SerialPort)portId.open("PixelController", serialTimeout);
+            port = (SerialPort)portId.open("serial madness", 2000);
             input = port.getInputStream();
             output = port.getOutputStream();
             port.setSerialPortParams(rate, databits, stopbits, parity);

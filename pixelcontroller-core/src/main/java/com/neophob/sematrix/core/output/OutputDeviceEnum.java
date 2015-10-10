@@ -56,14 +56,12 @@ public enum OutputDeviceEnum {
 	PIXELINVADERS_NET(PixelInvadersNetDevice.class, true),
 
 	/** The NULL Output. */
-	NULL(NullDevice.class, true),
-
-	FASTSERIAL(FastSerialDevice.class, true);
+	NULL(NullDevice.class, true);
 	
 	/** The implementing class. */
 	private Class<? extends Output> implementingClass;
 	
-	/** Whether the device is physical or not */
+	/** The physical. */
 	private boolean physical;
 	
 	/**

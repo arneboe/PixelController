@@ -76,8 +76,6 @@ public class ApplicationConfigurationHelper {
     
     private List<String> rainbowduinoV3SerialDevices = null;
 
-    private String fastSerialDevice = null;
-
     /** The lpd device. */
     private List<DeviceConfig> lpdDevice=null;
 
@@ -136,20 +134,13 @@ public class ApplicationConfigurationHelper {
         int miniDmxDevices = parseMiniDmxDevices();
         int tpm2Devices = parseTpm2Devices();
         int tpm2NetDevices = parseTpm2NetDevices();                
-        int udpDevices = parseUdpDevices();
-        int fastSerialDevices = parseFastSerialDevices();
+        int udpDevices = parseUdpDevices();       
         //track how many output systems are enabled
         int enabledOutputs = 0;
 
         //track how many ouput devices are configured
         int totalDevices = 0;
-        if (fastSerialDevices > 0)
-        {
-            enabledOutputs++;
-            totalDevices = fastSerialDevices;
-            LOG.log(Level.INFO, "found fast serial device: " + totalDevices);
-            this.outputDeviceEnum = OutputDeviceEnum.FASTSERIAL;
-        }
+
         if (rainbowduinoV2Devices > 0) {
             enabledOutputs++;
             totalDevices = rainbowduinoV2Devices;
@@ -284,18 +275,7 @@ public class ApplicationConfigurationHelper {
         gammaType = parseGammaCorrection();
     }
 
-    private int parseFastSerialDevices() {
-        //there may only be on fastserial device.
-        //The whole fastserial device is one panel.
-        String row1String = this.config.getProperty(ConfigConstant.FASTSERIAL_ROW1);
-        if (StringUtils.isNotBlank(row1String)) {
-            this.fastSerialDevice = StringUtils.strip(row1String);
-            return 1;
-        }
-        return 0;
-    }
-
-    /**
+	/**
      * Parses the boolean.
      *
      * @param property the property

@@ -38,7 +38,6 @@ public final class ConfigConstant {
 	
 	public static final String RAINBOWDUINO_V3_ROW1 = "layout.row1.serial.devices";
 	public static final String RAINBOWDUINO_V3_ROW2 = "layout.row2.serial.devices";
-	public static final String FASTSERIAL_ROW1 = "layout.row1.serial.addr";
 	
 	/** The Constant CFG_PANEL_COLOR_ORDER. */
 	public static final String CFG_PANEL_COLOR_ORDER = "panel.color.order";
