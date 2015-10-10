@@ -425,7 +425,12 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         int genSoundOptsYOffset = yPosStartDrowdown + 230;
         cp5.addTextlabel("soundOptions", messages.getString("GeneratorGui.SOUND_OPTIONS"),
                 GENERIC_X_OFS, genSoundOptsYOffset).moveTo(generatorTab).setGroup(effectOptionGroup);
-        genSoundOptsYOffset += 30;
+        genSoundOptsYOffset += 15;
+        cp5.addTextlabel("soundModeLabel", messages.getString("GeneratorGui.SOUND_MODE"),
+                GENERIC_X_OFS + Theme.DROPBOX_XOFS - 15, genSoundOptsYOffset)
+                .moveTo(generatorTab);
+        genSoundOptsYOffset += 15;
+
         soundModeList = cp5.addDropdownList(GuiElement.SOUND_MODE_DROPDOWN.guiText(),
                 GENERIC_X_OFS, genSoundOptsYOffset, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(soundModeList);
