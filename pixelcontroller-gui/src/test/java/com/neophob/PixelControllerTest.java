@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ * Copyright (C) 2011-2014 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -50,7 +50,7 @@ public class PixelControllerTest {
 		//Jenkins is headless, so this test would not work
 		if (!java.awt.GraphicsEnvironment.isHeadless()) {
 		    LOG.log(Level.INFO,"public void setup");			
-			PApplet.main(new String[] { "com.neophob.PixelController" });			
+			PApplet.main(new String[] { "com.neophob.PixelControllerP5" });			
 		}
 	}
 

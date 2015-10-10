@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ * Copyright (C) 2011-2014 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -23,8 +23,8 @@ import java.net.InetSocketAddress;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.osc.client.IClient;
 import com.neophob.sematrix.osc.client.OscClientException;
+import com.neophob.sematrix.osc.client.PixOscClient;
 import com.neophob.sematrix.osc.model.OscMessage;
 
 import de.sciss.net.OSCClient;
@@ -35,128 +35,144 @@ import de.sciss.net.OSCServer;
 /**
  * 
  * @author michu
- *
+ * 
  */
-class OscClientImpl implements IClient {
+class OscClientImpl implements PixOscClient {
 
-	private static final Logger LOG = Logger.getLogger(OscClientImpl.class.getName());
+    private static final Logger LOG = Logger.getLogger(OscClientImpl.class.getName());
 
-	private final boolean useTcp;
-	private OSCClient client;
-	private String targetIp;
-	private int targetPort;
-	
-	public OscClientImpl(boolean useTcp) throws OscClientException {
-		try {
-			if (useTcp) {
-				client = OSCClient.newUsing(OSCServer.TCP);							
-			} else {
-				client = OSCClient.newUsing(OSCServer.UDP);							
-			}
-			this.useTcp = useTcp;
-			this.targetPort = 0;
-			this.targetIp = "";
-			LOG.log(Level.INFO, "OSC Client Factory, initialized, buffersize: "+client.getBufferSize());
-		} catch (IOException e) {
-			throw new OscClientException("Failed to initialize OSC Client", e);
-		}
-	}
-	
-	/**
-	 * 
-	 * @param targetIp
-	 * @param targetPort
-	 * @return
-	 */
-	private boolean sendMessageToSameHost(String targetIp, int targetPort) {
-		return this.targetPort == targetPort && this.targetIp.equals(targetIp);
-	}
+    private OSCClient client;
+    private String targetIp;
+    private int targetPort;
+    private int sourcePort;
+    private int bufferSize;
+    private boolean useTcp;
 
-	/**
-	 * 
-	 * @param targetIp
-	 * @param targetPort
-	 * @return
-	 */
-	private boolean useUdpAndChangedTarget(String targetIp, int targetPort) {
-		if (client.getProtocol().equals(OSCServer.TCP)) {
-			return false;
-		}
-		
-		return this.targetPort != targetPort || !this.targetIp.equals(targetIp);
-	}
-	
-	@Override
-	public void sendMessage(String targetIp, int targetPort, OscMessage msg) throws OscClientException {
-		//check if the tcp client connection needs to disconnect
-		if (client.isConnected() && !sendMessageToSameHost(targetIp, targetPort)) {
-			this.disconnect();
-		}
+    public OscClientImpl(boolean useTcp, String targetIp, int targetPort, int sourcePort,
+            int bufferSize) throws OscClientException {
 
-		//if the server using the udp protocol and the target changes - reinit
-		boolean useUdpAndChangedTarget = useUdpAndChangedTarget(targetIp, targetPort);
+        try {
+            long t1 = System.currentTimeMillis();
+            this.targetIp = targetIp;
+            this.targetPort = targetPort;
+            this.sourcePort = sourcePort;
+            this.useTcp = useTcp;
+            this.bufferSize = bufferSize;
 
-		if (!client.isConnected() || useUdpAndChangedTarget) {			
-			try {
-				client.setTarget( new InetSocketAddress( targetIp, targetPort ));
-				client.start();
-				LOG.log(Level.INFO, "OSC Client start, target: {0}:{1}",
-						new Object[]{targetIp, targetPort});
+            startClient();
 
-				this.targetPort = targetPort;
-				this.targetIp = targetIp;
-			} catch (IOException e) {
-				throw new OscClientException("Failed to start OSC client", e);
-			}
-		}
+            LOG.log(Level.INFO,
+                    "OSC Client Factory initialized and started, buffersize: "
+                            + client.getBufferSize() + " bytes, startup time: "
+                            + (System.currentTimeMillis() - t1) + "ms. Source Port: "
+                            + this.client.getLocalAddress().getPort());
+        } catch (Exception e) {
+            throw new OscClientException("Failed to initialize OSC Client", e);
+        }
+    }
 
-		//TODO type check
-		OSCPacket oscPacket = null;
-		if (msg.getArgs()==null) {
-			oscPacket = new OSCMessage(msg.getOscPattern());
-		} else {
-			oscPacket = new OSCMessage(msg.getOscPattern(), (Object[])msg.getArgs());	
-		}
-		 
-		try {
-			//LOG.log(Level.INFO, "Send OSC Package "+oscPacket+" to "+targetPort);
-			client.send(oscPacket);
-		} catch (IOException e) {
-			throw new OscClientException("Failed to send OSC Message", e);
-		}
+    private void startClient() throws IOException {
+        if (useTcp) {
+            client = OSCClient.newUsing(OSCServer.TCP, sourcePort);
+        } else {
+            client = OSCClient.newUsing(OSCServer.UDP, sourcePort);
+        }
+        this.client.setBufferSize(bufferSize);
+        this.client.setTarget(new InetSocketAddress(targetIp, targetPort));
+        this.client.start();
+    }
 
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public boolean isConnected() {
-		if (client == null) {
-			return false;
-		}
-		return client.isConnected();
-	}
-	
+    @Override
+    public void sendMessage(OscMessage msg) throws OscClientException {
+        if (client == null || !client.isActive()) {
+            LOG.log(Level.WARNING, "Not initialized");
+            try {
+                startClient();
+            } catch (IOException e) {
+                LOG.log(Level.WARNING, "Failed to start client", e);
+            }
+        }
 
-	@Override
-	public void disconnect() throws OscClientException {
-		if (!useTcp) {
-			LOG.log(Level.INFO, "No need to disconnect, using a UDP Client");
-			return;
-		}
-		
-		if (client.isConnected()) {
-			try {
-				LOG.log(Level.INFO, "OSC Client, disconnect");
-				client.stop();
-				targetPort = 0;
-				targetIp = "";
-			} catch (Exception e) {
-				throw new OscClientException("Failed to stop OSC client", e);
-			}
-		}
-		
-	}
+        OSCPacket oscPacket = null;
+        if (msg.getArgs() == null && msg.getBlob() == null) {
+            // message only
+            oscPacket = new OSCMessage(msg.getOscPattern());
+        } else if (msg.getArgs() == null && msg.getBlob() != null) {
+            // message and blob
+            oscPacket = new OSCMessage(msg.getOscPattern(), new Object[] { msg.getBlob() });
+        } else {
+            oscPacket = new OSCMessage(msg.getOscPattern(), (Object[]) msg.getArgs());
+        }
 
+        try {
+            // LOG.log(Level.INFO,
+            // "Send OSC Package "+oscPacket+" to "+targetPort+", size: "+oscPacket.getSize());
+            client.send(oscPacket);
+        } catch (IOException ioEx) {
+            // java.io.IOException: Broken pipe -> reconnect
+            LOG.log(Level.WARNING, "IOException detected, restart client", ioEx);
+            try {
+                client.stop();
+            } catch (IOException e) {
+            }
+            try {
+                startClient();
+            } catch (IOException e) {
+            }
+
+            try {
+                client.send(oscPacket);
+                LOG.log(Level.INFO, "Resend command " + oscPacket);
+            } catch (IOException e) {
+                throw new OscClientException("Failed to re-send OSC Message", e);
+            }
+        } catch (Exception e) {
+            throw new OscClientException("Failed to send OSC Message", e);
+        }
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public boolean isConnected() {
+        if (client == null) {
+            return false;
+        }
+
+        return client.isConnected();
+    }
+
+    @Override
+    public String getTargetIp() {
+        return targetIp;
+    }
+
+    @Override
+    public int getTargetPort() {
+        return targetPort;
+    }
+
+    @Override
+    public void disconnect() throws OscClientException {
+        if (client == null) {
+            return;
+        }
+
+        if (client.isConnected()) {
+            try {
+                LOG.log(Level.INFO, "OSC Client, disconnect");
+                client.stop();
+                client.dispose();
+            } catch (Exception e) {
+                // LOG.log(Level.WARNING,
+                // "Ignored Exception while stopping OSC Client", e);
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "OSC Server Address: " + targetIp + ":" + targetPort;
+    }
 }

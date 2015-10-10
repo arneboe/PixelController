@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ * Copyright (C) 2011-2014 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -24,7 +24,7 @@ import java.util.UUID;
 import processing.core.PApplet;
 
 import com.neophob.sematrix.core.listener.MessageProcessor;
-import com.neophob.sematrix.core.properties.ValidCommands;
+import com.neophob.sematrix.core.properties.ValidCommand;
 
 /**
  * manual fuzzing test
@@ -41,12 +41,12 @@ public class Fuzzing {
     	//wait until PixelController is initialized
         Thread.sleep(4000);
         
-        ValidCommands[] allCommands = ValidCommands.values();
+        ValidCommand[] allCommands = ValidCommand.values();
         Random r = new Random();
         System.out.println("Start fuzzing");
         
         for (int i=0; i<100000; i++) {
-            ValidCommands cmd = allCommands[r.nextInt(allCommands.length)];
+            ValidCommand cmd = allCommands[r.nextInt(allCommands.length)];
             String[] param = new String[2];
             param[0] = cmd.toString();
             
@@ -58,7 +58,7 @@ public class Fuzzing {
                 param[1] = UUID.randomUUID().toString();
             }
             
-            MessageProcessor.processMsg(param, false, null);
+            MessageProcessor.INSTANCE.processMsg(param, false, null);
         }
         
         System.out.println("Fuzzing finished!");

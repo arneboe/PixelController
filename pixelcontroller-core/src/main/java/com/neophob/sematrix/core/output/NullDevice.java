@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ * Copyright (C) 2011-2014 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -18,38 +18,46 @@
  */
 package com.neophob.sematrix.core.output;
 
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
+import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
  * does nothin.
- *
+ * 
  * @author michu
  */
 public class NullDevice extends Output {
 
     /**
      * init the null devices.
-     *
-     * @param controller the controller
+     * 
+     * @param controller
+     *            the controller
      */
-    public NullDevice(ApplicationConfigurationHelper ph) {
-        super(OutputDeviceEnum.NULL, ph, 8);
+    public NullDevice(MatrixData matrixData, PixelControllerResize resizeHelper,
+            Configuration ph) {
+        super(matrixData, resizeHelper, OutputDeviceEnum.NULL, ph, 8);
         this.supportConnectionState = true;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.neophob.sematrix.core.output.Output#update()
      */
     public void update() {
-        //nothing todo
+        // nothing todo
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.neophob.sematrix.core.output.Output#close()
      */
     @Override
     public void close() {
-        //nothing todo
+        // nothing todo
     }
 
     @Override
@@ -58,8 +66,8 @@ public class NullDevice extends Output {
     }
 
     @Override
-    public String getConnectionStatus(){
-        return "Connected on port NULL";            
+    public String getConnectionStatus() {
+        return "Connected on port NULL";
     }
 
 }

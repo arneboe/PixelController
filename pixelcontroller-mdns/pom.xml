@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.neophob.pixelcontroller</groupId>
+		<artifactId>pixelcontroller</artifactId>
+		<relativePath>../pom.xml</relativePath>
+		<version>2.1.0-RC2</version>
+	</parent>
+
+	<artifactId>pixelcontroller-mdns</artifactId>
+	<name>PixelController MDNS Interface</name>
+	<packaging>jar</packaging>
+	<description>Provide MDNS/Bonjour Server</description>
+
+	<repositories>
+		<repository>
+			<id>pixelcontroller-mdns-repo</id>
+			<name>local repo for non published artefacts</name>
+			<url>file://${project.basedir}/lib</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>javax.jmdns</groupId>
+			<artifactId>jmdns</artifactId>
+			<version>3.4.2-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+</project>

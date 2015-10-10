@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ * Copyright (C) 2011-2014 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -22,6 +22,8 @@ package com.neophob.sematrix.gui;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import com.neophob.sematrix.gui.i18n.Messages;
 
 
 public class MessagesTest {

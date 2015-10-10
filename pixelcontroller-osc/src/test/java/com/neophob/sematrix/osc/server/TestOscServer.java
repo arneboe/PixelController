@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ * Copyright (C) 2011-2014 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -19,10 +19,10 @@
 package com.neophob.sematrix.osc.server;
 
 import com.neophob.sematrix.osc.model.OscMessage;
-import com.neophob.sematrix.osc.server.impl.OscServer;
+import com.neophob.sematrix.osc.server.impl.AbstractOscServer;
 
 
-public class TestOscServer extends OscServer {
+public class TestOscServer extends AbstractOscServer {
 
 	public TestOscServer(OscMessageHandler handler) {
 		super(handler, "127.0.0.1", 3333, 50000);		

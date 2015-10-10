@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ * Copyright (C) 2011-2014 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -32,9 +32,9 @@ public class WindowSizeCalculator {
 
 	//defined by the gui
 	public static final int MINIMAL_WINDOW_WIDTH = 820;
-	public static final int MINIMAL_WINDOW_HEIGHT = 440;
-	public static final int MINIMAL_VISUAL_WIDTH = 40;
-	public static final int MINIMAL_VISUAL_HEIGHT = 40;
+	public static final int MINIMAL_WINDOW_HEIGHT = 700;
+	public static final int MINIMAL_VISUAL_WIDTH = 170;
+	public static final int MINIMAL_VISUAL_HEIGHT = 170;
 
 
 	private int singleVisualWidth;
@@ -54,7 +54,6 @@ public class WindowSizeCalculator {
 	 * @param internalBufferWidth
 	 * @param internalBufferHeight
 	 * @param maximalWindowWidth
-	 * @param maximalWindowHeigh
 	 */
 	public WindowSizeCalculator(int internalBufferWidth, int internalBufferHeight, int maximalWindowWidth, 
 			int maximalWindowHeight, int nrOfScreens) {

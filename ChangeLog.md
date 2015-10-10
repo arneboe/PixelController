@@ -1,7 +1,57 @@
 # PixelController ChangeLog
 
+## Changelog v2.1.0-RC1 to v2.1.0
+    22 files changed, 292 insertions(+), 64 deletions(-)
+
+* Add option to start PixelController in random preset mode
+* Add TouchOSC Phone Layout for iPhone 5 (Thanks r26D)
+* Add hint to start PixelController on RPI (as root)
+* Fixed Issue #73, support on/off, 1/0 and 1.0f/0.0f as parameter for random mode events 
+
+## Changelog v2.0.0 to v2.1.0-RC1 (1. April 2014)
+    632 files changed, 96745 insertions(+), 151436 deletions(-)
+    
+* Add client/server architecture. PixelController can started headless on a server, connect to the server with the client GUI (same look as the standalone version)
+* Add RaspberryPi WS2801 output driver
+* Add custom led matrix mapping tool, see [http://pixelinvaders.ch/pixelcontroller/](http://pixelinvaders.ch/pixelcontroller/) for more details
+* Add Bonjour/Zeroconf support, PixelController register itself as "pixelcontroller.local"
+* Add new ROTATE_ Generator/Effect/Mixer/Colorset OSC command
+* Add Noise generator
+* Add Gamma 3.0 color correction
+* Add TouchOsc layout for phone and tablet
+* Add simple performance test (`PixelController.sh -perf` or `PixelControllerRPi.sh -perf`)
+* Add Random Mode with selectable time-life (option `randommode.lifetime.in.s`) (Issue #44)
+* Add more Blinkenlights movie files
+* Add new effect Posterize
+* Add new effect Darken
+* Add PixelInvaders firmware for Arduino UNO, thanks Yves Alter. This should fix all UNO related issues.
+* Add new output rotate option: FLIPPEDY
+* Remove support for stealth panels
+* Fix decouple fps setting of PixelController from the GUI update speed (Issue #61)
+* Fix replace Pixel and Quality image resize code with custom implementations (nearest neighbour and bilinear), major performance improvement
+* Fix add missing float parameter to the OSC server, only int values were parsed
+* Fix the framerate configuration can be a float number (ex. fps=0.1) if you need a really slow update rate
+* Fix refresh GUI settings when random mode kicks in
+* Fix generator speed changes the target fps (0..200%), much smoother (Issue #46, #52 and #59)
+* Fix generator speed and brightness were not stored as part of the preset (Issue #62)
+* Fix capture generator, crashed if recording window was too small
+* Fix Metaball generator resolution for different sizes
+* Fix more code cleanup
+* Fix optimize CPU usage in heavy beat detection mode
+* Fix optimize preset load time, load resource files (image and blinkenlight) only if generator is used in preset
+* Fix reduce rotozoom effect speed
+* Fix visual size in GUI
+* Fix rename preset.led -> preset.properties, all PixelController extension files have now the same file extension.
+* Fix update build process, put RPi specifiy resources (Serial and pi4j) dependencies into special directory, do not include junit dependencies.
+* Fix speedup Blinkenlight parser, some frames were displayed too long
+* Fix Multliply and Negative Multiply mixer, output didn't respect ColorSets correctly
+* Fix Subsat mixer - was completly broken
+* Fix output layout for all *FLIPPEDY entries - all FLIPPEDY action were broken.
+
+
 ## Changelog v1.5.1 to v2.0.0 (2. December 2013)  
     877 files changed, 230934 insertions(+), 227347 deletions(-)
+    
 * Modularize Project, rewrote large parts
 * Add new command line version of PixelController - run on a headless server (like an RPi)
 * Add make speed of generators configurable via GUI and save it as part of the preset (Issue #46)
@@ -161,8 +211,8 @@
 ## Changelog v1.1 to v1.2 (29. November 2011)
     30 files changed, 840 insertions(+), 268 deletions(-)
 
--PixelInvaders Firmware, fixed strip.doSwapBuffersAsap(0)
--Support AdaVision
+* PixelInvaders Firmware, fixed strip.doSwapBuffersAsap(0)
+* Support AdaVision
 
 
 ## Changelog v1.0.3 to v1.1 (8. November 2011)

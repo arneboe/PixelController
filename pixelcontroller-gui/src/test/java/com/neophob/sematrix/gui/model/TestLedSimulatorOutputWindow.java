@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ * Copyright (C) 2011-2014 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -21,9 +21,9 @@ package com.neophob.sematrix.gui.model;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.neophob.sematrix.core.glue.MatrixData;
-import com.neophob.sematrix.core.layout.HorizontalLayout;
-import com.neophob.sematrix.core.layout.Layout;
+import com.neophob.sematrix.core.visual.MatrixData;
+import com.neophob.sematrix.core.visual.layout.HorizontalLayout;
+import com.neophob.sematrix.core.visual.layout.Layout;
 
 
 public class TestLedSimulatorOutputWindow {

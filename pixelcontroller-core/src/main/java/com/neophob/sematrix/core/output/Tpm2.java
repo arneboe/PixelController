@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ * Copyright (C) 2011-2014 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -23,7 +23,10 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.output.tpm2.Tpm2NetProtocol;
 import com.neophob.sematrix.core.output.tpm2.Tpm2Serial;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.output.transport.serial.ISerial;
+import com.neophob.sematrix.core.properties.Configuration;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
+import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
  * Send data to a Tpm2 Device. this protocol is a successor of miniDMX and
@@ -35,107 +38,115 @@ import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
  */
 public class Tpm2 extends OnePanelResolutionAwareOutput {
 
-	/** The log. */
-	private static final Logger LOG = Logger.getLogger(Tpm2.class.getName());
-			
-	private static final String VERSION = "1.1";
+    /** The log. */
+    private static final transient Logger LOG = Logger.getLogger(Tpm2.class.getName());
 
-	private Tpm2Serial tpm2;
-	
-	/**
-	 * init the mini dmx devices.
-	 *
-	 * @param controller the controller
-	 */
-	public Tpm2(ApplicationConfigurationHelper ph) {
-		super(OutputDeviceEnum.TPM2, ph, 8);
-		
-		int baud = ph.parseTpm2BaudRate();
-		if (baud==0) {
-		    //set default
-		    baud = 115200;
-		}
-		
-		//HINT: on windows you need to (for example) use COM1, com1 will not work! (case sensitive)
-		String serialPort = OutputHelper.getSerialPortName(ph.getTpm2Device().toUpperCase());
-		this.initialized = false;
-		this.supportConnectionState = true;
-		try {
-			tpm2 = new Tpm2Serial(serialPort, baud);
-			this.initialized = true;
-			
-			LOG.log(Level.INFO, "Initialized TPM2 serial device v{0}, target port: {1}, Resolution: {2}/{3}",  
-					new Object[] { VERSION, serialPort, this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize()}
-			);
-			
-		} catch (NoSerialPortFoundException e) {
-			LOG.log(Level.WARNING, "failed to initialize serial port!", e);
-		}
-	}
-	
+    private static final transient String VERSION = "1.1";
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.output.Output#update()
-	 */
-	public void update() {		
-		if (initialized) {					
-			
-			byte[] rgbBuffer = OutputHelper.convertBufferTo24bit(getTransformedBuffer(), colorFormat);
-			if (rgbBuffer.length < 511) {
-				//small frame, fit in one packed
-				tpm2.sendFrame(Tpm2NetProtocol.createImagePayload(0,1,rgbBuffer));				
-			} else {
-				//need to splitup buffers				
-				int bytesToSend = rgbBuffer.length;
-				int currentUniverse = 0;
-				int totalUniverse = (int)((bytesToSend/510f))+1;
-				while (currentUniverse < totalUniverse) { 
-					int l = bytesToSend - 510*currentUniverse;
-					if (l>510) {
-						l=510;
-					}
-					byte[] tmp = new byte[l];
-					//System.out.println(l+" bytes, "+currentUniverse+"/"+totalUniverse );
-					
-					System.arraycopy(rgbBuffer, 510*currentUniverse, tmp, 0, l);
-					tpm2.sendFrame(Tpm2NetProtocol.createImagePayload(currentUniverse, totalUniverse, tmp));
-					
-					//debug out
-					while (tpm2.getPort().available() > 0) {
-						LOG.log(Level.INFO, "<<< ["+tpm2.getPort().readString()+"]");
-					} 			
-					
-					currentUniverse++;
-				}
-			}
-		}
-	}
+    private transient Tpm2Serial tpm2;
 
+    /**
+     * init the mini dmx devices.
+     * 
+     * @param controller
+     *            the controller
+     */
+    public Tpm2(MatrixData matrixData, PixelControllerResize resizeHelper,
+            Configuration ph, ISerial serialPort) {
+        super(matrixData, resizeHelper, OutputDeviceEnum.TPM2, ph, 8);
 
-	
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.output.Output#close()
-	 */
-	@Override
-	public void close() {
-		if (initialized) {
-			tpm2.dispose();
-		}
-	}
-	
+        int baud = ph.parseTpm2BaudRate();
+        if (baud == 0) {
+            // set default
+            baud = 115200;
+        }
+
+        // HINT: on windows you need to (for example) use COM1, com1 will not
+        // work! (case sensitive)
+        String serialPortName = serialPort.getSerialPortName(ph.getTpm2Device());
+        this.initialized = false;
+        this.supportConnectionState = true;
+        try {
+            tpm2 = new Tpm2Serial(serialPortName, baud, serialPort);
+            this.initialized = true;
+
+            LOG.log(Level.INFO,
+                    "Initialized TPM2 serial device v{0}, target port: {1}, Resolution: {2}/{3}",
+                    new Object[] { VERSION, serialPortName, this.matrixData.getDeviceXSize(),
+                            this.matrixData.getDeviceYSize() });
+
+        } catch (NoSerialPortFoundException e) {
+            LOG.log(Level.WARNING, "failed to initialize serial port!", e);
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.output.Output#update()
+     */
+    public void update() {
+        if (initialized) {
+
+            byte[] rgbBuffer = OutputHelper.convertBufferTo24bit(getTransformedBuffer(),
+                    colorFormat);
+            if (rgbBuffer.length < 511) {
+                // small frame, fit in one packed
+                tpm2.sendFrame(Tpm2NetProtocol.createImagePayload(0, 1, rgbBuffer));
+            } else {
+                // need to splitup buffers
+                int bytesToSend = rgbBuffer.length;
+                int currentUniverse = 0;
+                int totalUniverse = (int) (bytesToSend / 510f) + 1;
+                while (currentUniverse < totalUniverse) {
+                    int l = bytesToSend - 510 * currentUniverse;
+                    if (l > 510) {
+                        l = 510;
+                    }
+                    byte[] tmp = new byte[l];
+                    // System.out.println(l+" bytes, "+currentUniverse+"/"+totalUniverse
+                    // );
+
+                    System.arraycopy(rgbBuffer, 510 * currentUniverse, tmp, 0, l);
+                    tpm2.sendFrame(Tpm2NetProtocol.createImagePayload(currentUniverse,
+                            totalUniverse, tmp));
+
+                    // debug out
+                    while (tpm2.getSerialPort().available() > 0) {
+                        LOG.log(Level.INFO, "<<< [" + tpm2.getSerialPort().readString() + "]");
+                    }
+
+                    currentUniverse++;
+                }
+            }
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.output.Output#close()
+     */
+    @Override
+    public void close() {
+        if (initialized) {
+            tpm2.dispose();
+        }
+    }
+
     @Override
     public boolean isConnected() {
         return this.initialized;
-    }	
+    }
 
     @Override
-    public String getConnectionStatus(){        
+    public String getConnectionStatus() {
         if (initialized) {
-            return "Connected on port "+tpm2.getConnectedPort();            
+            return "Connected on port " + tpm2.getConnectedPort();
         }
         return "Not connected!";
     }
-    
+
     @Override
     public boolean isSupportConnectionState() {
         return true;

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ * Copyright (C) 2011-2014 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -18,90 +18,71 @@
  */
 package com.neophob.sematrix.core.output;
 
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
+import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
  * The Class ArduinoOutput.
- *
+ * 
  * @author michu
  */
 public abstract class ArduinoOutput extends Output {
-	
-	/** The log. */
-	private static final Logger LOG = Logger.getLogger(ArduinoOutput.class.getName());
 
-	/** The initialized. */
-	protected boolean initialized;
-	
-	/** The need update. */
-	protected long needUpdate;
-	
-	/** The no update. */
-	protected long noUpdate;
-	
-	/**
-	 * Instantiates a new arduino output.
-	 *
-	 * @param outputDeviceEnum the outputDeviceEnum
-	 * @param ph the ph
-	 * @param controller the controller
-	 */
-	public ArduinoOutput(OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, int bpp) {
-		super(outputDeviceEnum, ph, bpp);
-		this.supportConnectionState = true;
-	}
-	
-	/**
-	 * Gets the arduino error counter.
-	 *
-	 * @return the arduino error counter
-	 */
-	public abstract long getArduinoErrorCounter();
+    /** The initialized. */
+    protected boolean initialized;
 
-	/**
-	 * Gets the arduino buffer size.
-	 *
-	 * @return the arduino buffer size
-	 */
-	public abstract int getArduinoBufferSize();
-	
-	/**
-	 * Gets the latest heartbeat.
-	 *
-	 * @return the latest heartbeat
-	 */
-	public abstract long getLatestHeartbeat();
-	
-	
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.output.Output#logStatistics()
-	 */
-	@SuppressWarnings("deprecation")
-	public void logStatistics() {
-		if (this.getArduinoErrorCounter() > 0) {
-			long error = this.getArduinoErrorCounter();
-			LOG.log(Level.SEVERE,"error at: {0}, errorcnt: {1}, buffersize: {2}",
-					new Object[] {
-						new Date(this.getLatestHeartbeat()).toGMTString(),
-						error, this.getArduinoBufferSize()
-					}
-			);
-		}		
-	}
-	
+    /** The need update. */
+    protected long needUpdate;
+
+    /** The no update. */
+    protected long noUpdate;
+
+    /**
+     * Instantiates a new arduino output.
+     * 
+     * @param outputDeviceEnum
+     *            the outputDeviceEnum
+     * @param ph
+     *            the ph
+     * @param controller
+     *            the controller
+     */
+    public ArduinoOutput(MatrixData matrixData, PixelControllerResize resizeHelper,
+            OutputDeviceEnum outputDeviceEnum, Configuration ph, int bpp) {
+        super(matrixData, resizeHelper, outputDeviceEnum, ph, bpp);
+        this.supportConnectionState = true;
+    }
+
+    /**
+     * Gets the arduino error counter.
+     * 
+     * @return the arduino error counter
+     */
+    public abstract long getArduinoErrorCounter();
+
+    /**
+     * Gets the arduino buffer size.
+     * 
+     * @return the arduino buffer size
+     */
+    public abstract int getArduinoBufferSize();
+
+    /**
+     * Gets the latest heartbeat.
+     * 
+     * @return the latest heartbeat
+     */
+    public abstract long getLatestHeartbeat();
+
     @Override
     public boolean isConnected() {
         return this.initialized;
     }
-	
 
     @Override
     public long getErrorCounter() {
         return getArduinoErrorCounter();
     }
-    
+
 }

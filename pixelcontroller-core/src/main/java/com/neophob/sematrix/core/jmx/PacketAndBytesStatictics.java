@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ * Copyright (C) 2011-2014 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -16,8 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.neophob.sematrix.core.jmx;
+
+import java.io.Serializable;
 
 /**
  * interface to get some statistic information about a server
@@ -25,7 +26,7 @@ package com.neophob.sematrix.core.jmx;
  * @author mvogt
  *
  */
-public interface PacketAndBytesStatictics {
+public interface PacketAndBytesStatictics extends Serializable{
 
     int getPacketCounter();
 

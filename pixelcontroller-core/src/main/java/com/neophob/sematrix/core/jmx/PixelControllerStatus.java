@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ * Copyright (C) 2011-2014 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -34,7 +34,6 @@ import javax.management.ObjectName;
 
 import org.apache.commons.collections.buffer.CircularFifoBuffer;
 
-import com.neophob.sematrix.core.glue.Collector;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.output.OutputDeviceEnum;
 
@@ -46,21 +45,21 @@ import com.neophob.sematrix.core.output.OutputDeviceEnum;
 public class PixelControllerStatus implements PixelControllerStatusMBean {
 
 	/** The log. */
-	private static final Logger LOG = Logger.getLogger(PixelControllerStatus.class.getName());
+	private static final transient Logger LOG = Logger.getLogger(PixelControllerStatus.class.getName());
 	
 	/** The Constant JMX_BEAN_NAME. */
-	public static final String JMX_BEAN_NAME = PixelControllerStatus.class.getCanonicalName()+":type=PixelControllerStatusMBean";
+	public static final transient String JMX_BEAN_NAME = PixelControllerStatus.class.getCanonicalName()+":type=PixelControllerStatusMBean";
 	
 	/** The Constant VERSION. */
 	private static final float VERSION = 1.2f;
 	
 	/** The Constant SECONDS. */
-	private static final int SECONDS = 10;
+	private static final transient int SECONDS = 10;
 		
 	/** The Constant COOL_DOWN_MILLISECONDS. */
-	private static final int COOL_DOWN_MILLISECONDS = 3000;
+	private static final transient int COOL_DOWN_MILLISECONDS = 3000;
 	
-	private static long coolDownTimestamp = System.currentTimeMillis();
+	private static transient long coolDownTimestamp = System.currentTimeMillis();
 
 	/** The configured fps. */
 	private int configuredFps;
@@ -75,15 +74,13 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	private long startTime;
 	
 	/** The global time measure value. */
-	private Map<TimeMeasureItemGlobal, CircularFifoBuffer> timeMeasureMapGlobal;
+	private transient Map<TimeMeasureItemGlobal, CircularFifoBuffer> timeMeasureMapGlobal;
 	
 	/** The output dependent measure values */
-	private Map<IOutput, Map<TimeMeasureItemOutput, CircularFifoBuffer>> timeMeasureMapOutput;
+	private transient Map<IOutput, Map<TimeMeasureItemOutput, CircularFifoBuffer>> timeMeasureMapOutput;
 	
 	/** The output list. */
-	private List<IOutput> outputList;
-	
-	private Collector col;
+	private transient List<IOutput> outputList;
 	
 	private PacketAndBytesStatictics oscServerStatistics;
 	
@@ -92,12 +89,13 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	 *
 	 * @param configuredFps the configured fps
 	 */
-	public PixelControllerStatus(Collector col, int configuredFps) {
+	public PixelControllerStatus(int configuredFps) {
 		LOG.log(Level.INFO, "Initialize the PixelControllerStatus JMX Bean");
 		
 		this.configuredFps = configuredFps;
-		this.col = col;
-		
+		if (this.configuredFps < 1) {
+			this.configuredFps = 1;
+		}
 		// initialize all buffers 
 		this.timeMeasureMapGlobal = new ConcurrentHashMap<TimeMeasureItemGlobal, CircularFifoBuffer>();
 		for (TimeMeasureItemGlobal timeMeasureItem : TimeMeasureItemGlobal.values()) {
@@ -237,6 +235,7 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 			this.timeMeasureMapOutput.get(output).put(timeMeasureItem, new CircularFifoBuffer(this.configuredFps * SECONDS));
 		}
 		// add time to internal buffer instance
+		//FIXME NullPointerException can happen here
 		this.timeMeasureMapOutput.get(output).get(timeMeasureItem).add(time);
 	}
 	
@@ -332,12 +331,6 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
             return 0;            
         }
         return this.oscServerStatistics.getBytesRecieved();
-    }
-
-	@Override
-	public List<String> getCurrentState() {
-		return col.getCurrentStatus(); 
-	}
-	
+    }	
 	
 }

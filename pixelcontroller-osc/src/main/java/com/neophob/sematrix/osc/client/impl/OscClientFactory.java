@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ * Copyright (C) 2011-2014 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -18,48 +18,29 @@
  */
 package com.neophob.sematrix.osc.client.impl;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import com.neophob.sematrix.osc.client.OscClientException;
-import com.neophob.sematrix.osc.model.OscMessage;
+import com.neophob.sematrix.osc.client.PixOscClient;
 
 /**
  * OSC Client Factory, send OSC Message
  * 
  * @author michu
- *
+ * 
  */
-public abstract class OscClientFactory {
+public final class OscClientFactory {
 
-	private static final Logger LOG = Logger.getLogger(OscClientFactory.class.getName());
+    private OscClientFactory() {
+        // no instance
+    }
 
-	private static final boolean USE_TCP = false;
-	
-	private static OscClientImpl client = null; 
+    public static PixOscClient createClientTcp(String targetIp, int targetPort, int sourcePort,
+            int bufferSize) throws OscClientException {
+        return new OscClientImpl(true, targetIp, targetPort, sourcePort, bufferSize);
+    }
 
-	/**
-	 * 
-	 * @param targetIp
-	 * @param targetPort
-	 * @param msg
-	 * @throws OscClientException
-	 */
-	public static void sendOscMessage(String targetIp, int targetPort, OscMessage msg) throws OscClientException {		
-		if (client == null) {
-			client = new OscClientImpl(USE_TCP);
-		}
-		
-		client.sendMessage(targetIp, targetPort, msg);
-	}
+    public static PixOscClient createClientUdp(String targetIp, int targetPort, int sourcePort,
+            int bufferSize) throws OscClientException {
+        return new OscClientImpl(false, targetIp, targetPort, sourcePort, bufferSize);
+    }
 
-	public static void disconnectOscClient() {
-		if (client !=null && client.isConnected()) {
-			try {
-				client.disconnect();
-			} catch (OscClientException e) {
-				LOG.log(Level.WARNING, "Failed to disconnect OSC Client", e);
-			}
-		}
-	}
 }

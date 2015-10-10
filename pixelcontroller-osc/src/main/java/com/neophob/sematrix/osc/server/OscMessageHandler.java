@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ * Copyright (C) 2011-2014 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -27,7 +27,8 @@ import com.neophob.sematrix.osc.model.OscMessage;
 
 /**
  * observer pattern implementation for client callback
- * 
+ * client must implement handleOscMessage(OscMessage oscIn) that gets
+ * called if an OSC event occurs
  * 
  * @author michu
  *

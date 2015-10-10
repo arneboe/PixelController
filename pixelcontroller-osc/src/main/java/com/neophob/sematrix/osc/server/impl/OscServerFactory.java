@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ * Copyright (C) 2011-2014 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -18,8 +18,10 @@
  */
 package com.neophob.sematrix.osc.server.impl;
 
-import com.neophob.sematrix.osc.server.OscMessageHandler;
+import java.util.Observer;
+
 import com.neophob.sematrix.osc.server.OscServerException;
+import com.neophob.sematrix.osc.server.PixOscServer;
 
 /**
  * OSC Server Factory class
@@ -27,12 +29,18 @@ import com.neophob.sematrix.osc.server.OscServerException;
  * @author michu
  *
  */
-public abstract class OscServerFactory {
+public final class OscServerFactory {
 
-	private static final boolean USE_TCP = false;
+	private OscServerFactory() {
+		//no instance
+	}
 	
-	public static OscServer createServer(OscMessageHandler handler, int port, int bufferSize) throws OscServerException {
-		return new OscServerImpl(USE_TCP, handler, "", port, bufferSize);				
+	public static PixOscServer createServerTcp(Observer handler, int port, int bufferSize) throws OscServerException {
+		return new OscServerImpl(true, handler, "", port, bufferSize);				
+	}
+
+	public static PixOscServer createServerUdp(Observer handler, int port, int bufferSize) throws OscServerException {
+		return new OscServerImpl(false, handler, "", port, bufferSize);				
 	}
 
 }

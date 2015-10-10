@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ * Copyright (C) 2011-2014 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -28,59 +28,20 @@ import org.apache.commons.lang3.text.WordUtils;
  */
 public enum ShufflerOffset {
 	
-	/** The GENERATOR a. */
 	GENERATOR_A(0),
-	
-	/** The GENERATOR b. */
 	GENERATOR_B(1),
-	
-	/** The EFFECT a. */
 	EFFECT_A(2),
-	
-	/** The EFFECT b. */
 	EFFECT_B(3),
-	
-	/** The MIXER. */
 	MIXER(4),
-	
-	/** The MIXER output. */
 	MIXER_OUTPUT(5),
-	
-	/** The FADER output. */
 	FADER_OUTPUT(6),
-	
-	/** The OUTPUT. */
 	OUTPUT(7),
-	
-	/** The BLINKEN. */
-	BLINKEN(8),
-	
-	/** The IMAGE. */
-	IMAGE(9),
-	
-	/** The TEXTURE deformation. */
-	TEXTURE_DEFORM(10),
-	
-	/** The THRESHOLD value. */
-	THRESHOLD_VALUE(11),
-	
-	/** The ROTOZOOMER. */
-	ROTOZOOMER(12),
-	
-	/** COLOR_SCROLL */
-	COLOR_SCROLL(13),
-	
-	COLORSET(14),
-	
-	ZOOM_EFFECT(15),
-	
-	BEAT_WORK_MODE(16),
+	EFFECT_OPTIONS(8),
+	GENERATOR_OPTIONS(9),
+	BEAT_WORK_MODE(10),
+	GENERATORSPEED(11),
+	COLORSET(12);
 
-	GENERATORSPEED(17),
-
-	;
-	
-	
 	/** The ofs. */
 	private int ofs;
 	

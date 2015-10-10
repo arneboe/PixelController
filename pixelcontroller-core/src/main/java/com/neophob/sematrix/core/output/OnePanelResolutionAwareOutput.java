@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ * Copyright (C) 2011-2014 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -21,99 +21,97 @@ package com.neophob.sematrix.core.output;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.properties.ColorFormat;
 import com.neophob.sematrix.core.properties.DeviceConfig;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
+import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
  * The Class ResolutionAwareOutput.
  * 
- *
+ * 
  * @author michu
  */
 public abstract class OnePanelResolutionAwareOutput extends Output {
-	
-	/** The log. */
-	private static final Logger LOG = Logger.getLogger(OnePanelResolutionAwareOutput.class.getName());
 
-	   /** The x size. */
-    protected int xResolution;
-    
-    /** The y size. */
-    protected int yResolution;
-    
-    /** does the image needs to be rotated?*/
+    /** The log. */
+    private static final transient Logger LOG = Logger
+            .getLogger(OnePanelResolutionAwareOutput.class.getName());
+
+    /** does the image needs to be rotated? */
     protected DeviceConfig displayOption;
-    
+
     /** The output color format. */
     protected ColorFormat colorFormat;
-    
+
     /** flip each 2nd scanline? */
     protected boolean snakeCabeling;
-    
+
     /** Manual mapping */
     protected int[] mapping;
-    
-	/** The initialized. */
+
+    /** The initialized. */
     protected boolean initialized;
 
+    /**
+     * Instantiates a new ResolutionAwareOutput.
+     * 
+     * @param outputDeviceEnum
+     *            the outputDeviceEnum
+     * @param ph
+     *            the ph
+     * @param controller
+     *            the controller
+     */
+    public OnePanelResolutionAwareOutput(MatrixData matrixData, PixelControllerResize resizeHelper,
+            OutputDeviceEnum outputDeviceEnum, Configuration ph, int bpp) {
+        super(matrixData, resizeHelper, outputDeviceEnum, ph, bpp);
 
-
-	/**
-	 * Instantiates a new ResolutionAwareOutput.
-	 *
-	 * @param outputDeviceEnum the outputDeviceEnum
-	 * @param ph the ph
-	 * @param controller the controller
-	 */
-	public OnePanelResolutionAwareOutput(OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, int bpp) {
-		super(outputDeviceEnum, ph, bpp);
-		
-        this.xResolution = ph.parseOutputXResolution();
-        this.yResolution = ph.parseOutputYResolution();
         this.snakeCabeling = ph.isOutputSnakeCabeling();
         this.mapping = ph.getOutputMappingValues();
-        
-        //get the mini dmx layout
-        this.displayOption = ph.getOutputDeviceLayout();     
-        if (this.displayOption==null) {
+
+        // get the mini dmx layout
+        this.displayOption = ph.getOutputDeviceLayout();
+        if (this.displayOption == null) {
             this.displayOption = DeviceConfig.NO_ROTATE;
         }
-        
+
         this.colorFormat = ColorFormat.RBG;
-        if (ph.getColorFormat().size()>0) {
+        if (ph.getColorFormat().size() > 0) {
             this.colorFormat = ph.getColorFormat().get(0);
         }
-        
-        LOG.log(Level.INFO, "Output Settings:");
-        LOG.log(Level.INFO, "\tResolution: "+xResolution+"/"+yResolution);
-        LOG.log(Level.INFO, "\tSnakeCabeling: "+snakeCabeling);
-        LOG.log(Level.INFO, "\tRotate: "+displayOption);
-        LOG.log(Level.INFO, "\tColorFormat: "+colorFormat);
-        LOG.log(Level.INFO, "\tOutput Mapping entry size: "+this.mapping.length);
-	}
-	
-	/**
-	 * transform the buffer (rotate, flip 2nd scanline)
-	 *
-	 * @return the rotated buffer
-	 */
-	public int[] getTransformedBuffer() {
-        //rotate buffer (if needed)
-        int[] transformedBuffer = RotateBuffer.transformImage(super.getBufferForScreen(0), displayOption, 
-                xResolution, yResolution);
-        
-        if (this.snakeCabeling) {
-            //flip each 2nd scanline
-            transformedBuffer= OutputHelper.flipSecondScanline(transformedBuffer, xResolution, yResolution);
-        } else if (this.mapping.length>0) {
-        	//do manual mapping
-        	transformedBuffer = OutputHelper.manualMapping(transformedBuffer, mapping, xResolution, yResolution);
-        }
-	    
-        return transformedBuffer;
-	}
 
-	
+        LOG.log(Level.INFO, "Output Settings:");
+        LOG.log(Level.INFO,
+                "\tResolution: " + matrixData.getDeviceXSize() + "/" + matrixData.getDeviceYSize());
+        LOG.log(Level.INFO, "\tSnakeCabeling: " + snakeCabeling);
+        LOG.log(Level.INFO, "\tRotate: " + displayOption);
+        LOG.log(Level.INFO, "\tColorFormat: " + colorFormat);
+        LOG.log(Level.INFO, "\tOutput Mapping entry size: " + this.mapping.length);
+    }
+
+    /**
+     * transform the buffer (rotate, flip 2nd scanline)
+     * 
+     * @return the rotated buffer
+     */
+    public int[] getTransformedBuffer() {
+        // rotate buffer (if needed)
+        int[] transformedBuffer = RotateBuffer.transformImage(super.getBufferForScreen(0),
+                displayOption, matrixData.getDeviceXSize(), matrixData.getDeviceYSize());
+
+        if (this.snakeCabeling) {
+            // flip each 2nd scanline
+            transformedBuffer = OutputHelper.flipSecondScanline(transformedBuffer,
+                    matrixData.getDeviceXSize(), matrixData.getDeviceYSize());
+        } else if (this.mapping.length > 0) {
+            // do manual mapping
+            transformedBuffer = OutputHelper.manualMapping(transformedBuffer, mapping,
+                    matrixData.getDeviceXSize(), matrixData.getDeviceYSize());
+        }
+
+        return transformedBuffer;
+    }
 
 }

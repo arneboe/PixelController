@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ * Copyright (C) 2011-2014 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -19,73 +19,68 @@
 package com.neophob.sematrix.core.output;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.output.transport.ethernet.IEthernetUdp;
+import com.neophob.sematrix.core.properties.Configuration;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
+import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
  * Send frames out via UDP
- *
+ * 
  * @author michu
  * 
  */
 public class UdpDevice extends OnePanelResolutionAwareOutput {
 
-	private static final Logger LOG = Logger.getLogger(UdpDevice.class.getName());
+    private static final transient Logger LOG = Logger.getLogger(UdpDevice.class.getName());
 
-	private DatagramPacket packet;
-	private DatagramSocket dsocket;
-	
-	private String targetHost;
-	private int targetPort;
-	private int errorCounter=0;
+    private transient IEthernetUdp udpImpl;
+    private String targetHost;
+    private int targetPort;
+    private int errorCounter = 0;
 
-	/**
-	 * 
-	 * @param controller
-	 */
-	public UdpDevice(ApplicationConfigurationHelper ph) {
-		super(OutputDeviceEnum.UDP, ph, 8);
+    /**
+     * 
+     * @param controller
+     */
+    public UdpDevice(MatrixData matrixData, PixelControllerResize resizeHelper, Configuration ph,
+            IEthernetUdp udpImpl) {
+        super(matrixData, resizeHelper, OutputDeviceEnum.UDP, ph, 8);
 
-		targetHost = ph.getUdpIp();
-		targetPort = ph.getUdpPort();
-		
-		try {
-			InetAddress address = InetAddress.getByName(targetHost);
-			packet = new DatagramPacket(new byte[0], 0, address, targetPort);
-			dsocket = new DatagramSocket();
-			
-			this.initialized = true;
-			LOG.log(Level.INFO, "UDP device initialized, send data to {0}:{1}", 
-					new String[] {this.targetHost, ""+this.targetPort});
+        targetHost = ph.getUdpIp();
+        targetPort = ph.getUdpPort();
+        this.udpImpl = udpImpl;
 
-		} catch (Exception e) {
-			LOG.log(Level.WARNING, "failed to initialize UDP device", e);
-		}
-	}
+        if (this.udpImpl.initializeEthernet(targetHost, targetPort)) {
+            this.initialized = true;
+            LOG.log(Level.INFO, "UDP device initialized, send data to {0}:{1}", new String[] {
+                    this.targetHost, "" + this.targetPort });
+        } else {
+            LOG.log(Level.WARNING, "Failed to initialize UDP device.");
+        }
 
+    }
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.output.Output#update()
-	 */
-	@Override
-	public void update() {
-		if (this.initialized) {			
-			byte[] buffer = OutputHelper.convertBufferTo24bit(getTransformedBuffer(), colorFormat);
-			packet.setData(buffer);
-			packet.setLength(buffer.length);
-			try {
-				dsocket.send(packet);
-			} catch (IOException e) {
-			    errorCounter++;
-				LOG.log(Level.WARNING, "failed to send UDP data.", e);				
-			}
-		}
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.output.Output#update()
+     */
+    @Override
+    public void update() {
+        if (this.initialized) {
+            byte[] buffer = OutputHelper.convertBufferTo24bit(getTransformedBuffer(), colorFormat);
+            try {
+                udpImpl.sendData(buffer);
+            } catch (IOException e) {
+                errorCounter++;
+                LOG.log(Level.WARNING, "failed to send UDP data.", e);
+            }
+        }
+    }
 
     @Override
     public boolean isSupportConnectionState() {
@@ -98,25 +93,21 @@ public class UdpDevice extends OnePanelResolutionAwareOutput {
     }
 
     @Override
-    public String getConnectionStatus(){
+    public String getConnectionStatus() {
         if (initialized) {
-            return "Target IP "+targetHost+":"+targetPort;            
+            return "Target IP " + targetHost + ":" + targetPort;
         }
         return "Not connected!";
     }
-    
-	@Override
-	public void close()	{
-		if (initialized) {
-			dsocket.close();   
-		}	    
-	}
-	
 
-	@Override
-	public long getErrorCounter() {
-	    return errorCounter;
-	}
+    @Override
+    public void close() {
+        udpImpl.closePort();
+    }
+
+    @Override
+    public long getErrorCounter() {
+        return errorCounter;
+    }
 
 }
-

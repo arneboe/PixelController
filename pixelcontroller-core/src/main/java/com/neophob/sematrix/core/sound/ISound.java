@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ * Copyright (C) 2011-2014 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -17,6 +17,7 @@
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.neophob.sematrix.core.sound;
+
 
 /**
  * The Interface SeSound.
@@ -51,27 +52,33 @@ public interface ISound {
 	 * @return true, if is kick drum is heard
 	 */
 	boolean isKick();
-	
+
 	/**
 	 * Checks if is snare.
 	 *
 	 * @return true, if is snare drum is heard
 	 */
 	boolean isSnare();
-	
+
 	/**
 	 * Checks if is hat.
 	 *
 	 * @return true, if is hat is heard
 	 */
 	boolean isHat();
-	
+
 	/**
 	 * Checks if is pang.
 	 *
 	 * @return true, if is kick/snare or hat is hit
 	 */
 	boolean isPang();
+
+	/**
+	 * Checks if a beat occurred since the last call to reset using a different algorithm than the above methods.
+	 * @return
+	 */
+	boolean isBeat();
 
 	/**
 	 * Shutdown.
@@ -92,4 +99,11 @@ public interface ISound {
 	 * @return the fft avg
 	 */
 	float getFftAvg(int i);
+
+	/**Starts the detection thread (in case  there is one). Otherwise does nothing */
+	void start();
+
+	/**Resets the beat detector. isBeat() will return true if a beat has been detected since the last time reset()
+	 * has been called */
+	void reset();
 }

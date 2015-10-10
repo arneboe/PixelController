@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ * Copyright (C) 2011-2014 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -21,17 +21,17 @@ package com.neophob.sematrix.osc;
 import com.neophob.sematrix.osc.model.OscMessage;
 import com.neophob.sematrix.osc.server.OscMessageHandler;
 import com.neophob.sematrix.osc.server.OscServerException;
-import com.neophob.sematrix.osc.server.impl.OscServer;
+import com.neophob.sematrix.osc.server.PixOscServer;
 import com.neophob.sematrix.osc.server.impl.OscServerFactory;
 
 
 public class IntegrationTest extends OscMessageHandler {
 
-	OscServer srv;
+	PixOscServer srv;
 	
 	public IntegrationTest() throws OscServerException {
 		System.out.println("create server");
-		srv = OscServerFactory.createServer(this, 9876, 1500);
+		srv = OscServerFactory.createServerUdp(this, 9876, 1500);
 		srv.startServer();
 		System.out.println("done");
 	}

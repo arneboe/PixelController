@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ * Copyright (C) 2011-2014 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -22,134 +22,156 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.core.glue.Collector;
 import com.neophob.sematrix.core.output.neorainbowduino.Rainbowduino;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.output.transport.serial.ISerial;
+import com.neophob.sematrix.core.properties.Configuration;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
+import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
  * Send data to Rainbowduino.
- *
+ * 
  * @author michu
  */
 public class RainbowduinoV2Device extends ArduinoOutput {
 
-	/** The log. */
-	private static final Logger LOG = Logger.getLogger(RainbowduinoV2Device.class.getName());
-	
-	/** The all i2c address. */
-	private List<Integer> allI2cAddress;
-	
-	/** The rainbowduino. */
-	private Rainbowduino rainbowduino = null;
+    /** The log. */
+    private static final transient Logger LOG = Logger.getLogger(RainbowduinoV2Device.class
+            .getName());
 
-	/**
-	 * init the rainbowduino devices.
-	 *
-	 * @param controller the controller
-	 * @param allI2cAddress the all i2c address
-	 */
-	public RainbowduinoV2Device(ApplicationConfigurationHelper ph) {
-		super(OutputDeviceEnum.RAINBOWDUINO_V2, ph, 4);
-		
-		this.allI2cAddress = ph.getI2cAddr();		
-		this.initialized = false;		
-		try {
-			rainbowduino = new Rainbowduino(allI2cAddress);			
-			this.initialized = rainbowduino.ping();
-			LOG.log(Level.INFO, "ping result: "+ this.initialized);			
-		} catch (NoSerialPortFoundException e) {
-			LOG.log(Level.WARNING, "failed to initialize serial port!", e);
-		}
-		
-	}
+    /** The all i2c address. */
+    private List<Integer> allI2cAddress;
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.output.ArduinoOutput#getLatestHeartbeat()
-	 */
-	public long getLatestHeartbeat() {
-		if (initialized) {
-			return rainbowduino.getArduinoHeartbeat();			
-		}
-		return -1;
-	}
+    /** The rainbowduino. */
+    private transient Rainbowduino rainbowduino = null;
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.output.ArduinoOutput#getArduinoBufferSize()
-	 */
-	public int getArduinoBufferSize() {
-		if (initialized) {
-			return rainbowduino.getArduinoBufferSize();			
-		}
-		return -1;
-	}
+    private int nrOfScreens;
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.output.ArduinoOutput#getArduinoErrorCounter()
-	 */
-	public long getArduinoErrorCounter() {
-		if (initialized) {
-			return rainbowduino.getAckErrors();			
-		}
-		return -1;
-	}
+    /**
+     * init the rainbowduino devices.
+     * 
+     * @param controller
+     *            the controller
+     * @param allI2cAddress
+     *            the all i2c address
+     */
+    public RainbowduinoV2Device(MatrixData matrixData, PixelControllerResize resizeHelper,
+            Configuration ph, ISerial serialPort) {
+        super(matrixData, resizeHelper, OutputDeviceEnum.RAINBOWDUINO_V2, ph, 4);
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.output.Output#update()
-	 */
-	public void update() {
-		if (initialized) {
-			int size=allI2cAddress.size();
-			int totalScreens = Collector.getInstance().getNrOfScreens();
-			for (int screen=0; screen<totalScreens; screen++) {
-				//draw only on available screens!
-				if (screen<size) {
-					int i2cAddr = allI2cAddress.get(screen);
-					if (!rainbowduino.sendRgbFrame((byte)i2cAddr, super.getBufferForScreen(screen))) {
-						noUpdate++;
-					} else {
-						needUpdate++;
-					}
-						
-				}
-			}
-			
-			if ((noUpdate+needUpdate)%100==0) {
-				float f = noUpdate+needUpdate;
-				float result = (100.0f/f)*needUpdate;
-				LOG.log(Level.INFO, "sended frames: {0}% {1}/{2}, ack Errors: {3} last Error: {4}, arduino buffer size: {5}", 
-						new Object[] {result, needUpdate, noUpdate, rainbowduino.getAckErrors(), 
-							rainbowduino.getArduinoErrorCounter(), rainbowduino.getArduinoBufferSize()});				
-			}
-			
-		}
-	}
+        this.nrOfScreens = ph.getNrOfScreens();
+        this.allI2cAddress = ph.getI2cAddr();
+        this.initialized = false;
+        try {
+            rainbowduino = new Rainbowduino(allI2cAddress, serialPort);
+            this.initialized = rainbowduino.ping();
+            LOG.log(Level.INFO, "ping result: " + this.initialized);
+        } catch (NoSerialPortFoundException e) {
+            LOG.log(Level.WARNING, "failed to initialize serial port!", e);
+        }
 
-	/**
-	 * Prints the available i2c adr.
-	 */
-	public void printAvailableI2cAdr() {
-		if (initialized) {
-			List<Integer> list = rainbowduino.scanI2cBus();
-			StringBuffer foundDevices = new StringBuffer();
-			for (int i: list) {
-			    foundDevices.append(i);
-			    foundDevices.append(" ");
-			}
-			LOG.log(Level.INFO, "Found i2c devices: <{0}>", foundDevices);
-		} else {
-			LOG.log(Level.INFO, "I2C scan aborted - not connected to arduino!");
-		}
-	}
-	
-	
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.output.Output#close()
-	 */
-	@Override
-	public void close() {
-		if (initialized) {
-			rainbowduino.dispose();			
-		}
-	}
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.output.ArduinoOutput#getLatestHeartbeat()
+     */
+    public long getLatestHeartbeat() {
+        if (initialized) {
+            return rainbowduino.getArduinoHeartbeat();
+        }
+        return -1;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.neophob.sematrix.core.output.ArduinoOutput#getArduinoBufferSize()
+     */
+    public int getArduinoBufferSize() {
+        if (initialized) {
+            return rainbowduino.getArduinoBufferSize();
+        }
+        return -1;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.neophob.sematrix.core.output.ArduinoOutput#getArduinoErrorCounter()
+     */
+    public long getArduinoErrorCounter() {
+        if (initialized) {
+            return rainbowduino.getAckErrors();
+        }
+        return -1;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.output.Output#update()
+     */
+    public void update() {
+        if (initialized) {
+            int size = allI2cAddress.size();
+            for (int screen = 0; screen < nrOfScreens; screen++) {
+                // draw only on available screens!
+                if (screen < size) {
+                    int i2cAddr = allI2cAddress.get(screen);
+                    if (!rainbowduino
+                            .sendRgbFrame((byte) i2cAddr, super.getBufferForScreen(screen))) {
+                        noUpdate++;
+                    } else {
+                        needUpdate++;
+                    }
+
+                }
+            }
+
+            if ((noUpdate + needUpdate) % 100 == 0) {
+                float f = noUpdate + needUpdate;
+                float result = (100.0f / f) * needUpdate;
+                LOG.log(Level.INFO,
+                        "sended frames: {0}% {1}/{2}, ack Errors: {3} last Error: {4}, arduino buffer size: {5}",
+                        new Object[] { result, needUpdate, noUpdate, rainbowduino.getAckErrors(),
+                                rainbowduino.getArduinoErrorCounter(),
+                                rainbowduino.getArduinoBufferSize() });
+            }
+
+        }
+    }
+
+    /**
+     * Prints the available i2c adr.
+     */
+    public void printAvailableI2cAdr() {
+        if (initialized) {
+            List<Integer> list = rainbowduino.scanI2cBus();
+            StringBuilder foundDevices = new StringBuilder();
+            for (int i : list) {
+                foundDevices.append(i);
+                foundDevices.append(" ");
+            }
+            LOG.log(Level.INFO, "Found i2c devices: <{0}>", foundDevices);
+        } else {
+            LOG.log(Level.INFO, "I2C scan aborted - not connected to arduino!");
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.output.Output#close()
+     */
+    @Override
+    public void close() {
+        if (initialized) {
+            rainbowduino.dispose();
+        }
+    }
 
 }

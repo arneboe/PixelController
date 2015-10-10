@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ * Copyright (C) 2011-2014 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -18,8 +18,9 @@
  */
 package com.neophob.sematrix.core.jmx;
 
-import java.util.List;
+import java.io.Serializable;
 
+import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.output.OutputDeviceEnum;
 
 /**
@@ -27,7 +28,7 @@ import com.neophob.sematrix.core.output.OutputDeviceEnum;
  * @author michu
  *
  */
-public interface PixelControllerStatusMBean {
+public interface PixelControllerStatusMBean extends Serializable {
 
 	/**
 	 * 
@@ -96,5 +97,25 @@ public interface PixelControllerStatusMBean {
 	 */
 	OutputDeviceEnum getOutputType(int output);
 	
-	List<String> getCurrentState();
+	/**
+	 * update tracking time
+	 * @param valueEnum
+	 * @param time
+	 */
+	void trackTime(TimeMeasureItemGlobal valueEnum, long time);
+	
+	/**
+	 * 
+	 * @param output
+	 * @param timeMeasureItem
+	 * @param time
+	 */
+	void trackOutputTime(IOutput output, TimeMeasureItemOutput timeMeasureItem, long time);
+	
+	void setCurrentFps(float currentFps);
+	
+	void setFrameCount(long frameCount);
+	//List<String> getCurrentState();
+	
+	void setOscServerStatistics(PacketAndBytesStatictics oscServerStatistics);
 }

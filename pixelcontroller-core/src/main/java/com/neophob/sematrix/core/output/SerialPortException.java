@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ * Copyright (C) 2011-2014 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -19,26 +19,25 @@
 package com.neophob.sematrix.core.output;
 
 /**
- * If the library is unable to find a serial port, this Exception will be thrown
- * <br><br>
+ * If the library is unable to find a serial port, this Exception will be thrown <br>
+ * <br>
  * part of the neorainbowduino library
  * 
  * @author Michael Vogt / neophob.com
- *
+ * 
  */
 public class SerialPortException extends Exception {
 
-
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = 3951181732955456485L;
+    private static final long serialVersionUID = 3951181732955456485L;
 
-	/**
-	 * 
-	 * @param s
-	 */
-	public SerialPortException(String s) {
-		super(s);
-	}
+    /**
+     * 
+     * @param s
+     */
+    public SerialPortException(String s) {
+        super(s);
+    }
 }
