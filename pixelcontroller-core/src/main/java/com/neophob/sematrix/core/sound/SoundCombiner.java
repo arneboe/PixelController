@@ -1,5 +1,7 @@
 package com.neophob.sematrix.core.sound;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -18,12 +20,27 @@ public class SoundCombiner implements ISound
     }
 
 
-    public enum SoundSource
+    public enum SoundMode
     {
-        BPM,
-        AUDIO
+        BPM(0),
+        AUDIO(1);
+
+        private int id;
+
+        SoundMode(int id) {
+            this.id = id;
+        }
+        public String guiText()
+        {
+            return WordUtils.capitalizeFully(StringUtils.replace(this.name(), "_", " "));
+        }
+
+        public int getId()
+        {
+            return id;
+        }
     }
-    public void selectSound(SoundSource source)
+    public void selectSound(SoundMode source)
     {
         switch(source)
         {

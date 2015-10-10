@@ -133,7 +133,7 @@ public enum ValidCommand {
 
     GET_PASSTHROUGH_MODE(CommandGroup.INTERNAL, 0, "Return the pass through mode", true),
 
-    ;
+    SOUND_MODE(CommandGroup.MISC, 1, "Change the sound mode");
 
     /** The nr of params. */
     private int nrOfParams;

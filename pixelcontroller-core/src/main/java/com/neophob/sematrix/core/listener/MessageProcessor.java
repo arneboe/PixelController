@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.core.sound.SoundCombiner;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -489,6 +490,15 @@ public enum MessageProcessor {
                         col.notifyGuiUpdate();
                         col.notifyEffectChanged();
                         col.notifyGeneratorChanged();
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
+
+                case SOUND_MODE:
+                    try {
+                        int a = parseValue(msg[1]);
+                        col.setSoundMode(SoundCombiner.SoundMode.values()[a]);
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
                     }

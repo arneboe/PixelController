@@ -283,6 +283,10 @@ public final class P5EventListener implements ControlListener {
                 createMessage(ValidCommand.BEAT_WORKMODE, value);
                 break;
 
+            case SOUND_MODE_DROPDOWN:
+                createMessage(ValidCommand.SOUND_MODE, value);
+                break;
+
             default:
                 LOG.log(Level.INFO, "Invalid Object: " + selection + ", Value: " + value);
                 break;

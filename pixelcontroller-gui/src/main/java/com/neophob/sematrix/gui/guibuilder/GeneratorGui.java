@@ -20,11 +20,10 @@ package com.neophob.sematrix.gui.guibuilder;
 
 import java.io.File;
 import java.util.*;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.core.sound.SoundCombiner;
 import com.neophob.sematrix.core.visual.effect.Options.IOption;
 import com.neophob.sematrix.core.visual.effect.Options.Options;
 import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
@@ -106,6 +105,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private ControlP5 cp5;
     private DropdownList generatorListOne, effectListOne;
     private DropdownList generatorListTwo, effectListTwo;
+    private DropdownList soundModeList;
     private DropdownList mixerList;
     private RadioButton selectedVisualList;
     private RadioButton selectedOutputs;
@@ -273,6 +273,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         Theme.themeDropdownList(generatorListOne);
         Theme.themeDropdownList(generatorListTwo);
 
+
         for (GeneratorName gn : GeneratorName.values()) {
             generatorListOne.addItem(gn.guiText(), gn.getId());
             generatorListTwo.addItem(gn.guiText(), gn.getId());
@@ -418,6 +419,22 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         cp5.addTextlabel("genOptionsFxB", messages.getString("GeneratorGui.EFFECT_OPTIONS_B"),
                 EFFECT_B_OPTIONS_X_OFFSET, genElYOfs).moveTo(generatorTab).setGroup(effectOptionGroup);
 
+
+        //SOUND OPTIONS
+        // ---------------
+        int genSoundOptsYOffset = yPosStartDrowdown + 230;
+        cp5.addTextlabel("soundOptions", messages.getString("GeneratorGui.SOUND_OPTIONS"),
+                GENERIC_X_OFS, genSoundOptsYOffset).moveTo(generatorTab).setGroup(effectOptionGroup);
+        genSoundOptsYOffset += 30;
+        soundModeList = cp5.addDropdownList(GuiElement.SOUND_MODE_DROPDOWN.guiText(),
+                GENERIC_X_OFS, genSoundOptsYOffset, Theme.DROPBOXLIST_LENGTH, 140);
+        Theme.themeDropdownList(soundModeList);
+
+        for (SoundCombiner.SoundMode name : SoundCombiner.SoundMode.values())
+        {
+            soundModeList.addItem(name.guiText(), name.getId());
+        }
+        soundModeList.setLabel(soundModeList.getItem(0).getName());
 
         // GENERATOR OPTIONS
         // -----------------
@@ -1144,6 +1161,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         // close all open tabs
         if (!clickedOn.contains(GuiElement.GENERATOR_ONE_DROPDOWN)) {
             generatorListOne.setOpen(false);
+        }
+        if(!clickedOn.contains(GuiElement.SOUND_MODE_DROPDOWN))
+        {
+            soundModeList.setOpen(false);
         }
         if (!clickedOn.contains(GuiElement.GENERATOR_TWO_DROPDOWN)) {
             generatorListTwo.setOpen(false);

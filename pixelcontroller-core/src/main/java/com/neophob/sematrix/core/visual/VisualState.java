@@ -25,6 +25,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.core.api.impl.SoundSelector;
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.PixelControllerShufflerSelect;
 import com.neophob.sematrix.core.glue.ShufflerOffset;
@@ -36,12 +37,11 @@ import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.sound.ISound;
+import com.neophob.sematrix.core.sound.SoundCombiner;
 import com.neophob.sematrix.core.visual.color.IColorSet;
 import com.neophob.sematrix.core.visual.effect.Effect;
 import com.neophob.sematrix.core.visual.effect.Effect.EffectName;
-import com.neophob.sematrix.core.visual.effect.Options.IOption;
 import com.neophob.sematrix.core.visual.effect.Options.Options;
-import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
 import com.neophob.sematrix.core.visual.effect.PixelControllerEffect;
 import com.neophob.sematrix.core.visual.fader.Fader.FaderName;
 import com.neophob.sematrix.core.visual.fader.IFader;
@@ -117,6 +117,7 @@ public class VisualState extends Observable {
     private ISound sound;
 
     private PresetService presetService;
+    private SoundSelector soundSelector;
 
     /**
      * Instantiates a new collector.
@@ -137,7 +138,8 @@ public class VisualState extends Observable {
      *            the PropertiesHelper
      */
     public synchronized void init(FileUtils fileUtils, Configuration ph, ISound sound,
-            List<IColorSet> colorSets, PresetService presetService) {
+            List<IColorSet> colorSets, PresetService presetService, SoundSelector soundSelector) {
+        this.soundSelector = soundSelector;
 
         if (initialized) {
             LOG.log(Level.WARNING, "Reinitialize collector, use for unit tests only");
@@ -638,6 +640,11 @@ public class VisualState extends Observable {
      */
     public void setOutputGain(float outputGain) {
         this.outputGain = outputGain;
+    }
+
+    public void setSoundMode(SoundCombiner.SoundMode soundMode)
+    {
+        soundSelector.setSoundMode(soundMode);
     }
 
     public boolean isPassThroughModeEnabledForCurrentVisual() {

@@ -48,7 +48,7 @@ public enum GuiElement {
     // preset tab
     PRESET_BUTTONS, LOAD_PRESET, SAVE_PRESET, DELETE_PRESET,
 
-    SAVE_SCREENSHOT;
+    SAVE_SCREENSHOT, SOUND_MODE_DROPDOWN;
 
     /**
      * 

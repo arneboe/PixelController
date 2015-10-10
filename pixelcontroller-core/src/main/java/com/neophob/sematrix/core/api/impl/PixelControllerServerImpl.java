@@ -54,7 +54,7 @@ import com.neophob.sematrix.mdns.server.impl.MDnsServerFactory;
 /**
  * @author michu
  */
-final class PixelControllerServerImpl extends PixelControllerServer implements Runnable {
+final class PixelControllerServerImpl extends PixelControllerServer implements Runnable, SoundSelector {
 
     private static final Logger LOG = Logger.getLogger(PixelControllerServerImpl.class.getName());
     private static final long MAXIMAL_FRAME_DELAY_IN_MS = 250;
@@ -122,7 +122,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
         this.presetService = new PresetServiceImpl(presetSettings);
         MessageProcessor.INSTANCE.init(presetService, fileUtils);
 
-        this.visualState.init(fileUtils, applicationConfig, sound, colorSets, presetService);
+        this.visualState.init(fileUtils, applicationConfig, sound, colorSets, presetService, this);
         framerate = new Framerate(applicationConfig.parseFps());
 
         clientNotification("Initialize OSC Server");
@@ -374,4 +374,8 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
         return fileUtils;
     }
 
+    @Override
+    public void setSoundMode(SoundCombiner.SoundMode mode) {
+        sound.selectSound(mode);
+    }
 }

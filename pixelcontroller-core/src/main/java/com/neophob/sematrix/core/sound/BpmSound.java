@@ -28,7 +28,6 @@ public class BpmSound implements ISound {
         beatDetected = false;
         if(timePassed > timeTillNextBeat)
         {
-            System.out.println("beat " + currentTime/1000.0);
             beatDetected = true;
             //this is done to avoid drift due to overshooting
             if(timePassed <= timeBetweenBeats)
