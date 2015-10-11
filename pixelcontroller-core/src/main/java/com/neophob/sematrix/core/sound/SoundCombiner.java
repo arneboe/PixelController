@@ -13,10 +13,15 @@ public class SoundCombiner implements ISound
     private SoundMinimKctess5 audioSound = new SoundMinimKctess5();
 
     private ISound currentSound;
+    private float noBeatSpeed;
 
     public SoundCombiner()
     {
         currentSound = bpmSound;
+    }
+
+    public void setNoBeatSpeed(float noBeatSpeed) {
+        bpmSound.setNoBeatVolume(noBeatSpeed);
     }
 
 
@@ -122,5 +127,10 @@ public class SoundCombiner implements ISound
     public void reset() {
         bpmSound.reset();
         audioSound.reset();
+    }
+
+    public void setBpm(int bpm)
+    {
+        bpmSound.setBpm(bpm);
     }
 }

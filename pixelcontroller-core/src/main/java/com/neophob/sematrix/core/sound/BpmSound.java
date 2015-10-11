@@ -11,8 +11,8 @@ public class BpmSound implements ISound {
     private long lastBeatTime;//in milliseconds
     private int timeBetweenBeats; //in milliseconds
     private int timeTillNextBeat;
-    private int beatVolume = 3;
-    private int nonBeatVolume = 1;
+    private float beatVolume = 0.5f;
+    private float nonBeatVolume = 0;
     private boolean beatDetected = false;
 
     public BpmSound() {
@@ -119,5 +119,9 @@ public class BpmSound implements ISound {
         this.bpm = bpm;
         timeBetweenBeats = 60000 / bpm;
         timeTillNextBeat = timeBetweenBeats;
+    }
+
+    public void setNoBeatVolume(float noBeatVolume) {
+        this.nonBeatVolume = noBeatVolume;
     }
 }

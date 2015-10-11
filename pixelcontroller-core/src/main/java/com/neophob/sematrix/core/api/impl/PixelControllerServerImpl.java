@@ -42,8 +42,6 @@ import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.sound.SoundCombiner;
-import com.neophob.sematrix.core.sound.SoundDummy;
-import com.neophob.sematrix.core.sound.SoundMinimKctess5;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.OutputMapping;
 import com.neophob.sematrix.core.visual.VisualState;
@@ -54,7 +52,7 @@ import com.neophob.sematrix.mdns.server.impl.MDnsServerFactory;
 /**
  * @author michu
  */
-final class PixelControllerServerImpl extends PixelControllerServer implements Runnable, SoundSelector {
+final class PixelControllerServerImpl extends PixelControllerServer implements Runnable, SoundController {
 
     private static final Logger LOG = Logger.getLogger(PixelControllerServerImpl.class.getName());
     private static final long MAXIMAL_FRAME_DELAY_IN_MS = 250;
@@ -377,5 +375,15 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
     @Override
     public void setSoundMode(SoundCombiner.SoundMode mode) {
         sound.selectSound(mode);
+    }
+
+    @Override
+    public void setBpm(int bpm) {
+        sound.setBpm(bpm);
+    }
+
+    @Override
+    public void setNoBeatSpeed(float noBeatSpeed) {
+        sound.setNoBeatSpeed(noBeatSpeed);
     }
 }

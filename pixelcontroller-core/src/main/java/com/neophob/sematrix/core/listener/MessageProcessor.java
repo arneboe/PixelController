@@ -504,6 +504,24 @@ public enum MessageProcessor {
                     }
                     break;
 
+                case BPM:
+                    try {
+                        int a = parseValue(msg[1]);
+                        col.setBpm(a);
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
+
+                case NO_BEAT_SPEED:
+                    try {
+                        float a = Float.parseFloat(msg[1]);
+                        col.setNoBeatSpeed(a);
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
+
                 case CURRENT_OUTPUT:
                     // change the selected output, need to update
                     // some of the gui elements

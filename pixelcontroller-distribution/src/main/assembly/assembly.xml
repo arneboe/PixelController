@@ -69,19 +69,6 @@
 			<destName>Readme.pdf</destName>
 		</file>
 
- 		<file>
-			<source>${basedir}/../ToDo.md</source>
-			<outputDirectory>/</outputDirectory>
-			<filtered>false</filtered>
-			<destName>TODO.txt</destName>
-		</file>
-
- 		<file>
-			<source>${basedir}/../ChangeLog.md</source>
-			<outputDirectory>/</outputDirectory>
-			<filtered>false</filtered>
-			<destName>Changelog.txt</destName>
-		</file>
  	
  	</files>
  	

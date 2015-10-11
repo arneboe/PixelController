@@ -25,7 +25,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.core.api.impl.SoundSelector;
+import com.neophob.sematrix.core.api.impl.SoundController;
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.PixelControllerShufflerSelect;
 import com.neophob.sematrix.core.glue.ShufflerOffset;
@@ -52,7 +52,6 @@ import com.neophob.sematrix.core.visual.generator.PixelControllerGenerator;
 import com.neophob.sematrix.core.visual.mixer.Mixer;
 import com.neophob.sematrix.core.visual.mixer.Mixer.MixerName;
 import com.neophob.sematrix.core.visual.mixer.PixelControllerMixer;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Visual State of PixelController
@@ -117,7 +116,7 @@ public class VisualState extends Observable {
     private ISound sound;
 
     private PresetService presetService;
-    private SoundSelector soundSelector;
+    private SoundController soundController;
 
     /**
      * Instantiates a new collector.
@@ -138,8 +137,8 @@ public class VisualState extends Observable {
      *            the PropertiesHelper
      */
     public synchronized void init(FileUtils fileUtils, Configuration ph, ISound sound,
-            List<IColorSet> colorSets, PresetService presetService, SoundSelector soundSelector) {
-        this.soundSelector = soundSelector;
+            List<IColorSet> colorSets, PresetService presetService, SoundController soundController) {
+        this.soundController = soundController;
 
         if (initialized) {
             LOG.log(Level.WARNING, "Reinitialize collector, use for unit tests only");
@@ -644,7 +643,7 @@ public class VisualState extends Observable {
 
     public void setSoundMode(SoundCombiner.SoundMode soundMode)
     {
-        soundSelector.setSoundMode(soundMode);
+        soundController.setSoundMode(soundMode);
     }
 
     public boolean isPassThroughModeEnabledForCurrentVisual() {
@@ -789,5 +788,13 @@ public class VisualState extends Observable {
         notifyObservers(getCurrentOptions(Options.Target.EFFECT_A));
         setChanged();
         notifyObservers(getCurrentOptions(Options.Target.EFFECT_B));
+    }
+
+    public void setBpm(int bpm) {
+        soundController.setBpm(bpm);
+    }
+
+    public void setNoBeatSpeed(float noBeatSpeed) {
+        soundController.setNoBeatSpeed(noBeatSpeed);
     }
 }

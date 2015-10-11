@@ -47,7 +47,7 @@ public class PixelControllerEffect implements PixelControllerElement {
     private MatrixData matrix;
     private ISound sound;
     private IResize resize;
-    private BpmStrobo bpmStrobo;
+    private BeatStrobo beatStrobo;
 
     /**
      * Instantiates a new pixel controller effect.
@@ -95,8 +95,8 @@ public class PixelControllerEffect implements PixelControllerElement {
 
         allEffects.add(new FlipY(matrix));
         allEffects.add(new FlipX(matrix));
-        bpmStrobo = new BpmStrobo(matrix);
-        allEffects.add(bpmStrobo);
+        beatStrobo = new BeatStrobo(matrix, sound);
+        allEffects.add(beatStrobo);
         allEffects.add(new Rotate90(matrix, resize));
         allEffects.add(new Posterize(matrix));
 
@@ -212,9 +212,4 @@ public class PixelControllerEffect implements PixelControllerElement {
     public int getZoomOption() {
         return zoom.getZoomMode();
     }
-
-    public void setBpm(int bpm) {
-        bpmStrobo.setBpm(bpm);
-    }
-
 }

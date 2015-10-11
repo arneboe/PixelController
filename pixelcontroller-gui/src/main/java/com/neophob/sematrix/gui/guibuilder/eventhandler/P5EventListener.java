@@ -287,6 +287,14 @@ public final class P5EventListener implements ControlListener {
                 createMessage(ValidCommand.SOUND_MODE, value);
                 break;
 
+            case BPM:
+                createMessage(ValidCommand.BPM, value);
+                break;
+
+            case NO_BEAT_SPEED:
+                createMessage(ValidCommand.NO_BEAT_SPEED, String.valueOf(value));
+                break;
+
             default:
                 LOG.log(Level.INFO, "Invalid Object: " + selection + ", Value: " + value);
                 break;

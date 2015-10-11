@@ -19,9 +19,12 @@
 package com.neophob.sematrix.core.visual.effect;
 
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
+import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -29,31 +32,26 @@ import java.util.Random;
  *
  * @author michu, arne
  */
-public class BpmStrobo extends Effect {
+public class BeatStrobo extends Effect {
 
 	private boolean on; /**< Whether the strobe is on or off*/
-	private int offTime; /**<The time of half a strobe cycle. I.e. how long the strobe should be off */
 	private int cycleTime; /**<The time between two flashes */
 	private int flashTime; /**<How long a flash takes */
 	private long lastTime; /**<The time of the last update() call in millis*/
 	private long lastFlashTime; /**<Timestamp of the time that the flash was enabled */
 	private int[] offBuffer; /**<buffer that is returned when the strobo is off */
-	private FloatRangeOption bpmOption = new FloatRangeOption("BPM", 1, 600, 150);
 	private FloatRangeOption flashTimeOption = new FloatRangeOption("LENGTH", 0.01f, 1, 0.05f);
-	Random random = new Random();
+	private ISound sound;
 
-	public BpmStrobo(MatrixData matrix) {
+	public BeatStrobo(MatrixData matrix, ISound sound) {
 		super(matrix, EffectName.BPM_STROBO, ResizeName.QUALITY_RESIZE);
+		this.sound = sound;
 		lastTime = System.currentTimeMillis();
-		setBpm((int)bpmOption.getValue());
 		offBuffer = new int[1]; //will be resized later!
-		options.add(bpmOption);
 		options.add(flashTimeOption);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.effect.Effect#getBuffer(int[])
-	 */
+
 	public int[] getBuffer(int[] buffer) {
 		if (on) {
 			return buffer;
@@ -66,35 +64,27 @@ public class BpmStrobo extends Effect {
 			return offBuffer;
 		}
 	}
-		
-	/* (non-Javadoc)
-     * @see com.neophob.sematrix.core.effect.Effect#update()
-     */
+
     @Override
 	public void update() {
-		setBpm((int)bpmOption.getValue());
-		flashTime = (int)(flashTimeOption.getValue() * 1000.0f);
 		final long currentTime = System.currentTimeMillis();
-		if(currentTime - lastFlashTime >= flashTime) {
+		if(sound.isBeat())
+		{
+            System.out.println("beat " + getCurrentTimeStamp());
+			on = true;
+			lastFlashTime = currentTime;
+		}
+		else if(currentTime - lastFlashTime >= flashTime)
+		{
 			on = false;
 		}
-
-		if(currentTime - lastTime >= cycleTime) {
-			lastTime = currentTime;
-			lastFlashTime = currentTime;
-			on = true;
-		}
 	}
 
-	public void setBpm(int bpm) {
-		final double bpms = bpm / 60.0 / 1000.0;
-		cycleTime = (int)(1.0/bpms);
-	}
+    public static String getCurrentTimeStamp() {
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//dd/MM/yyyy
+        Date now = new Date();
+        String strDate = sdfDate.format(now);
+        return strDate;
+    }
 
-	@Override
-	public void shuffle() {
-		final int max = (int)bpmOption.getUpper();
-		final int min = (int)bpmOption.getLower();
-		bpmOption.setValue(random.nextInt((max - min) + 1) + min);
-	}
 }
