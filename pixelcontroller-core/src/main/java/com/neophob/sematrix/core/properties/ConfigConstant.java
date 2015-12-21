@@ -56,6 +56,8 @@ public final class ConfigConstant {
     public static final String E131_FIRST_UNIVERSE_ID = "e131.first.universe.id";
     public static final String E131_ROW1 = "e131.layout.row1";
     public static final String E131_ROW2 = "e131.layout.row2";
+    public static final String E131_ROW3 = "e131.layout.row3";
+    public static final String E131_ROW4 = "e131.layout.row4";
 
     public static final String UDP_IP = "udp.ip";
     public static final String UDP_PORT = "udp.port";

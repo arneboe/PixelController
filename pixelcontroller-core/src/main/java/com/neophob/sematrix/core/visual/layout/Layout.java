@@ -32,7 +32,7 @@ import com.neophob.sematrix.core.visual.OutputMapping;
  */
 public abstract class Layout implements Serializable {
 
-    /**
+        /**
      * The Enum LayoutName.
      */
     public enum LayoutName {
@@ -78,6 +78,9 @@ public abstract class Layout implements Serializable {
     /** The row2 size. */
     protected int row2Size;
 
+    protected int row3Size;
+    protected int row4Size;
+
     /**
      * Instantiates a new layout.
      * 
@@ -88,13 +91,15 @@ public abstract class Layout implements Serializable {
      * @param row2Size
      *            the row2 size
      */
-    public Layout(LayoutName layoutName, int row1Size, int row2Size) {
+    public Layout(LayoutName layoutName, int row1Size, int row2Size, int row3Size, int row4Size) {
         this.layoutName = layoutName;
         this.row1Size = row1Size;
         this.row2Size = row2Size;
+        this.row3Size = row3Size;
+        this.row4Size = row4Size;
 
-        LOG.log(Level.INFO, "Layout created: {0}, size row 1: {1}, row 2: {2}", new Object[] {
-                layoutName.toString(), row1Size, row2Size });
+        LOG.log(Level.INFO, "Layout created: {0}, size row 1: {1}, row 2: {2}, row3: {3}, row4: {4}", new Object[] {
+                layoutName.toString(), row1Size, row2Size, row3Size, row4Size});
     }
 
     /**
@@ -123,6 +128,10 @@ public abstract class Layout implements Serializable {
     public int getRow2Size() {
         return row2Size;
     }
+
+    public int getRow3Size() { return row3Size;}
+
+    public int getRow4Size() {return row4Size;}
 
     /**
      * Gets the layout name.

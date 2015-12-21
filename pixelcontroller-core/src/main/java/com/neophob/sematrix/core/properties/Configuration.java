@@ -94,11 +94,10 @@ public class Configuration implements Serializable {
 
     private transient Map<Integer, RGBAdjust> pixelInvadersCorrectionMap = new HashMap<Integer, RGBAdjust>();
 
-    /** The devices in row1. */
     private int devicesInRow1 = 0;
-
-    /** The devices in row2. */
     private int devicesInRow2 = 0;
+    private int devicesInRow3 = 0;
+    private int devicesInRow4 = 0;
 
     /** The output device x resolution. */
     private int deviceXResolution = 0;
@@ -236,7 +235,8 @@ public class Configuration implements Serializable {
             throw new IllegalArgumentException(ERROR_MULTIPLE_DEVICES_CONFIGURATED);
         }
 
-        int outputMappingSize = getOutputMappingValues().length;
+        //all output mappings need to have the same size :)
+        int outputMappingSize = getOutputMappingValues(0).length;
         if (isOutputSnakeCabeling() && outputMappingSize > 0) {
             LOG.log(Level.SEVERE, ERROR_MULTIPLE_CABLING_METHOD_CONFIGURATED);
             throw new IllegalArgumentException(ERROR_MULTIPLE_CABLING_METHOD_CONFIGURATED);
@@ -885,6 +885,8 @@ public class Configuration implements Serializable {
 
                 devicesInRow1 = 0;
                 devicesInRow2 = 0;
+                devicesInRow3 = 0;
+                devicesInRow4 = 0;
 
                 for (String s : value.split(ConfigConstant.DELIM)) {
                     try {
@@ -909,6 +911,33 @@ public class Configuration implements Serializable {
                     }
                 }
             }
+
+            value = config.getProperty(ConfigConstant.E131_ROW3);
+            if (StringUtils.isNotBlank(value)) {
+                for (String s : value.split(ConfigConstant.DELIM)) {
+                    try {
+                        DeviceConfig cfg = DeviceConfig.valueOf(StringUtils.strip(s));
+                        e131Device.add(cfg);
+                        devicesInRow3++;
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
+                    }
+                }
+            }
+
+            value = config.getProperty(ConfigConstant.E131_ROW4);
+            if (StringUtils.isNotBlank(value)) {
+                for (String s : value.split(ConfigConstant.DELIM)) {
+                    try {
+                        DeviceConfig cfg = DeviceConfig.valueOf(StringUtils.strip(s));
+                        e131Device.add(cfg);
+                        devicesInRow4++;
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
+                    }
+                }
+            }
+
         }
 
         return e131Device.size();
@@ -1163,7 +1192,7 @@ public class Configuration implements Serializable {
      * @return the nr of screens
      */
     public int getNrOfScreens() {
-        return devicesInRow1 + devicesInRow2;
+        return devicesInRow1 + devicesInRow2 + devicesInRow3 + devicesInRow4;
     }
 
     /**
@@ -1203,8 +1232,9 @@ public class Configuration implements Serializable {
             return new HorizontalLayout(devicesInRow1);
         }
 
-        if (devicesInRow1 > 0 && devicesInRow2 > 0 && devicesInRow1 == devicesInRow2) {
-            return new BoxLayout(devicesInRow1, devicesInRow2);
+        if (devicesInRow1 > 0 && devicesInRow2 > 0 && devicesInRow3 > 0 && devicesInRow4 > 0
+            && devicesInRow1 == devicesInRow2 && devicesInRow3 == devicesInRow1 && devicesInRow4 == devicesInRow1) {
+            return new BoxLayout(devicesInRow1, devicesInRow2, devicesInRow3, devicesInRow4);
         }
 
         throw new IllegalStateException("Illegal device configuration detected!");
@@ -1290,8 +1320,8 @@ public class Configuration implements Serializable {
         return deviceYResolution;
     }
 
-    public int[] getOutputMappingValues() {
-        String rawConfig = config.getProperty(ConfigConstant.OUTPUT_MAPPING);
+    public int[] getOutputMappingValues(final Integer i) {
+        String rawConfig = config.getProperty(ConfigConstant.OUTPUT_MAPPING + i.toString());
         if (rawConfig == null) {
             return new int[0];
         }

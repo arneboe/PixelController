@@ -71,7 +71,7 @@ public class OutputHelper {
      * @param yResolution
      * @return
      */
-    public static int[] manualMapping(int[] src, int[] mapping, int xResolution, int yResolution) {
+    public static int[] manualMappingOld(int[] src, int[] mapping, int xResolution, int yResolution) {
         int[] bufferTwo = new int[mapping.length];
         int length = src.length;
         int ofs = 0;
@@ -86,6 +86,20 @@ public class OutputHelper {
         }
         return bufferTwo;
     }
+
+    public static int[] manualMapping(int[] src, int[] mapping, int xResolution, int yResolution) {
+        int[] bufferTwo = new int[src.length];
+
+        for(int i = 0; i < src.length; ++i)
+        {
+            if(i < mapping.length)
+                bufferTwo[mapping[i]] = src[i];
+        }
+        return bufferTwo;
+    }
+
+
+
 
     /**
      * Convert buffer to15bit.

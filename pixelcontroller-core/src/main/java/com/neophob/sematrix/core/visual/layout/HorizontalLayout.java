@@ -42,7 +42,7 @@ public class HorizontalLayout extends Layout {
      *            the row2 size
      */
     public HorizontalLayout(int row1Size) {
-        super(LayoutName.HORIZONTAL, row1Size, 0);
+        super(LayoutName.HORIZONTAL, row1Size, 0,0,0);
 
         LOG.log(Level.INFO, "HorizontalLayout created, size row1: {0}, row2:{1}", new Object[] {
                 row1Size, row2Size });

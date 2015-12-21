@@ -33,7 +33,7 @@ public class BoxLayout extends Layout {
 
     private static final transient Logger LOG = Logger.getLogger(BoxLayout.class.getName());
 
-    private static final transient int YSIZE = 2;
+    private static final transient int YSIZE = 4;
     private static final transient int MAXVAL = 1000;
 
     /**
@@ -44,11 +44,11 @@ public class BoxLayout extends Layout {
      * @param row2Size
      *            the row2 size
      */
-    public BoxLayout(int row1Size, int row2Size) {
-        super(LayoutName.BOX, row1Size, row2Size);
+    public BoxLayout(int row1Size, int row2Size, int row3Size, int row4Size) {
+        super(LayoutName.BOX, row1Size, row2Size, row3Size, row4Size);
 
-        LOG.log(Level.INFO, "BoxLayout created, size row1: {0}, row 2: {1}", new Object[] {
-                row1Size, row2Size });
+        LOG.log(Level.INFO, "BoxLayout created, size row1: {0}, row 2: {1}, row 3:{2}, row 4: {3}", new Object[] {
+                row1Size, row2Size, row3Size, row4Size });
     }
 
     /**
@@ -63,8 +63,9 @@ public class BoxLayout extends Layout {
         int min = MAXVAL;
         OutputMapping o;
 
-        // we only have 2 rows
+        // we only have 4 rows
         for (int y = 0; y < YSIZE; y++) {
+            //FIXME assuems that row1Size == row2Size == row3Size == row4Size
             for (int x = 0; x < row1Size; x++) {
                 o = ioMapping.get(row1Size * y + x);
                 if (o.getVisualId() == fxInput) {
@@ -94,7 +95,7 @@ public class BoxLayout extends Layout {
         int min = MAXVAL;
         OutputMapping o;
 
-        // we only have 2 rows
+        // we only have 4 rows
         for (int x = 0; x < row1Size; x++) {
             for (int y = 0; y < YSIZE; y++) {
                 o = ioMapping.get(row1Size * y + x);
@@ -129,6 +130,7 @@ public class BoxLayout extends Layout {
         if (ret >= row1Size) {
             ret -= row1Size;
         }
+
 
         if (fxOnHowMayScreens == 1 || ret == 0) {
             return 0;
@@ -175,8 +177,14 @@ public class BoxLayout extends Layout {
             return 0;
         }
 
+        //FIXME HACK THAT ONLY WORKS FOR 1 DEVICE PER ROW
+        //return screenNr;
+        if(screenNr >= row1Size + row2Size + row3Size)
+            return 3;
+        if(screenNr >= row1Size + row2Size)
+            return 2;
         if (screenNr >= row1Size) {
-            return 1;
+           return 1;
         }
 
         return 0;

@@ -40,7 +40,7 @@ public class BeatStrobo extends Effect {
 	private long lastTime; /**<The time of the last update() call in millis*/
 	private long lastFlashTime; /**<Timestamp of the time that the flash was enabled */
 	private int[] offBuffer; /**<buffer that is returned when the strobo is off */
-	private FloatRangeOption flashTimeOption = new FloatRangeOption("LENGTH", 0.01f, 1, 0.05f);
+	private FloatRangeOption flashTimeOption = new FloatRangeOption("PIXEL", 0.0f, 200, 1);
 	private ISound sound;
 
 	public BeatStrobo(MatrixData matrix, ISound sound) {
@@ -53,31 +53,23 @@ public class BeatStrobo extends Effect {
 
 
 	public int[] getBuffer(int[] buffer) {
-		if (on) {
-			return buffer;
-		}
-		else
+		for(int i = 0; i < buffer.length; ++i)
 		{
-			if(offBuffer.length != buffer.length) {
-				offBuffer = new int[buffer.length];
+			if(i == ((int)flashTimeOption.getValue()))
+			{
+				buffer[i] = 128;
 			}
-			return offBuffer;
+			else
+			{
+				buffer[i] = 0;
+			}
 		}
+		return buffer;
 	}
 
     @Override
 	public void update() {
-		final long currentTime = System.currentTimeMillis();
-		if(sound.isBeat())
-		{
-            System.out.println("beat " + getCurrentTimeStamp());
-			on = true;
-			lastFlashTime = currentTime;
-		}
-		else if(currentTime - lastFlashTime >= flashTime)
-		{
-			on = false;
-		}
+
 	}
 
     public static String getCurrentTimeStamp() {
