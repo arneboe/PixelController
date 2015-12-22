@@ -114,13 +114,18 @@ public final class KeyboardHandler {
 
         if (key >= '1' && key < '9') {
             if (registerGuiClass != null) {
-                // convert a key-number (48-52) to an int between 0 and 4
-                int currentVisual = (int) key - 49;
-                registerGuiClass.activeVisual(currentVisual);
+                createMessage(ValidCommand.CHANGE_PRESET, (int) key - 49);
+                sendMsg(ValidCommand.LOAD_PRESET);
                 pixConServer.refreshGuiState();
             }
         }
+    }
 
+    private static void createMessage(ValidCommand validCommand, float newValue) {
+        String[] msg = new String[2];
+        msg[0] = "" + validCommand;
+        msg[1] = "" + (int) newValue;
+        pixConServer.sendMessage(msg);
     }
 
     private static void sendMsg(ValidCommand command) {
