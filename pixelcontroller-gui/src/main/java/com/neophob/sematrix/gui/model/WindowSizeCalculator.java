@@ -31,7 +31,7 @@ public class WindowSizeCalculator {
 	private static final Logger LOG = Logger.getLogger(WindowSizeCalculator.class.getName());
 
 	//defined by the gui
-	public static final int MINIMAL_WINDOW_WIDTH = 820;
+	public static final int MINIMAL_WINDOW_WIDTH = 900;
 	public static final int MINIMAL_WINDOW_HEIGHT = 660;
 	public static final int MINIMAL_VISUAL_WIDTH = 170;
 	public static final int MINIMAL_VISUAL_HEIGHT = 170;
