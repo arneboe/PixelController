@@ -11,6 +11,7 @@ public class SoundCombiner implements ISound
 {
     private BpmSound bpmSound = new BpmSound();
     private SoundMinimKctess5 audioSound = new SoundMinimKctess5();
+    private SoundMinim minimSound = new SoundMinim(0.0005f);
 
     private ISound currentSound;
     private float noBeatSpeed;
@@ -28,7 +29,8 @@ public class SoundCombiner implements ISound
     public enum SoundMode
     {
         BPM(0),
-        AUDIO(1);
+        AUDIO(1),
+        AUDIO2(2);
 
         private int id;
 
@@ -55,6 +57,8 @@ public class SoundCombiner implements ISound
             case AUDIO:
                 currentSound = audioSound;
                 break;
+            case AUDIO2:
+                currentSound = minimSound;
             default:
                 throw new NotImplementedException();
         }

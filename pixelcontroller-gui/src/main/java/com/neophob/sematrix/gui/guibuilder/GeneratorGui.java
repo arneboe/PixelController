@@ -434,15 +434,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                 .moveTo(generatorTab);
         genSoundOptsYOffset += 15;
 
-        soundModeList = cp5.addDropdownList(GuiElement.SOUND_MODE_DROPDOWN.guiText(),
-                GENERIC_X_OFS, genSoundOptsYOffset, Theme.DROPBOXLIST_LENGTH, 140);
-        Theme.themeDropdownList(soundModeList);
-
-        for (SoundCombiner.SoundMode name : SoundCombiner.SoundMode.values())
-        {
-            soundModeList.addItem(name.guiText(), name.getId());
-        }
-        soundModeList.setLabel(soundModeList.getItem(0).getName());
         genSoundOptsYOffset += 15;
         bpmSlider = cp5.addSlider(GuiElement.BPM.guiText(), 1f, 500, 1f,
                 GENERIC_X_OFS, genSoundOptsYOffset, 140, 14);
@@ -450,6 +441,18 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         genSoundOptsYOffset += 16;
         noBeatSpeed = cp5.addSlider(GuiElement.NO_BEAT_SPEED.guiText(), 0f, 1f, 1f,
                 GENERIC_X_OFS, genSoundOptsYOffset, 140, 14);
+
+        genSoundOptsYOffset -= 31;
+        soundModeList = cp5.addDropdownList(GuiElement.SOUND_MODE_DROPDOWN.guiText(),
+                GENERIC_X_OFS, genSoundOptsYOffset, Theme.DROPBOXLIST_LENGTH, 140);
+        soundModeList.moveTo(generatorTab);
+        Theme.themeDropdownList(soundModeList);
+
+        for (SoundCombiner.SoundMode name : SoundCombiner.SoundMode.values())
+        {
+            soundModeList.addItem(name.guiText(), name.getId());
+        }
+        soundModeList.setLabel(soundModeList.getItem(0).getName());
 
 
         // GENERATOR OPTIONS

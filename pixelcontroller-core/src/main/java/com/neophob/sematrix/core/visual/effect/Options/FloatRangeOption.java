@@ -6,6 +6,7 @@ public class FloatRangeOption implements IOption {
     private final float min;
     private final float max;
     private float value;
+    private boolean hasChanged = false;
 
     public FloatRangeOption(final String name, final float min, final float max, final float value)
     {
@@ -27,5 +28,13 @@ public class FloatRangeOption implements IOption {
         return max;
     }
     public float getValue() { return value; }
-    public void setValue(final float v) { value = v; }
+    public void setValue(final float v) {
+        value = v;
+        hasChanged = true;
+    }
+    public boolean changed() {
+      boolean ret = hasChanged;
+      hasChanged = false;
+        return ret;
+    }
 }

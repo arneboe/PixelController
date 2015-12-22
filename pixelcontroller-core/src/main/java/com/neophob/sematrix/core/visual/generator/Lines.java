@@ -107,8 +107,17 @@ public class Lines extends Generator {
                            getInternalBufferYSize(),127));
         lines.add(new Line(getInternalBufferXSize()/2 -1, 0, getInternalBufferXSize()/2 - 1, getInternalBufferYSize()/2, internalBuffer, getInternalBufferXSize(),
                 getInternalBufferYSize(),127));
+        lines.add(new Line(getInternalBufferXSize()/2 -2, 0, getInternalBufferXSize()/2 - 1, getInternalBufferYSize()/2, internalBuffer, getInternalBufferXSize(),
+                getInternalBufferYSize(),127));
         lines.add(new Line(getInternalBufferXSize()/2 + 1, 0, getInternalBufferXSize()/2 + 1, getInternalBufferYSize()/2, internalBuffer, getInternalBufferXSize(),
                 getInternalBufferYSize(),127));
+        lines.add(new Line(getInternalBufferXSize()/2 +2, 0, getInternalBufferXSize()/2 - 1, getInternalBufferYSize()/2, internalBuffer, getInternalBufferXSize(),
+                getInternalBufferYSize(),127));
+        lines.add(new Line(getInternalBufferXSize()/2 + 3, 0, getInternalBufferXSize()/2 + 1, getInternalBufferYSize()/2, internalBuffer, getInternalBufferXSize(),
+                getInternalBufferYSize(),127));
+        lines.add(new Line(getInternalBufferXSize()/2 -3, 0, getInternalBufferXSize()/2 - 1, getInternalBufferYSize()/2, internalBuffer, getInternalBufferXSize(),
+                getInternalBufferYSize(),127));
+
 
         lines.add(new Line(getInternalBufferXSize() / 2, getInternalBufferYSize() - 1,getInternalBufferXSize() / 2,
                 getInternalBufferYSize()/2, internalBuffer, getInternalBufferXSize(),
@@ -117,6 +126,18 @@ public class Lines extends Generator {
                 getInternalBufferYSize()/2, internalBuffer, getInternalBufferXSize(),
                 getInternalBufferYSize(),80));
         lines.add(new Line(getInternalBufferXSize() / 2 + 1, getInternalBufferYSize() - 1,getInternalBufferXSize() / 2 + 1,
+                getInternalBufferYSize()/2, internalBuffer, getInternalBufferXSize(),
+                getInternalBufferYSize(),80));
+        lines.add(new Line(getInternalBufferXSize() / 2 - 2, getInternalBufferYSize() - 1,getInternalBufferXSize() / 2 -1,
+                getInternalBufferYSize()/2, internalBuffer, getInternalBufferXSize(),
+                getInternalBufferYSize(),80));
+        lines.add(new Line(getInternalBufferXSize() / 2 + 2, getInternalBufferYSize() - 1,getInternalBufferXSize() / 2 + 1,
+                getInternalBufferYSize()/2, internalBuffer, getInternalBufferXSize(),
+                getInternalBufferYSize(),80));
+        lines.add(new Line(getInternalBufferXSize() / 2 - 3, getInternalBufferYSize() - 1,getInternalBufferXSize() / 2 -1,
+                getInternalBufferYSize()/2, internalBuffer, getInternalBufferXSize(),
+                getInternalBufferYSize(),80));
+        lines.add(new Line(getInternalBufferXSize() / 2 + 3, getInternalBufferYSize() - 1,getInternalBufferXSize() / 2 + 1,
                 getInternalBufferYSize()/2, internalBuffer, getInternalBufferXSize(),
                 getInternalBufferYSize(),80));
     }
