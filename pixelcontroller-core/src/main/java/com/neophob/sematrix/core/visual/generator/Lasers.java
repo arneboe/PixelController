@@ -110,7 +110,7 @@ public class Lasers extends Generator {
     }
 
     private FloatRangeOption heightOption = new FloatRangeOption("Height", 1, 20, 5);
-    private FloatRangeOption amountOption = new FloatRangeOption("Amount", 1, 30, 1);
+    private FloatRangeOption amountOption = new FloatRangeOption("Amount", 1, 60, 1);
     private FloatRangeOption colorOption = new FloatRangeOption("Color", 1, 255, 1);
     public static Random rand = new Random();
 
