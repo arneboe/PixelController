@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.properties.ValidCommand;
+import com.neophob.sematrix.gui.guibuilder.GeneratorGui;
 import com.neophob.sematrix.gui.guibuilder.GuiCallbackAction;
 import com.neophob.sematrix.gui.service.PixConServer;
 
@@ -39,6 +40,7 @@ public final class KeyboardHandler {
 
     private static GuiCallbackAction registerGuiClass;
     private static PixConServer pixConServer;
+    public static GeneratorGui gui;
 
     private KeyboardHandler() {
         // no instance
@@ -102,19 +104,102 @@ public final class KeyboardHandler {
                 break;
         }
 
-        // select previous/next tab
-        switch (keyCode) {
-            case KeyEvent.VK_LEFT:
-                registerGuiClass.selectPreviousTab();
-                break;
-            case KeyEvent.VK_RIGHT:
-                registerGuiClass.selectNextTab();
-                break;
+        if (registerGuiClass != null) {
+            // select previous/next tab
+            switch (keyCode) {
+                case KeyEvent.VK_LEFT:
+                    gui.decreaseBrightness();
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    gui.increaseBrightness();
+                    break;
+                case KeyEvent.VK_UP:
+                    if(gui != null)
+                    {
+                        gui.increaseSpeed();
+                    }
+                    break;
+                case KeyEvent.VK_DOWN:
+                    if(gui != null)
+                    {
+                        gui.decreaseSpeed();
+                    }
+                    break;
+                case KeyEvent.VK_F1:
+                    createMessage(ValidCommand.CHANGE_PRESET, 11);
+                    sendMsg(ValidCommand.LOAD_PRESET);
+                    pixConServer.refreshGuiState();
+                    break;
+                case KeyEvent.VK_F2:
+                    createMessage(ValidCommand.CHANGE_PRESET, 12);
+                    sendMsg(ValidCommand.LOAD_PRESET);
+                    pixConServer.refreshGuiState();
+                    break;
+                case KeyEvent.VK_F3:
+                    createMessage(ValidCommand.CHANGE_PRESET, 13);
+                    sendMsg(ValidCommand.LOAD_PRESET);
+                    pixConServer.refreshGuiState();
+                    break;
+                case KeyEvent.VK_F4:
+                    createMessage(ValidCommand.CHANGE_PRESET, 14);
+                    sendMsg(ValidCommand.LOAD_PRESET);
+                    pixConServer.refreshGuiState();
+                    break;
+                case KeyEvent.VK_F5:
+                    createMessage(ValidCommand.CHANGE_PRESET, 15);
+                    sendMsg(ValidCommand.LOAD_PRESET);
+                    pixConServer.refreshGuiState();
+                    break;
+                case KeyEvent.VK_F6:
+                    createMessage(ValidCommand.CHANGE_PRESET, 16);
+                    sendMsg(ValidCommand.LOAD_PRESET);
+                    pixConServer.refreshGuiState();
+                    break;
+                case KeyEvent.VK_F7:
+                    createMessage(ValidCommand.CHANGE_PRESET, 17);
+                    sendMsg(ValidCommand.LOAD_PRESET);
+                    pixConServer.refreshGuiState();
+                    break;
+                case KeyEvent.VK_F8:
+                    createMessage(ValidCommand.CHANGE_PRESET, 18);
+                    sendMsg(ValidCommand.LOAD_PRESET);
+                    pixConServer.refreshGuiState();
+                    break;
+                case KeyEvent.VK_F9:
+                    createMessage(ValidCommand.CHANGE_PRESET, 19);
+                    sendMsg(ValidCommand.LOAD_PRESET);
+                    pixConServer.refreshGuiState();
+                    break;
+                case KeyEvent.VK_F10:
+                    createMessage(ValidCommand.CHANGE_PRESET, 20);
+                    sendMsg(ValidCommand.LOAD_PRESET);
+                    pixConServer.refreshGuiState();
+                    break;
+                case KeyEvent.VK_F11:
+                    createMessage(ValidCommand.CHANGE_PRESET, 21);
+                    sendMsg(ValidCommand.LOAD_PRESET);
+                    pixConServer.refreshGuiState();
+                    break;
+                case KeyEvent.VK_F12:
+                    createMessage(ValidCommand.CHANGE_PRESET, 22);
+                    sendMsg(ValidCommand.LOAD_PRESET);
+                    pixConServer.refreshGuiState();
+                    break;
+            }
         }
 
-        if (key >= '1' && key < '9') {
+        if (key >= '1' && key <= '9') {
             if (registerGuiClass != null) {
                 createMessage(ValidCommand.CHANGE_PRESET, (int) key - 49);
+                sendMsg(ValidCommand.LOAD_PRESET);
+                pixConServer.refreshGuiState();
+            }
+        }
+
+        if(key == '0')
+        {
+            if (registerGuiClass != null) {
+                createMessage(ValidCommand.CHANGE_PRESET, 10);
                 sendMsg(ValidCommand.LOAD_PRESET);
                 pixConServer.refreshGuiState();
             }

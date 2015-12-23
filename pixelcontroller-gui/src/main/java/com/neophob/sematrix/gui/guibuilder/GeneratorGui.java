@@ -186,6 +186,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
     public GeneratorGui(PixConServer pixelController, WindowSizeCalculator wsc) {
         super();
+        KeyboardHandler.gui = this;
         this.pixConServer = pixelController;
         this.windowWidth = wsc.getWindowWidth();
         this.windowHeight = wsc.getWindowHeight();
@@ -373,7 +374,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         generatorSpeedSlider.setDecimalPrecision(0);
         generatorSpeedSlider.setRange(0, 200);
         generatorSpeedSlider.setLabelVisible(true);
-        generatorSpeedSlider.setNumberOfTickMarks(21);
+        generatorSpeedSlider.setNumberOfTickMarks(200);
+        generatorSpeedSlider.showTickMarks(false);
 
         // beat animation
         cp5.addTextlabel("beatWorkmode", messages.getString("GeneratorGui.BEAT_WORKMODE"),
@@ -517,9 +519,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         brightnessControll.setSliderMode(Slider.FIX);
         brightnessControll.setGroup(outputTab);
         brightnessControll.setDecimalPrecision(0);
-        brightnessControll.setNumberOfTickMarks(11);
+        brightnessControll.setNumberOfTickMarks(100);
         brightnessControll.setRange(0, 100);
-        brightnessControll.setLabelVisible(false);
+        brightnessControll.showTickMarks(false);
+        brightnessControll.setLabelVisible(true);
 
         int nrOfOutputs = pixConServer.getConfig().getNrOfScreens();
         selectedOutputs = cp5.addRadioButton(GuiElement.CURRENT_OUTPUT.guiText(), GENERIC_X_OFS,
@@ -1635,5 +1638,26 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     {
         HashMap<String, IOption> activeOptions = getActiveOptions(target);
         return activeOptions.get(name);
+    }
+
+    public void increaseSpeed() {
+        final float newValue = generatorSpeedSlider.getValue() + 5;
+        generatorSpeedSlider.setValue(newValue);
+    }
+
+    public void decreaseSpeed()
+    {
+        final float newValue = generatorSpeedSlider.getValue() - 5;
+        generatorSpeedSlider.setValue(newValue);
+    }
+
+    public void increaseBrightness() {
+        final float newValue = brightnessControll.getValue() + 2;
+        brightnessControll.setValue(newValue);
+    }
+
+    public void decreaseBrightness() {
+        final float newValue = brightnessControll.getValue() - 2;
+        brightnessControll.setValue(newValue);
     }
 }
