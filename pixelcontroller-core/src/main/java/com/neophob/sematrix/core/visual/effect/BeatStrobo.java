@@ -40,7 +40,7 @@ public class BeatStrobo extends Effect {
 	private long lastTime; /**<The time of the last update() call in millis*/
 	private long lastFlashTime; /**<Timestamp of the time that the flash was enabled */
 	private int[] offBuffer; /**<buffer that is returned when the strobo is off */
-	private FloatRangeOption flashTimeOption = new FloatRangeOption("PIXEL", 0.0f, 200, 1);
+	private FloatRangeOption flashTimeOption = new FloatRangeOption("FLASH_LEN", 1, 400, 5);
 	private ISound sound;
 
 	public BeatStrobo(MatrixData matrix, ISound sound) {
@@ -53,30 +53,38 @@ public class BeatStrobo extends Effect {
 
 
 	public int[] getBuffer(int[] buffer) {
-		for(int i = 0; i < buffer.length; ++i)
-		{
-			if(i == ((int)flashTimeOption.getValue()))
-			{
-				buffer[i] = 128;
-			}
-			else
-			{
-				buffer[i] = 0;
-			}
+		if (on) {
+			return buffer;
 		}
-		return buffer;
+		else
+		{
+			if(offBuffer.length != buffer.length) {
+				offBuffer = new int[buffer.length];
+			}
+			return offBuffer;
+		}
 	}
 
-    @Override
+	@Override
 	public void update() {
-
+		final long currentTime = System.currentTimeMillis();
+		flashTime = (int) flashTimeOption.getValue();
+		if(sound.isBeat())
+		{
+			on = true;
+			lastFlashTime = currentTime;
+		}
+		else if(currentTime - lastFlashTime >= flashTime)
+		{
+			on = false;
+		}
 	}
 
-    public static String getCurrentTimeStamp() {
-        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//dd/MM/yyyy
-        Date now = new Date();
-        String strDate = sdfDate.format(now);
-        return strDate;
-    }
+	public static String getCurrentTimeStamp() {
+		SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//dd/MM/yyyy
+		Date now = new Date();
+		String strDate = sdfDate.format(now);
+		return strDate;
+	}
 
 }

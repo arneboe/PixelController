@@ -64,7 +64,7 @@ public abstract class Generator implements IShuffleState {
         NOISE(14),
         LINES(15),
         LINES2(16),
-        LASERS(17);
+        LASERS(17);//, AREAS(18);
 
         /** The id. */
         private int id;

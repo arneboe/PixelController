@@ -122,6 +122,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
         allGenerators.add(new Lines(matrix, GeneratorName.LINES, Resize.ResizeName.QUALITY_RESIZE));
         allGenerators.add(new Lines2(matrix, GeneratorName.LINES2, Resize.ResizeName.QUALITY_RESIZE));
         allGenerators.add(new Lasers(matrix, GeneratorName.LASERS, Resize.ResizeName.QUALITY_RESIZE));
+        //allGenerators.add(new Areas(matrix, GeneratorName.AREAS, Resize.ResizeName.QUALITY_RESIZE));
         LOG.log(Level.INFO, "Init finished");
     }
 
