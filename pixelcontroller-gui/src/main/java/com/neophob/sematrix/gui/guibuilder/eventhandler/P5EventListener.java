@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.visual.effect.Options.IOption;
 import com.neophob.sematrix.core.visual.effect.Options.Options;
+import com.neophob.sematrix.gui.HardwareController.IHardwareController;
 import com.neophob.sematrix.gui.guibuilder.GeneratorGui;
 import com.neophob.sematrix.gui.model.GuiElement;
 import com.neophob.sematrix.gui.service.PixConServer;
@@ -81,8 +82,28 @@ public final class P5EventListener implements ControlListener {
         int intVal;
         String name;
 
+        if(theEvent.getName().equals("TEMP1")) {
+            callback.hwSubscriber.buttonPressed(0);
+            return;
+        }
+        if(theEvent.getName().equals("TEMP2")) {
+            callback.hwSubscriber.buttonPressed(1);
+            return;
+        }
+        if(theEvent.getName().equals("TEMP3")) {
+            callback.hwSubscriber.buttonPressed(2);
+            return;
+        }
+        if(theEvent.getName().equals("TEMP4")) {
+            callback.hwSubscriber.buttonPressed(3);
+            return;
+        }
+        if(theEvent.getName().equals("TEMPSLIDER")) {
+            callback.hwSubscriber.sliderChanged(0, (int)theEvent.getValue());
+        }
 
-        if (theEvent.isGroup()) {
+
+            if (theEvent.isGroup()) {
                        // check if the Event was triggered from a ControlGroup
             // LOG.log(Level.INFO,
             // theEvent.getGroup().getValue()+" from "+theEvent.getGroup());
