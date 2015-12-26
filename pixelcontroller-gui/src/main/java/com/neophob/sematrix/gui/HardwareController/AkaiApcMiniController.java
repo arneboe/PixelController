@@ -1,14 +1,15 @@
 package com.neophob.sematrix.gui.HardwareController;
 import javax.sound.midi.*;
 
-/**
- * Created by arne on 26.12.2015.
+/** @see http://community.akaipro.com/akai_professional/topics/midi-information-for-apc-mini2
+ *       for midi protocol
  */
-public class AkaiApcMiniController implements IHardwareController {
+public class AkaiApcMiniController implements IHardwareController, Receiver {
 
     private IHardwareControllerSubscriber subscriber;
     private MidiDevice device;
     private Receiver receiver;
+    private Transmitter transmitter;
     private ShortMessage msg; //buffered for repeated use
 
     public AkaiApcMiniController() {
@@ -17,6 +18,8 @@ public class AkaiApcMiniController implements IHardwareController {
             try {
                 device.open();
                 receiver = device.getReceiver();
+                //register this as receiver for midi data from the device
+                device.getTransmitter().setReceiver(this);
                 msg = new ShortMessage();
             } catch (MidiUnavailableException e) {
                 e.printStackTrace();
@@ -33,7 +36,7 @@ public class AkaiApcMiniController implements IHardwareController {
     public void setButtonState(int button, HWButtonState state) {
         if(button >= 0 && button < 64) //3 color push buttons
         {
-            int cmd = 0;
+            int cmd;
             switch(state) {
 
                 case RED:
@@ -65,7 +68,7 @@ public class AkaiApcMiniController implements IHardwareController {
             send(button, cmd);
         }
         else if (button >= 64 && button < 72) { //red push buttons
-            int cmd = 0;
+            int cmd;
             switch (state) {
                 case OFF:
                     cmd = 0;
@@ -88,7 +91,7 @@ public class AkaiApcMiniController implements IHardwareController {
             send(button, cmd);
         }
         else if(button >= 82 && button < 90) { //green push buttons
-            int cmd = 0;
+            int cmd;
             switch(state) {
                 case GREEN:
                 case ON:
@@ -111,7 +114,7 @@ public class AkaiApcMiniController implements IHardwareController {
             send(button, cmd);
         }
     }
-
+    /**Send a NOTE_ON message with two byte payload */
     private void send( final int byte1, final int byte2) {
         try {
             msg.setMessage(ShortMessage.NOTE_ON, byte1, byte2);
@@ -119,5 +122,16 @@ public class AkaiApcMiniController implements IHardwareController {
         } catch (InvalidMidiDataException e) {
             e.printStackTrace();
         }
+    }
+
+    /**Is called when midi data is received from the device */
+    @Override
+    public void send(MidiMessage message, long timeStamp) {
+        System.out.println("received: " + message.toString());
+    }
+
+    @Override
+    public void close() {
+        //only here because the Receiver interface requires it. but we don't need to close anything.
     }
 }
