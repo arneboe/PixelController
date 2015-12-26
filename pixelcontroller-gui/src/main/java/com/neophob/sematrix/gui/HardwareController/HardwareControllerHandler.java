@@ -23,7 +23,7 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber 
 
 
     @Override
-    public void buttonPressed(IHardwareController.HWButton button) {
+    public void buttonPressed(int button) {
 
         createMessage(ValidCommand.CHANGE_PRESET, buttonToPreset(button));
         sendMsg(ValidCommand.LOAD_PRESET);
@@ -31,7 +31,7 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber 
     }
 
     @Override
-    public void sliderChanged(IHardwareController.HWSlider slider, int newValue) {
+    public void sliderChanged(int slider, int newValue) {
         if(slider == speedSlider) {
             final int val = map(newValue, 0, 127, 0, 200);
             createMessage(ValidCommand.GENERATOR_SPEED, val);

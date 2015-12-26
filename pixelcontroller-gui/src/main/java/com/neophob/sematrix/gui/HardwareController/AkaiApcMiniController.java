@@ -128,6 +128,18 @@ public class AkaiApcMiniController implements IHardwareController, Receiver {
     @Override
     public void send(MidiMessage message, long timeStamp) {
         System.out.println("received: " + message.toString());
+        if(subscriber != null) {
+            if(message.getStatus() == ShortMessage.NOTE_OFF) { //button released
+                final int button = message.getMessage()[0];
+                subscriber.buttonPressed(button);
+            }
+            else if(message.getStatus() == ShortMessage.CONTROL_CHANGE) { //slider moved
+                final byte[] msg = message.getMessage();
+                final int slider = msg[0];
+                final int value = msg[1];
+                subscriber.sliderChanged(slider, value);
+            }
+        }
     }
 
     @Override
