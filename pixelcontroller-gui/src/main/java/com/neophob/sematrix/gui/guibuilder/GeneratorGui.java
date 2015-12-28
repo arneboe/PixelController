@@ -654,7 +654,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         presetButtons = cp5.addRadioButton(GuiElement.PRESET_BUTTONS.guiText())
                 .setPosition(10, yPosStartDrowdown).setSize(24, 14).setColorForeground(color(120))
                 .setColorActive(color(255)).setColorLabel(color(255)).setItemsPerRow(8)
-                .setSpacingColumn(55).setNoneSelectedAllowed(false);
+                .setSpacingColumn(80).setNoneSelectedAllowed(false);
 
         for (i = 0; i <  PresetService.NR_OF_PRESET_SLOTS; i++) {
             String label = "" + i;
@@ -1099,7 +1099,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                     assert(t != null);
                     t.setColorBackground(color(150));
                     if(s.getName().length() > 0) {
-                        t.setLabel(s.getName().substring(0, min(8, s.getName().length())));
+                        t.setLabel(s.getName().substring(0, min(13, s.getName().length())));
                     }
                 }
                 ++i;
