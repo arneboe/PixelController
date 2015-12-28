@@ -82,27 +82,6 @@ public final class P5EventListener implements ControlListener {
         int intVal;
         String name;
 
-        if(theEvent.getName().equals("TEMP1")) {
-            callback.hwSubscriber.buttonPressed(0);
-            return;
-        }
-        if(theEvent.getName().equals("TEMP2")) {
-            callback.hwSubscriber.buttonPressed(1);
-            return;
-        }
-        if(theEvent.getName().equals("TEMP3")) {
-            callback.hwSubscriber.buttonPressed(2);
-            return;
-        }
-        if(theEvent.getName().equals("TEMP4")) {
-            callback.hwSubscriber.buttonPressed(3);
-            return;
-        }
-        if(theEvent.getName().equals("TEMPSLIDER")) {
-            callback.hwSubscriber.sliderChanged(0, (int)theEvent.getValue());
-        }
-
-
             if (theEvent.isGroup()) {
                        // check if the Event was triggered from a ControlGroup
             // LOG.log(Level.INFO,
