@@ -33,6 +33,9 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
         hw.subscribe(this);
         server.observeVisualState(this); //register to get updates if the user changes something in the gui manually
         selectedPreset = server.getConfig().loadPresetOnStart();
+        if(selectedPreset < 0) {
+            selectedPreset = 0; //bad hack but the gui does the same
+        }
         displayPreset(selectedPreset);
     }
 

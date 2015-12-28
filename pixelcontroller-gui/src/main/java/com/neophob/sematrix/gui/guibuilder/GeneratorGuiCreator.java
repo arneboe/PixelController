@@ -24,6 +24,8 @@ import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 
+import com.neophob.sematrix.gui.HardwareController.HardwareControllerHandler;
+import com.neophob.sematrix.gui.HardwareController.IHardwareController;
 import processing.core.PApplet;
 import processing.core.PImage;
 
