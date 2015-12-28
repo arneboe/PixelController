@@ -107,8 +107,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private DropdownList generatorListTwo, effectListTwo;
     private DropdownList soundModeList;
     private Slider bpmSlider;
-    private Slider noBeatSpeed;
-    private Slider beatSpeed;
     private DropdownList mixerList;
     private RadioButton selectedVisualList;
     private RadioButton selectedOutputs;
