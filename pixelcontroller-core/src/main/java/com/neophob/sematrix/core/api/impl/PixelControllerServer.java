@@ -18,9 +18,7 @@
  */
 package com.neophob.sematrix.core.api.impl;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.util.List;
 import java.util.Observable;
 import java.util.Properties;
@@ -29,6 +27,7 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.api.CallbackMessageInterface;
 import com.neophob.sematrix.core.api.PixelController;
+import com.neophob.sematrix.core.glue.impl.FileUtilsLocalImpl;
 import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.visual.color.ColorSet;
 import com.neophob.sematrix.core.visual.color.IColorSet;
@@ -131,4 +130,28 @@ public abstract class PixelControllerServer extends Observable implements PixelC
         }
 
     }
+
+    public static void appendColorPalette(String color) {
+        final String dataDir = new FileUtilsLocalImpl().getDataDir();
+        String filename = dataDir + File.separator + PALETTE_CONFIG_FILENAME;
+        Writer output = null;
+        try {
+            output = new BufferedWriter(new FileWriter(filename, true));
+            output.append(color);
+            output.append(System.getProperty("line.separator"));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            if(null != output)
+                try {
+                    output.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+        }
+
+    }
+
 }

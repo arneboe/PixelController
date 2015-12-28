@@ -107,6 +107,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private DropdownList generatorListTwo, effectListTwo;
     private DropdownList soundModeList;
     private Slider bpmSlider;
+    private Slider noBeatSpeed;
+    private Slider beatSpeed;
     private DropdownList mixerList;
     private RadioButton selectedVisualList;
     private RadioButton selectedOutputs;
@@ -870,6 +872,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                 "outputDevice", messages.getString("GeneratorGui.OUTPUT_DEVICE"), GENERIC_X_OFS + xSizeForEachWidget * 3, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel();  //$NON-NLS-2$
         cp5.addTextlabel(
                 "outputDeviceName", getOutputDeviceName(), 15 + GENERIC_X_OFS + xSizeForEachWidget * 3, 2 + GENERIC_Y_OFS + 10).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); 
+
+        cp5.addButton(GuiElement.ADD_COLORSET.guiText(), 0, 500,
+                500, 110, 15);
+
 
         // register event listener
         cp5.addListener(listener);

@@ -9,9 +9,9 @@ import java.util.ArrayList;
  * A ColorSet that is initialized using hsv colors
  */
 //FIXME this class should extend ColorSet because most of the methods are identical!
-public class HsvColorSet implements IColorSet
+public class  HsvColorSet implements IColorSet
 {
-    private final String name;
+    private String name;
     private ArrayList<HsvColor> colors;
     /**look up table for rgb values*/
     private transient int[] precalc;
@@ -24,15 +24,44 @@ public class HsvColorSet implements IColorSet
         precalculateRbgValues(precalc, colors);
     }
 
+    public HsvColorSet(String name) {
+        this.name = name;
+        this.colors = new ArrayList<HsvColor>();
+        precalc = new int[256];
+    }
+
+    public void appendColor(HsvColor col) {
+        colors.add(col);
+        precalculateRbgValues(precalc, colors);
+    }
+
+    public void removeLastColor() {
+        if(null == colors) {
+            return;
+        }
+        if(colors.size() == 0) {
+            return;
+        }
+        colors.remove(colors.size() - 1);
+        precalculateRbgValues(precalc, colors);
+    }
+
     private void precalculateRbgValues(final int[] lut, final ArrayList<HsvColor> colors)
     {
         if(colors.size() == 0)
         {
-            throw new RuntimeException("A hsv colorset should consist of at least one color");
+            for(int i = 0; i <= 128; ++i) {
+                precalc[i] = 0;
+            }
         }
         else if(colors.size() == 1)
         {
-            throw new NotImplementedException();
+            for(int i = 0; i <=128; ++i) {
+                final float h = colors.get(0).h / 360f;
+                final float s = colors.get(0).s / 100f;
+                final float v = colors.get(0).v / 100f;
+                precalc[i] = java.awt.Color.HSBtoRGB(h, s, v);
+            }
         }
         else
         {
@@ -57,12 +86,11 @@ public class HsvColorSet implements IColorSet
                 interpolateColors(currentColor, nextColor, startIdx, endIdx, lut);
                 startIdx = endIdx;
             }
-            //copy inverted colors
-            int j = 127;
-            for(int i = 128; i < 256; ++i, --j) {
-                lut[i] = lut[j];
-            }
-
+        }
+        //copy inverted colors
+        int j = 127;
+        for(int i = 128; i < 256; ++i, --j) {
+            lut[i] = lut[j];
         }
     }
 
@@ -99,6 +127,11 @@ public class HsvColorSet implements IColorSet
     }
 
     @Override
+    public void setName(String n) {
+        name = n;
+    }
+
+    @Override
     public int getSmoothColor(int pos)
     {
         assert(pos >= 0);
@@ -131,5 +164,14 @@ public class HsvColorSet implements IColorSet
             return -1;
         }
         return this.getName().compareTo(otherColorSet.getName());
+    }
+
+    @Override
+    public String toString() {
+        String text = "HSV: ";
+        for(HsvColor c : colors) {
+            text += c.h + "," + c.s + "," + c.v + "; ";
+        }
+        return text;
     }
 }

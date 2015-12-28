@@ -27,6 +27,7 @@ import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.visual.effect.Options.IOption;
 import com.neophob.sematrix.core.visual.effect.Options.Options;
 import com.neophob.sematrix.gui.HardwareController.IHardwareController;
+import com.neophob.sematrix.gui.guibuilder.ColorsetDesigner;
 import com.neophob.sematrix.gui.guibuilder.GeneratorGui;
 import com.neophob.sematrix.gui.model.GuiElement;
 import com.neophob.sematrix.gui.service.PixConServer;
@@ -35,6 +36,8 @@ import controlP5.ControlEvent;
 import controlP5.ControlListener;
 import controlP5.ControlP5;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import javax.swing.*;
 
 /**
  * GUI Listener
@@ -134,6 +137,16 @@ public final class P5EventListener implements ControlListener {
         }
 
         switch (selection) {
+            case ADD_COLORSET:
+                ColorsetDesigner designer = new ColorsetDesigner();
+                designer.init();
+                JFrame childFrame = new JFrame("New Colorset");
+                childFrame.setResizable(false);
+                childFrame.add(designer);
+                childFrame.setBounds(0, 0, 500, 500);
+                designer.setBounds(0, 0, 500, 500);
+                childFrame.setVisible(true);
+                break;
             case EFFECT_ONE_DROPDOWN:
             case EFFECT_TWO_DROPDOWN:
                 LOG.log(Level.INFO, "EFFECT Value: " + value);

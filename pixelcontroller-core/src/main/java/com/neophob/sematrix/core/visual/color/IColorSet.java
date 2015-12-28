@@ -27,6 +27,8 @@ public interface IColorSet extends Comparable<IColorSet> {
      */
     String getName();
 
+    void setName(final String n);
+
     /**
      * return a color defined in this color set
      * 

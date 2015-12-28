@@ -18,8 +18,10 @@
  */
 package com.neophob.sematrix.core.visual.color;
 
+import java.awt.*;
 import java.io.Serializable;
 import java.util.*;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,6 +42,34 @@ public class ColorSet implements Serializable, IColorSet {
 
     private int[] colors;
 
+
+    /**Create an empty ColorSet */
+    public ColorSet(String name) {
+        this.name = name;
+        this.colors = null;
+    }
+
+    public void appendColor(final int newCol) {
+        if(colors == null) {
+            colors = new int[1];
+        }
+        else
+        {
+            colors = java.util.Arrays.copyOf(colors, colors.length + 1);
+        }
+        colors[colors.length - 1 ] = newCol;
+        precalcColors();
+    }
+
+    public void removeLastColor() {
+        if(colors == null || colors.length == 0) {
+            return;
+        }
+        colors = java.util.Arrays.copyOf(colors, colors.length - 1);
+        precalcColors();
+    }
+
+
     /**
      * 
      * @param name
@@ -48,10 +78,13 @@ public class ColorSet implements Serializable, IColorSet {
     public ColorSet(String name, int[] colors) {
         this.name = name;
         this.colors = colors.clone();
-        float boarderCount = 255f / (float) colors.length;
+        precalcColors();
+    }
 
-        // precalc colorset to save to cpu cycles
+    // precalc colorset to save to cpu cycles
+    public void precalcColors(){
         precalc = new int[256];
+        final float boarderCount = 255f / (float) colors.length;
         for (int i = 0; i < 256; i++) {
             int ofs = 0;
 
@@ -61,7 +94,7 @@ public class ColorSet implements Serializable, IColorSet {
                 ofs++;
             }
 
-            int targetOfs = ofs + 1;
+            final int targetOfs = ofs + 1;
 
             precalc[i] = calcSmoothColor(colors[targetOfs % colors.length], colors[ofs
                     % colors.length], pos);
@@ -76,6 +109,10 @@ public class ColorSet implements Serializable, IColorSet {
     @Override
     public String getName() {
         return name;
+    }
+
+    public void setName(final String n) {
+        name = n;
     }
 
     /*
@@ -223,7 +260,13 @@ public class ColorSet implements Serializable, IColorSet {
         int[] ret = new int[len];
         for (int i = 0; i < len; i++) {
             // use only 8bpp here!
-            ret[i] = precalc[buffer[i] & 255];
+            if(precalc != null) {
+                ret[i] = precalc[buffer[i] & 255];
+            }
+            else
+            {
+                ret[i] = 0;
+            }
         }
         return ret;
     }
@@ -294,4 +337,15 @@ public class ColorSet implements Serializable, IColorSet {
             return false;
         return true;
     }
+
+    @Override
+    public String toString() {
+        String text = "RGB: ";
+        for(int c : colors) {
+            Color col = new Color(c);
+            text += col.getRed() + "," + col.getGreen() + "," + col.getBlue() + "; ";
+        }
+        return text;
+    }
+
 }
