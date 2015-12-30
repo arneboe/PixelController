@@ -19,6 +19,8 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
     private static final int speedSlider = 48;
     private static final int brightnessSlider = 49;
     private static final int holdButton = 82;
+    private static final int nextColorButton = 64;
+    private static final int prevColorButton = 65;
 
     private static final  HWButtonState holdButtonActive = HWButtonState.GREEN_BLINK;
     private static final  HWButtonState holdButtonInactive = HWButtonState.GREEN;
@@ -63,6 +65,12 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
         else if(button == holdButton) {
             holdMode = !holdMode;
             hw.setButtonState(holdButton, holdMode ? holdButtonActive : holdButtonInactive);
+        }
+        else if(button == nextColorButton) {
+            sendMsg(ValidCommand.ROTATE_COLORSET);
+        }
+        else if(button == prevColorButton) {
+            sendMsg(ValidCommand.ROTATE_COLORSET_BACK);
         }
     }
 
@@ -119,8 +127,8 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
             hw.setButtonState(i, unusedGreenColor);
         }
 
-        hw.setButtonState(64, HWButtonState.RED);
-        hw.setButtonState(65, HWButtonState.RED);
+        hw.setButtonState(nextColorButton, HWButtonState.RED);
+        hw.setButtonState(prevColorButton, HWButtonState.RED);
         hw.setButtonState(holdButton, holdMode ? holdButtonActive : holdButtonInactive);
     }
 
