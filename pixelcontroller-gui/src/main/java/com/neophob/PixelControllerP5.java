@@ -20,6 +20,8 @@ package com.neophob;
 
 import java.util.logging.Level;
 
+import com.neophob.sematrix.gui.HardwareController.AkaiApcMiniController;
+import com.neophob.sematrix.gui.HardwareController.HardwareControllerHandler;
 import processing.core.PApplet;
 
 import com.neophob.sematrix.gui.service.impl.LocalServer;
@@ -32,10 +34,22 @@ import com.neophob.sematrix.gui.service.impl.LocalServer;
  */
 public class PixelControllerP5 extends AbstractPixelControllerP5 {  
 
+	private AkaiApcMiniController akai;
+	private HardwareControllerHandler akaiHandler;
 	public void initPixelController() {
 		pixelController = new LocalServer(this);
 		pixelController.start();
 		LOG.log(Level.INFO, "LocalServer created");
+
+		akai = new AkaiApcMiniController();
+		if(akai.open()) {
+			akaiHandler = new HardwareControllerHandler(pixelController, akai);
+			LOG.log(Level.INFO, "Connected akai apc mini controller");
+		}
+		else
+		{
+			LOG.log(Level.INFO, "Could not connect to akai apc mini controller");
+		}
 	}
 
 	public static void main(String[] args) {

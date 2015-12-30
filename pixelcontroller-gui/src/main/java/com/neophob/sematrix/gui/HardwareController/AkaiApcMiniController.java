@@ -14,17 +14,6 @@ public class AkaiApcMiniController implements IHardwareController, Receiver {
 
     public AkaiApcMiniController() {
 
-        if (!(device.isOpen())) {
-            try {
-                device.open();
-                receiver = device.getReceiver();
-                //register this as receiver for midi data from the device
-                device.getTransmitter().setReceiver(this);
-                msg = new ShortMessage();
-            } catch (MidiUnavailableException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     @Override
@@ -114,6 +103,30 @@ public class AkaiApcMiniController implements IHardwareController, Receiver {
             send(button, cmd);
         }
     }
+
+    @Override
+    public boolean open() {
+        MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
+        for(MidiDevice.Info info : infos) {
+            System.out.println(info.getName());
+        }
+        return false;
+        /*
+        //FIXME find device
+        if (!(device.isOpen())) {
+            try {
+                device.open();
+                receiver = device.getReceiver();
+                //register this as receiver for midi data from the device
+                device.getTransmitter().setReceiver(this);
+                msg = new ShortMessage();
+            } catch (MidiUnavailableException e) {
+                e.printStackTrace();
+            }
+        }
+        */
+    }
+
     /**Send a NOTE_ON message with two byte payload */
     private void send( final int byte1, final int byte2) {
         try {

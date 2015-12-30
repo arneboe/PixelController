@@ -97,4 +97,9 @@ public interface IHardwareController {
 
     /**@note not all buttons may support all states.  */
     void setButtonState(final int button, final HWButtonState state);
+
+    /**Opens a connection to the device.
+     * @return True if the device was opened, false otherwise */
+    boolean open();
+
 }
