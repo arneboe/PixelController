@@ -69,6 +69,9 @@ public final class KeyboardHandler {
             case 'C':
                 sendMsg(ValidCommand.ROTATE_COLORSET);
                 break;
+            case 'D':
+                sendMsg(ValidCommand.ROTATE_COLORSET_BACK);
+                break;
 
             // change current generator 1
             case 'F':

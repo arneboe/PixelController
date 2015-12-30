@@ -88,6 +88,7 @@ public enum ValidCommand {
     BEAT_WORKMODE(CommandGroup.GENERATOR, 1, "<INT> change beat workmode"),
 
     ROTATE_COLORSET(CommandGroup.VISUAL, 0, "Select next Colorset"),
+    ROTATE_COLORSET_BACK(CommandGroup.VISUAL, 0, "Select prev Colorset"),
 
     ROTATE_GENERATOR_A(CommandGroup.VISUAL, 0, "Select next Generator A"),
 

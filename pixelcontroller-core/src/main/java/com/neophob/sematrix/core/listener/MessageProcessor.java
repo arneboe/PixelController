@@ -614,6 +614,16 @@ public enum MessageProcessor {
                     col.togglePauseMode();
                     break;
 
+                case ROTATE_COLORSET_BACK:
+                    v = col.getVisual(col.getCurrentVisual());
+                    IColorSet currentColorSet = v.getColorSet();
+                    int nextId = col.getColorSets().indexOf(currentColorSet) - 1;
+                    if(nextId < 0)
+                        nextId = col.getColorSets().size() - 1;
+                    IColorSet nextSet = col.getColorSets().get(nextId);
+                    v.setColorSet(nextSet.getName());
+                    break;
+
                 case ROTATE_COLORSET:
                     v = col.getVisual(col.getCurrentVisual());
                     String colorSetName = v.getColorSet().getName();
