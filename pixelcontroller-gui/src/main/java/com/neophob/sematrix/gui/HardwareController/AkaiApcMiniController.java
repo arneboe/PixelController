@@ -162,14 +162,17 @@ public class AkaiApcMiniController implements IHardwareController, Receiver {
         }
     }
 
-    /**Is called when midi data is received from the device */
+    /**Is called when midi data is received from the device. 'send' is an irritating name but the interface requires it... */
     @Override
     public void send(MidiMessage message, long timeStamp) {
         if(subscriber != null) {
-
-            if(message.getStatus() == ShortMessage.NOTE_OFF) { //button released
+            if(message.getStatus() == ShortMessage.NOTE_ON) { //button pressed
                 final int button = message.getMessage()[1];
                 subscriber.buttonPressed(button);
+            }
+            if(message.getStatus() == ShortMessage.NOTE_OFF) { //button released
+                final int button = message.getMessage()[1];
+                subscriber.buttonReleased(button);
             }
             else if(message.getStatus() == ShortMessage.CONTROL_CHANGE) { //slider moved
                 final byte[] msg = message.getMessage();

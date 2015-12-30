@@ -5,5 +5,6 @@ package com.neophob.sematrix.gui.HardwareController;
  */
 public interface IHardwareControllerSubscriber {
     void buttonPressed(final int button);
+    void buttonReleased(final int button);
     void sliderChanged(final int slider, final int newValue);
 }

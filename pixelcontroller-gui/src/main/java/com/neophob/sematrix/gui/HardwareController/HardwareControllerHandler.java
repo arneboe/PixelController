@@ -18,6 +18,10 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
 
     private static final int speedSlider = 48;
     private static final int brightnessSlider = 49;
+    private static final int holdButton = 82;
+
+    private static final  HWButtonState holdButtonActive = HWButtonState.GREEN_BLINK;
+    private static final  HWButtonState holdButtonInactive = HWButtonState.GREEN;
     private static final  HWButtonState unusedPresetColor = HWButtonState.YELLOW;
     private static final HWButtonState usedPresetColor = HWButtonState.GREEN;
     private static final HWButtonState unusedRedColor = HWButtonState.OFF;
@@ -25,7 +29,13 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
     private final IHardwareController hw;
     private PixConServer server;
 
+    /**If holdMode is enabled the presets are only switched for as long as the button is pressed, if it is released we
+     * switch back to the previous preset */
+    private boolean holdMode = false;
+    private int buttonDown = -1; //number of the button that is currently beeing pressed (-1) if none
+
     private int selectedPreset = 0; //the preset that is currently selected
+    private int oldPreset = 0; //only used in holdMode to switch back to the previous preset
 
     public HardwareControllerHandler(final PixConServer server, IHardwareController hw) {
         this.server = server;
@@ -42,10 +52,30 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
 
     @Override
     public void buttonPressed(int button) {
+        if(buttonDown != -1)//this code can only handle one button at a time
+            return;
+        buttonDown = button;
         if(button >= 0 && button < PresetService.NR_OF_PRESET_SLOTS) {
+            oldPreset = selectedPreset;
             createMessage(ValidCommand.CHANGE_PRESET, (buttonToPreset(button)));
-            sendMsg(ValidCommand.LOAD_PRESET);
-            displayPreset(buttonToPreset(button));//highlight the button on the controller
+            sendMsg(ValidCommand.LOAD_PRESET);//the message will cause a call to displayPreset()
+        }
+        else if(button == holdButton) {
+            holdMode = !holdMode;
+            hw.setButtonState(holdButton, holdMode ? holdButtonActive : holdButtonInactive);
+        }
+    }
+
+    @Override
+    public void buttonReleased(int button) {
+        if(buttonDown == button) //int is used instead of bool to stop the user from pressing two buttons and releasing the wrong one first
+            buttonDown = -1;
+        else
+            return;//wait for the correct button to be released first
+        if(holdMode && button >= 0 && button < PresetService.NR_OF_PRESET_SLOTS) {//slot released
+            createMessage(ValidCommand.CHANGE_PRESET, (oldPreset));
+            sendMsg(ValidCommand.LOAD_PRESET);//the message will cause a call to displayPreset()
+            //displayPreset(buttonToPreset(oldPreset));
         }
     }
 
@@ -91,6 +121,7 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
 
         hw.setButtonState(64, HWButtonState.RED);
         hw.setButtonState(65, HWButtonState.RED);
+        hw.setButtonState(holdButton, holdMode ? holdButtonActive : holdButtonInactive);
     }
 
     /**Display @p preset  */
