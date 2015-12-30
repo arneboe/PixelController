@@ -35,7 +35,7 @@ public final class ConfigDefault {
     public static final int DEFAULT_REMOTE_CLIENT_FPS = 10;
 
     public static final int DEFAULT_VISUAL_FADE_TIME = 1500;
-    public static final int DEFAULT_PRESET_LOADING_FADE_TIME = 500;
+    public static final int DEFAULT_PRESET_LOADING_FADE_TIME = 100;
 
     public static final int DEFAULT_NET_OSC_LISTENING_PORT = 9876;
 
