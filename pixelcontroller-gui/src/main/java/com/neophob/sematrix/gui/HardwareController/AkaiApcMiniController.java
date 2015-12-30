@@ -18,6 +18,12 @@ public class AkaiApcMiniController implements IHardwareController, Receiver {
     private Transmitter transmitter;//usedto receive midi from the device
     private ShortMessage msg; //buffered for repeated use
 
+    /**The different device names that the apc uses on different operating systems */
+    private static final String[] deviceNames = {
+            "APC MINI",//on windows 7
+            "MINI [hw:1,0,0]"//on 3.17.8-1-MANJARO Linux
+    };
+
     public AkaiApcMiniController() {
 
     }
@@ -115,7 +121,7 @@ public class AkaiApcMiniController implements IHardwareController, Receiver {
         MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
         //the apc mini provides two midi devices, one for input and one for output
         for(MidiDevice.Info info : infos) {
-            if(info.getName().equals("APC MINI")) {
+            if(isApcDeviceName(info.getName())) {
                 LOG.log(Level.INFO, "Found apc mini device");
                 MidiDevice dev = MidiSystem.getMidiDevice(info);
                 //figure out if this the input or the output device
@@ -175,6 +181,13 @@ public class AkaiApcMiniController implements IHardwareController, Receiver {
         }
     }
 
+    private boolean isApcDeviceName(final String name) {
+        for(final String devName : deviceNames) {
+            if(name.equals(devName))
+                return true;
+        }
+        return false;
+    }
 
     @Override
     protected void finalize() throws Throwable {
