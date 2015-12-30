@@ -169,7 +169,6 @@ public abstract class Effect implements IShuffleState {
     public void setOptionState(final String[] opts){
         for(int i = 0; i < opts.length; i += 2) {
             final String name = opts[i];
-            System.out.println("Parsing option " + name);
             try {
                 final float value = Float.parseFloat(opts[i + 1]);
                 for(IOption o :options) {
