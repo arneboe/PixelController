@@ -43,9 +43,9 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
     @Override
     public void buttonPressed(int button) {
         if(button >= 0 && button < PresetService.NR_OF_PRESET_SLOTS) {
-            createMessage(ValidCommand.CHANGE_PRESET, button);
+            createMessage(ValidCommand.CHANGE_PRESET, (buttonToPreset(button)));
             sendMsg(ValidCommand.LOAD_PRESET);
-            displayPreset(button);//highlight the button on the controller
+            displayPreset(buttonToPreset(button));//highlight the button on the controller
         }
     }
 
@@ -98,15 +98,30 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
         //turn old button off
         //NOTE: selectedPreset can be -1 if the user did not specify a default preset in the config.properties
         if(selectedPreset >= 0 && selectedPreset < 64) {
-            hw.setButtonState(selectedPreset, unusedPresetColor);
+            hw.setButtonState(presetToButton(selectedPreset), unusedPresetColor);
         }
+        final int buttonNo = presetToButton(preset);
         //turn new button on
-        if(preset >= 0 && preset < 64) {
-            hw.setButtonState(preset, usedPresetColor);
+        if(buttonNo >= 0 && buttonNo < 64) {
+            hw.setButtonState(buttonNo, usedPresetColor);
         }
         selectedPreset = preset;
     }
 
+
+    /**The hardware starts indexing the buttons from bottom to top while the presets are indexed from top to bottom */
+    private int presetToButton(final int preset) {
+        //buttons are located in a 8x8 grid. We just need to invert the y-value
+        final int presetRow = preset / 8;
+        final int hardwareRow = 8 - presetRow - 1;
+        final int col = preset % 8;
+        return hardwareRow * 8 + col;
+    }
+
+    private int buttonToPreset(final int button) {
+        /**The inverse conversion is the same, it is only in a different method for readability purposes */
+        return presetToButton(button);
+    }
 
     private int map(int x, int in_min, int in_max, int out_min, int out_max)
     {//http://stackoverflow.com/questions/7505991/arduino-map-equivalent-function-in-java
@@ -130,8 +145,10 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
                         displayPreset(preset);
                     }
                 }
-                else if(tmp[0].equals("CHANGE_BRIGHTNESS"))
-                {
+                else if(tmp[0].equals("CHANGE_BRIGHTNESS")) {
+
+                }
+                else if(tmp[0].equals("CHANGE_BRIGHTNESS"))  {
                     //FIXME there is no way to update the controllers sliders since they dont have motors :(
                 }
                 else if(tmp[0].equals("GENERATOR_SPEED"))
