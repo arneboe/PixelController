@@ -26,6 +26,8 @@ import processing.core.PApplet;
 
 import com.neophob.sematrix.gui.service.impl.LocalServer;
 
+import javax.sound.midi.MidiUnavailableException;
+
 
 /**
  * The Class PixelController.
@@ -42,13 +44,18 @@ public class PixelControllerP5 extends AbstractPixelControllerP5 {
 		LOG.log(Level.INFO, "LocalServer created");
 
 		akai = new AkaiApcMiniController();
-		if(akai.open()) {
-			akaiHandler = new HardwareControllerHandler(pixelController, akai);
-			LOG.log(Level.INFO, "Connected akai apc mini controller");
-		}
-		else
-		{
+		try {
+			if(akai.open()) {
+                akaiHandler = new HardwareControllerHandler(pixelController, akai);
+                LOG.log(Level.INFO, "Connected akai apc mini controller");
+            }
+            else
+            {
+                LOG.log(Level.INFO, "Could not connect to akai apc mini controller");
+            }
+		} catch (MidiUnavailableException e) {
 			LOG.log(Level.INFO, "Could not connect to akai apc mini controller");
+			e.printStackTrace();
 		}
 	}
 

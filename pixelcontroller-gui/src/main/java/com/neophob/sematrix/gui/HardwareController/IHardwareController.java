@@ -1,5 +1,7 @@
 package com.neophob.sematrix.gui.HardwareController;
 
+import javax.sound.midi.MidiUnavailableException;
+
 /**
  * Created by arne on 25.12.2015.
  */
@@ -100,6 +102,6 @@ public interface IHardwareController {
 
     /**Opens a connection to the device.
      * @return True if the device was opened, false otherwise */
-    boolean open();
+    boolean open() throws MidiUnavailableException;
 
 }

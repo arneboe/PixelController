@@ -1,15 +1,21 @@
 package com.neophob.sematrix.gui.HardwareController;
+import com.sun.media.sound.MidiInDeviceProvider;
+
 import javax.sound.midi.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /** @see http://community.akaipro.com/akai_professional/topics/midi-information-for-apc-mini2
  *       for midi protocol
  */
 public class AkaiApcMiniController implements IHardwareController, Receiver {
 
+    protected static final Logger LOG = Logger.getLogger(AkaiApcMiniController.class.getName());
     private IHardwareControllerSubscriber subscriber;
-    private MidiDevice device;
-    private Receiver receiver;
-    private Transmitter transmitter;
+    private MidiDevice receiverDevice;
+    private MidiDevice transmitterDevice;
+    private Receiver receiver;//used to send midi to the device
+    private Transmitter transmitter;//usedto receive midi from the device
     private ShortMessage msg; //buffered for repeated use
 
     public AkaiApcMiniController() {
@@ -105,26 +111,39 @@ public class AkaiApcMiniController implements IHardwareController, Receiver {
     }
 
     @Override
-    public boolean open() {
+    public boolean open() throws MidiUnavailableException {
         MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
+        //the apc mini provides two midi devices, one for input and one for output
         for(MidiDevice.Info info : infos) {
-            System.out.println(info.getName());
-        }
-        return false;
-        /*
-        //FIXME find device
-        if (!(device.isOpen())) {
-            try {
-                device.open();
-                receiver = device.getReceiver();
-                //register this as receiver for midi data from the device
-                device.getTransmitter().setReceiver(this);
-                msg = new ShortMessage();
-            } catch (MidiUnavailableException e) {
-                e.printStackTrace();
+            if(info.getName().equals("APC MINI")) {
+                LOG.log(Level.INFO, "Found apc mini device");
+                MidiDevice dev = MidiSystem.getMidiDevice(info);
+                //figure out if this the input or the output device
+                try {
+                    receiver = dev.getReceiver();
+                    receiverDevice = dev;
+                    LOG.log(Level.INFO, "Found apc mini receiver");
+                    continue;
+                }
+                catch(MidiUnavailableException e) {}
+                try {
+                    transmitter = dev.getTransmitter();
+                    transmitterDevice = dev;
+                    LOG.log(Level.INFO, "Found apc mini transmitter");
+                    continue;
+
+                }
+                catch(MidiUnavailableException e) {}
             }
         }
-        */
+        if(receiver != null && transmitter != null) {
+            transmitter.setReceiver(this);//subscribe to the transmitter to get midi data from the device
+            receiverDevice.open();
+            transmitterDevice.open();
+            msg = new ShortMessage();
+            return true;
+        }
+        return false;
     }
 
     /**Send a NOTE_ON message with two byte payload */
@@ -140,23 +159,48 @@ public class AkaiApcMiniController implements IHardwareController, Receiver {
     /**Is called when midi data is received from the device */
     @Override
     public void send(MidiMessage message, long timeStamp) {
-        System.out.println("received: " + message.toString());
         if(subscriber != null) {
+
             if(message.getStatus() == ShortMessage.NOTE_OFF) { //button released
-                final int button = message.getMessage()[0];
+                final int button = message.getMessage()[1];
                 subscriber.buttonPressed(button);
             }
             else if(message.getStatus() == ShortMessage.CONTROL_CHANGE) { //slider moved
                 final byte[] msg = message.getMessage();
-                final int slider = msg[0];
-                final int value = msg[1];
+                final int slider = msg[1];
+                final int value = msg[2];
                 subscriber.sliderChanged(slider, value);
             }
+
         }
+    }
+
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        close();
     }
 
     @Override
     public void close() {
-        //only here because the Receiver interface requires it. but we don't need to close anything.
+        if(null != transmitter) {
+            transmitter.close();
+            transmitter = null;
+        }
+        if(null != receiver) {
+            receiver.close();
+            receiver = null;
+        }
+        if(null != receiverDevice && receiverDevice.isOpen()) {
+            receiverDevice.close();
+            receiverDevice = null;
+        }
+        if(null != transmitterDevice && transmitterDevice.isOpen()) {
+            transmitterDevice.close();
+            transmitterDevice = null;
+        }
+        if(null != msg)
+            msg = null;
     }
 }

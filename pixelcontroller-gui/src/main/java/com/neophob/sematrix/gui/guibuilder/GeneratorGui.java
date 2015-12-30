@@ -511,13 +511,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         // -----------------
 
         // brightness control
-        cp5.addTextlabel("brightnessControllTxt", messages.getString("GeneratorGui.BRIGHTNESS"), 5,
-                yPosStartDrowdown + 95).moveTo(outputTab);
-
-        brightnessControll = cp5.addSlider(GuiElement.BRIGHTNESS.guiText(), 0, 255, 255, 38,
-                yPosStartDrowdown + 110, 160, 14);
+        brightnessControll = cp5.addSlider(GuiElement.BRIGHTNESS.guiText(), 0, 255, 255, 38 + GENERIC_X_OFS,
+                p5GuiYOffset + 100, 140, 14);
         brightnessControll.setSliderMode(Slider.FIX);
-        brightnessControll.setGroup(outputTab);
         brightnessControll.setDecimalPrecision(0);
         brightnessControll.setNumberOfTickMarks(100);
         brightnessControll.setRange(0, 100);

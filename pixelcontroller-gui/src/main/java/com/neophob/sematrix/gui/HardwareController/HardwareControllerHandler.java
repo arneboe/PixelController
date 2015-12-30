@@ -1,5 +1,6 @@
 package com.neophob.sematrix.gui.HardwareController;
 
+import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.gui.HardwareController.IHardwareController.HWButtonState;
 import com.neophob.sematrix.gui.service.PixConServer;
@@ -15,12 +16,12 @@ import java.util.Observer;
  */
 public class HardwareControllerHandler implements IHardwareControllerSubscriber, Observer {
 
-    private static final int speedSlider = 0;
-    private static final int brightnessSlider = 1;
-    private static final  HWButtonState unusedPresetColor = HWButtonState.YELLOW_BLINK;
-    private static final HWButtonState usedPresetColor = HWButtonState.RED_BLINK;
-    private static final HWButtonState unusedRedColor = HWButtonState.RED_BLINK;
-    private static final HWButtonState unusedGreenColor = HWButtonState.RED_BLINK;
+    private static final int speedSlider = 48;
+    private static final int brightnessSlider = 49;
+    private static final  HWButtonState unusedPresetColor = HWButtonState.YELLOW;
+    private static final HWButtonState usedPresetColor = HWButtonState.GREEN;
+    private static final HWButtonState unusedRedColor = HWButtonState.OFF;
+    private static final HWButtonState unusedGreenColor = HWButtonState.OFF;
     private final IHardwareController hw;
     private PixConServer server;
 
@@ -41,11 +42,11 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
 
     @Override
     public void buttonPressed(int button) {
-
-        createMessage(ValidCommand.CHANGE_PRESET, button);
-        sendMsg(ValidCommand.LOAD_PRESET);
-        displayPreset(button);//highlight the button on the controller
-        //server.refreshGuiState();
+        if(button >= 0 && button < PresetService.NR_OF_PRESET_SLOTS) {
+            createMessage(ValidCommand.CHANGE_PRESET, button);
+            sendMsg(ValidCommand.LOAD_PRESET);
+            displayPreset(button);//highlight the button on the controller
+        }
     }
 
     @Override
@@ -58,10 +59,6 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
         {
             final int val = map(newValue, 0, 127, 0, 100);
             createMessage(ValidCommand.CHANGE_BRIGHTNESS, val);
-        }
-        else
-        {
-            throw new NotImplementedException();
         }
 
     }
@@ -91,6 +88,9 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
         for(int i = 82; i < 90; ++i) { //green push buttons
             hw.setButtonState(i, unusedGreenColor);
         }
+
+        hw.setButtonState(64, HWButtonState.RED);
+        hw.setButtonState(65, HWButtonState.RED);
     }
 
     /**Display @p preset  */
