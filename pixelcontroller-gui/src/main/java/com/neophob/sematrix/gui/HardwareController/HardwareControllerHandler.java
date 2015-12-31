@@ -39,6 +39,9 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
     private int selectedPreset = 0; //the preset that is currently selected
     private int oldPreset = 0; //only used in holdMode to switch back to the previous preset
 
+    private int speed = 50;
+    private int brightness = 50;
+
     public HardwareControllerHandler(final PixConServer server, IHardwareController hw) {
         this.server = server;
         this.hw = hw;
@@ -54,6 +57,7 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
 
     @Override
     public void buttonPressed(int button) {
+        if(button < 16) return;
         if(buttonDown != -1)//this code can only handle one button at a time
             return;
         buttonDown = button;
@@ -61,21 +65,24 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
             oldPreset = selectedPreset;
             createMessage(ValidCommand.CHANGE_PRESET, (buttonToPreset(button)));
             sendMsg(ValidCommand.LOAD_PRESET);//the message will cause a call to displayPreset()
+            createMessage(ValidCommand.GENERATOR_SPEED, speed);
+            createMessage(ValidCommand.CHANGE_BRIGHTNESS, brightness);
         }
         else if(button == holdButton) {
             holdMode = !holdMode;
             hw.setButtonState(holdButton, holdMode ? holdButtonActive : holdButtonInactive);
         }
         else if(button == nextColorButton) {
-            sendMsg(ValidCommand.ROTATE_COLORSET);
+            sendMsg(ValidCommand.ROTATE_COLORSET_BACK);
         }
         else if(button == prevColorButton) {
-            sendMsg(ValidCommand.ROTATE_COLORSET_BACK);
+            sendMsg(ValidCommand.ROTATE_COLORSET);
         }
     }
 
     @Override
     public void buttonReleased(int button) {
+        if(button < 16) return;
         if(buttonDown == button) //int is used instead of bool to stop the user from pressing two buttons and releasing the wrong one first
             buttonDown = -1;
         else
@@ -83,6 +90,8 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
         if(holdMode && button >= 0 && button < PresetService.NR_OF_PRESET_SLOTS) {//slot released
             createMessage(ValidCommand.CHANGE_PRESET, (oldPreset));
             sendMsg(ValidCommand.LOAD_PRESET);//the message will cause a call to displayPreset()
+            createMessage(ValidCommand.GENERATOR_SPEED, speed);
+            createMessage(ValidCommand.CHANGE_BRIGHTNESS, brightness);
             //displayPreset(buttonToPreset(oldPreset));
         }
     }
@@ -92,10 +101,12 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
         if(slider == speedSlider) {
             final int val = map(newValue, 0, 127, 0, 200);
             createMessage(ValidCommand.GENERATOR_SPEED, val);
+            speed = val;
         }
         else if(slider == brightnessSlider)
         {
             final int val = map(newValue, 0, 127, 0, 100);
+            brightness = val;
             createMessage(ValidCommand.CHANGE_BRIGHTNESS, val);
         }
 
@@ -117,7 +128,7 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
     /**Sets all push button colors to the inital values */
     private void initController() {
         //FIXME blink is just for testing
-        for(int i = 0; i < 64; ++i) {//3 color push buttons
+        for(int i = 16; i < 64; ++i) {//3 color push buttons
             hw.setButtonState(i, unusedPresetColor);
         }
         for(int i = 64; i < 72; ++i) { //red push buttons
@@ -130,6 +141,7 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
         hw.setButtonState(nextColorButton, HWButtonState.RED);
         hw.setButtonState(prevColorButton, HWButtonState.RED);
         hw.setButtonState(holdButton, holdMode ? holdButtonActive : holdButtonInactive);
+
     }
 
     /**Display @p preset  */
