@@ -92,7 +92,6 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
             sendMsg(ValidCommand.LOAD_PRESET);//the message will cause a call to displayPreset()
             createMessage(ValidCommand.GENERATOR_SPEED, speed);
             createMessage(ValidCommand.CHANGE_BRIGHTNESS, brightness);
-            //displayPreset(buttonToPreset(oldPreset));
         }
     }
 

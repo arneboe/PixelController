@@ -26,6 +26,7 @@ import java.util.Random;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.visual.MatrixData;
+import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
 
 /**
  * create some drops
@@ -36,9 +37,7 @@ import com.neophob.sematrix.core.visual.MatrixData;
  * @author michu
  */
 public class Geometrics extends Generator {
-
-    /** The Constant THICKNESS. */
-    private static final int THICKNESS = 10;
+    private FloatRangeOption thicknessOption = new FloatRangeOption("THICKNESS", 1, 30, 10);
 
     /** The drops. */
     private List<Drop> drops;
@@ -54,17 +53,13 @@ public class Geometrics extends Generator {
     /** The rnd gen. */
     private Random rndGen = new Random();
 
-    /**
-     * Instantiates a new geometrics.
-     * 
-     * @param controller
-     *            the controller
-     */
+
     public Geometrics(MatrixData matrix, ISound sound) {
         super(matrix, GeneratorName.DROPS, ResizeName.QUALITY_RESIZE);
         drops = new ArrayList<Drop>();
         tmp = new ArrayList<Drop>();
         this.sound = sound;
+        options.add(thicknessOption);
 
         internalBufferTmp = new int[internalBuffer.length];
     }
@@ -92,7 +87,8 @@ public class Geometrics extends Generator {
     public void update(int amount) {
         // maximal 3 active drops
         if ((sound.isBeat() || drops.isEmpty()) && drops.size() < 5) {
-            drops.add(new Drop(random(THICKNESS, internalBufferXSize), random(THICKNESS,
+            final int thick = (int) thicknessOption.getValue();
+            drops.add(new Drop(random(thick, internalBufferXSize), random(thick,
                     internalBufferYSize), random(0, 255)));
         }
 
@@ -152,7 +148,7 @@ public class Geometrics extends Generator {
                     }
                 }
             }
-            drawCircle();
+            drawCircle((int) thicknessOption.getValue());
         }
 
         /**
@@ -167,8 +163,8 @@ public class Geometrics extends Generator {
         /**
          * draw circle
          */
-        private void drawCircle() {
-            int dropsizeThickness = dropSize - THICKNESS;
+        private void drawCircle(final int thickness) {
+            int dropsizeThickness = dropSize - thickness;
 
             boolean drawOnscreen = false;
             for (int i = 0; i < internalBufferXSize; i++) {
@@ -188,7 +184,7 @@ public class Geometrics extends Generator {
             }
 
             // detect if the circle is finished
-            if (dropSize > THICKNESS && !drawOnscreen) {
+            if (dropSize > thickness && !drawOnscreen) {
                 finished = true;
             }
         }
