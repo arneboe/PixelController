@@ -85,6 +85,15 @@ public class Visual {
         this.colorSet = c;
     }
 
+    public void initFrom(final Visual otherVisual) {
+        this.generator1 = otherVisual.getGenerator1();
+        this.generator2 = otherVisual.getGenerator2();
+        this.colorSet = otherVisual.getColorSet();
+        this.effect1 = otherVisual.getEffect1();
+        this.effect2 = otherVisual.getEffect2();
+        this.mixer = otherVisual.getMixer();
+    }
+
     /**
      * Gets the buffer.
      * 

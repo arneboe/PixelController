@@ -136,7 +136,8 @@ public enum ValidCommand {
 
     SOUND_MODE(CommandGroup.MISC, 1, "Change the sound mode"),
     BPM(CommandGroup.MISC, 1, "set the current bpm"),
-    NO_BEAT_SPEED(CommandGroup.MISC, 1, "Volume when there is no beat");
+    NO_BEAT_SPEED(CommandGroup.MISC, 1, "Volume when there is no beat"),
+    COPY_VISUAL(CommandGroup.VISUAL, 2 ,"Copy visual from a to b");
 
     /** The nr of params. */
     private int nrOfParams;

@@ -721,6 +721,15 @@ public enum MessageProcessor {
                     // nothing todo
                     break;
 
+                case COPY_VISUAL:
+                    try {
+                        final int from = parseValue(msg[1]);
+                        final int to = parseValue(msg[2]);
+                        col.copyVisual(from, to);
+                    } catch( Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+
                 // unkown message
                 default:
                     StringBuilder sb = new StringBuilder();

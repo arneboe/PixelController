@@ -625,6 +625,13 @@ public class VisualState extends Observable {
         this.fpsSpeed = fpsSpeed;
     }
 
+
+    public void copyVisual(final int from, final int to) {
+        Visual fromVis = getVisual(from);
+        Visual toVis = getVisual(to);
+        toVis.initFrom(fromVis);
+    }
+
     /**
      * @param brightness
      *            the brightness to set

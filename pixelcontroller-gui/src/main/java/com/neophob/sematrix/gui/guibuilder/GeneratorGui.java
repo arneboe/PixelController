@@ -115,6 +115,12 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private Button randomSelection, randomPresets;
     private RadioButton randomButtons;
 
+    private Button copyVisual1To2;
+    private Button copyVisual1To3;
+    private Button copyVisual1To4;
+    private Button copyVisual1To5;
+
+
     private Slider brightnessControll;
     private Toggle freeze;
 
@@ -619,6 +625,15 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         }
         randomCheckbox.activateAll();
         randomCheckbox.moveTo(randomTab);
+
+        copyVisual1To2 = cp5.addButton(GuiElement.C1_2.guiText(), 0,
+                0, 21, 18, 15);
+        copyVisual1To3 = cp5.addButton(GuiElement.C1_3.guiText(), 0,
+                19, 21, 18, 15);
+        copyVisual1To4 = cp5.addButton(GuiElement.C1_4.guiText(), 0,
+                39, 21, 18, 15);
+        copyVisual1To5 = cp5.addButton(GuiElement.C1_5.guiText(), 0,
+                58, 21, 18, 15);
 
         // Button
         randomSelection = cp5.addButton(GuiElement.BUTTON_RANDOM_CONFIGURATION.guiText(), 0,

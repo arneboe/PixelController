@@ -308,6 +308,22 @@ public final class P5EventListener implements ControlListener {
                 createMessage(ValidCommand.NO_BEAT_SPEED, String.valueOf(value));
                 break;
 
+            case C1_2:
+                createMessage(ValidCommand.COPY_VISUAL, 0, 1);
+                break;
+
+            case C1_3:
+                createMessage(ValidCommand.COPY_VISUAL, 0, 2);
+                break;
+
+            case C1_4:
+                createMessage(ValidCommand.COPY_VISUAL, 0, 3);
+                break;
+
+            case C1_5:
+                createMessage(ValidCommand.COPY_VISUAL, 0, 4);
+                break;
+
             default:
                 LOG.log(Level.INFO, "Invalid Object: " + selection + ", Value: " + value);
                 break;
@@ -340,6 +356,14 @@ public final class P5EventListener implements ControlListener {
         String[] msg = new String[2];
         msg[0] = "" + validCommand;
         msg[1] = "" + (int) newValue;
+        singleSendMessageOut(msg);
+    }
+
+    private void createMessage(ValidCommand validCommand, float value1, float value2) {
+        String[] msg = new String[3];
+        msg[0] = "" + validCommand;
+        msg[1] = "" + (int) value1;
+        msg[2] = "" + (int) value2;
         singleSendMessageOut(msg);
     }
 
