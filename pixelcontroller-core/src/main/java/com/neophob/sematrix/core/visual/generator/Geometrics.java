@@ -26,7 +26,8 @@ import java.util.Random;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.visual.MatrixData;
-import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
+import com.neophob.sematrix.core.visual.effect.Options.FloatValueOption;
+import com.neophob.sematrix.core.visual.effect.Options.SelectionListOption;
 
 /**
  * create some drops
@@ -37,22 +38,19 @@ import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
  * @author michu
  */
 public class Geometrics extends Generator {
-    private FloatRangeOption thicknessOption = new FloatRangeOption("THICKNESS", 1, 30, 10);
 
-    /** The drops. */
+
+    private FloatValueOption thicknessOption = new FloatValueOption("THICKNESS", 1, 30, 10);
+    private FloatValueOption maxDropsOption = new FloatValueOption("MAX_DROPS", 1, 20, 5);
+    private SelectionListOption startLocationOption = new SelectionListOption("START_LOCATION");
+    private FloatValueOption lowerColorLimitOption = new FloatValueOption("MIN_COLOR", 0, 255, 10);
+    private FloatValueOption upperColorLimitOption = new FloatValueOption("MAX_COLOR", 0, 255, 128);
+
     private List<Drop> drops;
-
-    /** The tmp. */
     private List<Drop> tmp;
-
-    /** The sound. */
     private ISound sound;
-
     public int[] internalBufferTmp;
-
-    /** The rnd gen. */
     private Random rndGen = new Random();
-
 
     public Geometrics(MatrixData matrix, ISound sound) {
         super(matrix, GeneratorName.DROPS, ResizeName.QUALITY_RESIZE);
@@ -60,36 +58,55 @@ public class Geometrics extends Generator {
         tmp = new ArrayList<Drop>();
         this.sound = sound;
         options.add(thicknessOption);
+        options.add(maxDropsOption);
+        options.add(lowerColorLimitOption);
+        options.add(upperColorLimitOption);
+        startLocationOption.addEntry("RANDOM");
+        startLocationOption.addEntry("CENTER");
+        startLocationOption.addEntry("BOTTOM");
+        startLocationOption.addEntry("TOP");
+        startLocationOption.setValue(0);
+        options.add(startLocationOption);
 
         internalBufferTmp = new int[internalBuffer.length];
     }
 
-    /**
-     * Random.
-     * 
-     * @param min
-     *            the min
-     * @param max
-     *            the max
-     * @return the int
-     */
     private int random(int min, int max) {
         int ret = rndGen.nextInt(Math.abs(max - min));
         return ret + min;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.neophob.sematrix.core.generator.Generator#update()
-     */
+    private void addDrop() {
+        final int thick = (int) thicknessOption.getValue();
+        int x = 0;
+        int y = 0;
+        final String startLocation = startLocationOption.getSelected();
+        if(startLocation.equals("RANDOM")) {
+            x = random(thick, internalBufferXSize);
+            y = random(thick, internalBufferYSize);
+        }
+        else if(startLocation.equals("TOP")) {
+            x = random(thick, internalBufferXSize);
+            y = 0;
+        }
+        else if(startLocation.equals("BOTTOM")) {
+            x = random(thick, internalBufferXSize);
+            y = internalBufferYSize - 1;
+        }
+        else if(startLocation.equals("CENTER")) {
+            x = internalBufferXSize / 2;
+            y = internalBufferYSize / 2;
+        }
+        final int lowerColorLimit = (int)lowerColorLimitOption.getValue();
+        int upperColorLimit = (int)upperColorLimitOption.getValue();
+        if(upperColorLimit <= lowerColorLimit) upperColorLimit = lowerColorLimit + 1;
+        drops.add(new Drop(x, y, random(lowerColorLimit, upperColorLimit)));
+    }
     @Override
     public void update(int amount) {
-        // maximal 3 active drops
-        if ((sound.isBeat() || drops.isEmpty()) && drops.size() < 5) {
-            final int thick = (int) thicknessOption.getValue();
-            drops.add(new Drop(random(thick, internalBufferXSize), random(thick,
-                    internalBufferYSize), random(0, 255)));
+        final int maxDrops = (int)maxDropsOption.getValue();
+        if ((sound.isBeat() || drops.isEmpty()) && drops.size() < maxDrops) {
+            addDrop();
         }
 
         tmp.clear();

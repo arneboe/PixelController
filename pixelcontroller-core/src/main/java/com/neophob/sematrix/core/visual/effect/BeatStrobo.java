@@ -21,11 +21,10 @@ package com.neophob.sematrix.core.visual.effect;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.visual.MatrixData;
-import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
+import com.neophob.sematrix.core.visual.effect.Options.FloatValueOption;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Random;
 
 /**
  * create a strobo effect.
@@ -40,7 +39,7 @@ public class BeatStrobo extends Effect {
 	private long lastTime; /**<The time of the last update() call in millis*/
 	private long lastFlashTime; /**<Timestamp of the time that the flash was enabled */
 	private int[] offBuffer; /**<buffer that is returned when the strobo is off */
-	private FloatRangeOption flashTimeOption = new FloatRangeOption("FLASH_LEN", 1, 400, 5);
+	private FloatValueOption flashTimeOption = new FloatValueOption("FLASH_LEN", 1, 400, 5);
 	private ISound sound;
 
 	public BeatStrobo(MatrixData matrix, ISound sound) {

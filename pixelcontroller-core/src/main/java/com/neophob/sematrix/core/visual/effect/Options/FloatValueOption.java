@@ -1,6 +1,6 @@
 package com.neophob.sematrix.core.visual.effect.Options;
 
-public class FloatRangeOption implements IOption {
+public class FloatValueOption implements IOption {
 
     private final String name;
     private final float min;
@@ -8,7 +8,7 @@ public class FloatRangeOption implements IOption {
     private float value;
     private boolean hasChanged = false;
 
-    public FloatRangeOption(final String name, final float min, final float max, final float value)
+    public FloatValueOption(final String name, final float min, final float max, final float value)
     {
         this.name = name;
         this.min = min;

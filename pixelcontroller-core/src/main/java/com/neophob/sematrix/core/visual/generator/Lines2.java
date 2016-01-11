@@ -2,8 +2,7 @@ package com.neophob.sematrix.core.visual.generator;
 
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.MatrixData;
-import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
-import com.neophob.sematrix.core.visual.effect.Options.SelectionListOption;
+import com.neophob.sematrix.core.visual.effect.Options.FloatValueOption;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -93,9 +92,9 @@ public class Lines2 extends Generator {
         }
     }
 
-    private FloatRangeOption widthOption = new FloatRangeOption("Width", 1, 20, 3);
-    private FloatRangeOption amountOption = new FloatRangeOption("Amount", 1, 10, 1);
-    private FloatRangeOption colorOption = new FloatRangeOption("Color", 1, 255, 1);
+    private FloatValueOption widthOption = new FloatValueOption("Width", 1, 20, 3);
+    private FloatValueOption amountOption = new FloatValueOption("Amount", 1, 10, 1);
+    private FloatValueOption colorOption = new FloatValueOption("Color", 1, 255, 1);
 
     List<Line> lines = new ArrayList<Line>();
     public Lines2(MatrixData matrix, GeneratorName name, ResizeName resizeOption) {

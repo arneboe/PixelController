@@ -20,11 +20,9 @@ package com.neophob.sematrix.core.visual.effect;
 
 import java.util.Random;
 
-import com.neophob.sematrix.core.glue.ShufflerOffset;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.MatrixData;
-import com.neophob.sematrix.core.visual.VisualState;
-import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
+import com.neophob.sematrix.core.visual.effect.Options.FloatValueOption;
 import com.neophob.sematrix.core.visual.effect.Options.SelectionListOption;
 import com.neophob.sematrix.core.visual.fader.CrossfaderHelper;
 
@@ -51,7 +49,7 @@ public class RotoZoom extends RotoZoomEffect {
     private float faderPos;
     private float dscalee = 0.01f;
     private WORKMODE workmode = WORKMODE.ZOOM;
-    private FloatRangeOption angleOption = new FloatRangeOption("Speed", 0, 359, 2.5f);
+    private FloatValueOption angleOption = new FloatValueOption("Speed", 0, 359, 2.5f);
     private SelectionListOption workmodeOption = new SelectionListOption("Mode");
     /**
      * Instantiates a new roto zoom.

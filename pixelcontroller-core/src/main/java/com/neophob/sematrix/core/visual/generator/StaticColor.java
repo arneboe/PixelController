@@ -20,14 +20,14 @@ package com.neophob.sematrix.core.visual.generator;
 
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.MatrixData;
-import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
+import com.neophob.sematrix.core.visual.effect.Options.FloatValueOption;
 
 import java.util.Arrays;
 
 public class StaticColor extends Generator {
 
     private int frameCount;
-    private FloatRangeOption colorOption = new FloatRangeOption("Color", 0, 128, 64);
+    private FloatValueOption colorOption = new FloatValueOption("Color", 0, 128, 64);
 
     public StaticColor(MatrixData matrix) {
         super(matrix, GeneratorName.STATIC_COLOR, ResizeName.PIXEL_RESIZE);

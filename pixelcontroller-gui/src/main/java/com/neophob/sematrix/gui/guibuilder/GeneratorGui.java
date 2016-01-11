@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 import com.neophob.sematrix.core.sound.SoundCombiner;
 import com.neophob.sematrix.core.visual.effect.Options.IOption;
 import com.neophob.sematrix.core.visual.effect.Options.Options;
-import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
+import com.neophob.sematrix.core.visual.effect.Options.FloatValueOption;
 import com.neophob.sematrix.core.visual.effect.Options.SelectionListOption;
 import controlP5.*;
 import org.apache.commons.lang3.StringUtils;
@@ -1521,9 +1521,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     /**only call this method if the options have been cleared before */
     private void addOption(final IOption opt, final Options.Target target)
     {
-        if(opt instanceof FloatRangeOption)
+        if(opt instanceof FloatValueOption)
         {
-            addSliderOption((FloatRangeOption)opt, target);
+            addSliderOption((FloatValueOption)opt, target);
         }
         else if(opt instanceof SelectionListOption)
         {
@@ -1589,7 +1589,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         activeOptions.put(name + "LABEL", opt); //FIXME this is a crude hack to get the label removed
     }
 
-    private void addSliderOption(final FloatRangeOption opt, final Options.Target target) {
+    private void addSliderOption(final FloatValueOption opt, final Options.Target target) {
         int x = 0;
         int y = 0;
         String name = "";

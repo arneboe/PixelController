@@ -24,8 +24,7 @@ import java.util.Random;
 
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.MatrixData;
-import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
-import com.neophob.sematrix.core.visual.effect.Options.SelectionListOption;
+import com.neophob.sematrix.core.visual.effect.Options.FloatValueOption;
 
 /**
  * moving cell.
@@ -51,7 +50,7 @@ public class Cell extends Generator {
     private int lowXRes, lowYRes;
     private int hsize;
 
-    private FloatRangeOption nrOfCells = new FloatRangeOption("Cells", 2, 10, 5);
+    private FloatValueOption nrOfCells = new FloatValueOption("Cells", 2, 10, 5);
     private int oldNrCells = 5;
 
     public Cell(MatrixData matrix) {

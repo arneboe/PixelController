@@ -20,21 +20,19 @@ package com.neophob.sematrix.core.visual.effect;
 
 import java.util.Random;
 
-import com.neophob.sematrix.core.glue.ShufflerOffset;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.MatrixData;
-import com.neophob.sematrix.core.visual.VisualState;
-import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
+import com.neophob.sematrix.core.visual.effect.Options.FloatValueOption;
 
 /**
  * @author michu
  */
 public class Threshold extends Effect {
 
-	private FloatRangeOption threshold;
+	private FloatValueOption threshold;
 	public Threshold(MatrixData matrix) {
 		super(matrix, EffectName.THRESHOLD, ResizeName.QUALITY_RESIZE);
-		threshold = new FloatRangeOption("Threshold", 0, 255, 128);
+		threshold = new FloatValueOption("Threshold", 0, 255, 128);
 		options.add(threshold);
 	}
 

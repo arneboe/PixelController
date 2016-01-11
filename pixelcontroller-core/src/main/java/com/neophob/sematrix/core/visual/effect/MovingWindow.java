@@ -2,7 +2,7 @@ package com.neophob.sematrix.core.visual.effect;
 
 import com.neophob.sematrix.core.resize.Resize;
 import com.neophob.sematrix.core.visual.MatrixData;
-import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
+import com.neophob.sematrix.core.visual.effect.Options.FloatValueOption;
 
 import java.util.Random;
 
@@ -12,9 +12,9 @@ import java.util.Random;
 public class MovingWindow extends Effect {
 
     private int[] buffer;
-    private FloatRangeOption widthOption;
-    private FloatRangeOption heightOption;
-    private FloatRangeOption speedOption = new FloatRangeOption("Speed",0.1f, 20, 1);
+    private FloatValueOption widthOption;
+    private FloatValueOption heightOption;
+    private FloatValueOption speedOption = new FloatValueOption("Speed",0.1f, 20, 1);
 
     private float x = 0;//current top left position of window
     private float y = 0;
@@ -28,8 +28,8 @@ public class MovingWindow extends Effect {
         buffer = new int[1];
         bufferWidth = matrix.getBufferXSize();
         bufferHeight = matrix.getBufferYSize();
-        widthOption = new FloatRangeOption("Width", 1, bufferWidth / 2, 10);
-        heightOption = new FloatRangeOption("Height", 1, bufferHeight / 2, 10);
+        widthOption = new FloatValueOption("Width", 1, bufferWidth / 2, 10);
+        heightOption = new FloatValueOption("Height", 1, bufferHeight / 2, 10);
         options.add(widthOption);
         options.add(heightOption);
         options.add(speedOption);

@@ -20,7 +20,7 @@ package com.neophob.sematrix.core.visual.effect;
 
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.MatrixData;
-import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
+import com.neophob.sematrix.core.visual.effect.Options.FloatValueOption;
 
 import java.util.Random;
 
@@ -29,7 +29,7 @@ import java.util.Random;
  */
 public class Binning extends Effect {
 
-	private FloatRangeOption numBins = new FloatRangeOption("Bins", 3, 60, 3);
+	private FloatValueOption numBins = new FloatValueOption("Bins", 3, 60, 3);
 	private int binCount = 3;
 	private int binColors[] = new int[3];
 	private Random random = new Random();

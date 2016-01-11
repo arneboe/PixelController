@@ -2,13 +2,9 @@ package com.neophob.sematrix.core.visual.generator;
 
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.MatrixData;
-import com.neophob.sematrix.core.visual.effect.Options.FloatRangeOption;
+import com.neophob.sematrix.core.visual.effect.Options.FloatValueOption;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
 
 public class Areas extends Generator {
 
@@ -40,7 +36,7 @@ public class Areas extends Generator {
 
     }
 
-    private FloatRangeOption numOpt = new FloatRangeOption("Count", 4, 40, 10);
+    private FloatValueOption numOpt = new FloatValueOption("Count", 4, 40, 10);
     private ArrayList<Rect> areas = new ArrayList<Rect>();
 
     public Areas(MatrixData matrix, GeneratorName name, ResizeName resizeOption) {
