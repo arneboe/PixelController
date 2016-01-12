@@ -54,6 +54,7 @@ public enum ValidCommand {
     SAVE_PRESET(CommandGroup.MISC, 1, "<NAME> save current preset settings with name NAME"),
 
     LOAD_PRESET(CommandGroup.MISC, 0, "<NO PARAM> load current preset settings"),
+    LOAD_PRESET_AND_SET_VISUAL(CommandGroup.MISC, 1, "<visual> load current preset settings and select visual n"),
 
     TEXTDEF(CommandGroup.GENERATOR, 1, "<INT> select texture deformation option, 1-11"),
 

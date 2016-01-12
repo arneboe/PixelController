@@ -19,8 +19,6 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
     private static final int speedSlider = 48;
     private static final int brightnessSlider = 49;
     private static final int holdButton = 82;
-    private static final int nextColorButton = 64;
-    private static final int prevColorButton = 65;
 
     private static final  HWButtonState holdButtonActive = HWButtonState.GREEN_BLINK;
     private static final  HWButtonState holdButtonInactive = HWButtonState.GREEN;
@@ -41,6 +39,8 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
 
     private int speed = 50;
     private int brightness = 50;
+
+    private int visual = 0;
 
     /**true if the controller is sending a message. used to avoid infinit recursion */
     private boolean sendingMsg = false;
@@ -66,7 +66,7 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
         if(button >= 0 && button < PresetService.NR_OF_PRESET_SLOTS) {
             oldPreset = selectedPreset;
             createMessage(ValidCommand.CHANGE_PRESET, (buttonToPreset(button)));
-            sendMsg(ValidCommand.LOAD_PRESET);//the message will cause a call to displayPreset()
+            createMessage(ValidCommand.LOAD_PRESET_AND_SET_VISUAL, visual);//the message will cause a call to displayPreset()
             createMessage(ValidCommand.GENERATOR_SPEED, speed);
             createMessage(ValidCommand.CHANGE_BRIGHTNESS, brightness);
         }
@@ -74,11 +74,11 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
             holdMode = !holdMode;
             hw.setButtonState(holdButton, holdMode ? holdButtonActive : holdButtonInactive);
         }
-        else if(button == nextColorButton) {
-            sendMsg(ValidCommand.ROTATE_COLORSET_BACK);
-        }
-        else if(button == prevColorButton) {
-            sendMsg(ValidCommand.ROTATE_COLORSET);
+        else if(button >= 64 && button < 69) {//select visual buttons
+            hw.setButtonState(64 + visual, HWButtonState.RED);
+            visual = button - 64;
+            hw.setButtonState(64 + visual, HWButtonState.RED_BLINK);
+            createMessage(ValidCommand.CHANGE_ALL_OUTPUT_VISUAL, visual);
         }
     }
 
@@ -93,6 +93,7 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
             sendMsg(ValidCommand.LOAD_PRESET);//the message will cause a call to displayPreset()
             createMessage(ValidCommand.GENERATOR_SPEED, speed);
             createMessage(ValidCommand.CHANGE_BRIGHTNESS, brightness);
+            createMessage(ValidCommand.CHANGE_ALL_OUTPUT_VISUAL, visual);
         }
     }
 
@@ -141,9 +142,11 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
         for(int i = 82; i < 90; ++i) { //green push buttons
             hw.setButtonState(i, unusedGreenColor);
         }
+        for(int i = 64; i < 69; ++i) { //visual selection buttons
+            hw.setButtonState(i, HWButtonState.RED);
+        }
+        hw.setButtonState(64 + visual, HWButtonState.RED_BLINK);
 
-        hw.setButtonState(nextColorButton, HWButtonState.RED);
-        hw.setButtonState(prevColorButton, HWButtonState.RED);
         hw.setButtonState(holdButton, holdMode ? holdButtonActive : holdButtonInactive);
 
     }
@@ -208,9 +211,6 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
                 else if(tmp[0].equals("GENERATOR_SPEED") && !sendingMsg) {
                     //override speed changes by anyone else
                     createMessage(ValidCommand.GENERATOR_SPEED, speed);
-                }
-                {
-                    //FIXME there is no way to update the controllers sliders since they dont have motors :(
                 }
             }
         }

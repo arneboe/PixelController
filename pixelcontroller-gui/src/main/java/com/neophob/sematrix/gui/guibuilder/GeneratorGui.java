@@ -350,7 +350,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         Tab allOutputTab = null;
 
         // add all output mapping only if multiple output panels exist
-        if (nrOfVisuals > 2) {
+        // and no hardware controller is present
+        if (nrOfVisuals > 2 && !hwControllerPresent) {
             allOutputTab = cp5.addTab(messages.getString("GeneratorGui.TAB_ALL_OUTPUT_MAPPING")); 
             allOutputTab.setColorForeground(0xffff0000);
             allTabs.add(allOutputTab);
@@ -891,9 +892,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         cp5.addTextlabel(
                 "outputDeviceName", getOutputDeviceName(), 15 + GENERIC_X_OFS + xSizeForEachWidget * 3, 2 + GENERIC_Y_OFS + 10).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); 
 
-        cp5.addButton(GuiElement.ADD_COLORSET.guiText(), 0, 790,
-                263, 60, 15);
-
+        cp5.addButton(GuiElement.ADD_COLORSET.guiText(), 0, 790, 263, 60, 15);
 
         // register event listener
         cp5.addListener(listener);

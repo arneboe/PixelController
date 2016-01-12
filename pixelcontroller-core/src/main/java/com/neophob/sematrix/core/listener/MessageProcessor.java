@@ -377,11 +377,21 @@ public enum MessageProcessor {
 
                 case LOAD_PRESET:
                     try {
-                        loadActivePreset(col);
+                        loadActivePreset(col, -1);
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
                     }
                     break;
+
+                case LOAD_PRESET_AND_SET_VISUAL:
+                    try {
+                        int visual = parseValue(msg[1]);
+                        loadActivePreset(col, visual);
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
+
 
                 case CHANGE_PRESET:
                     try {
@@ -472,7 +482,7 @@ public enum MessageProcessor {
                     try {
                         int currentPreset = Shuffler.getRandomPreset(presetService);
                         presetService.setSelectedPreset(currentPreset);
-                        loadActivePreset(col);
+                        loadActivePreset(col, -1);
                         col.notifyGuiUpdate();
                         col.notifyEffectChanged();
                         col.notifyGeneratorChanged();
@@ -749,7 +759,8 @@ public enum MessageProcessor {
 
     }
 
-    private synchronized void loadActivePreset(VisualState visualState) {
+    /**If overrideVisual is != -1 the visual will be overriden */
+    private synchronized void loadActivePreset(VisualState visualState, int overrideVisual) {
         LOG.log(Level.INFO, "Load Preset ...");
         visualState.setLoadingPresent(true);
 
@@ -768,7 +779,13 @@ public enum MessageProcessor {
             s = StringUtils.trim(s);
             s = StringUtils.removeEnd(s, ";");
             LOG.log(Level.FINEST, "LOAD PRESET: " + s);
-            this.processMsg(StringUtils.split(s, ' '), false, null);
+            String[] cmd = StringUtils.split(s, ' ');
+            if(overrideVisual >= 0 && cmd[0].equals("CHANGE_OUTPUT_VISUAL"))
+            {
+                //FIXME extremly dirty hack!!!
+                cmd[1] = String.valueOf(overrideVisual);
+            }
+            this.processMsg(cmd, false, null);
         }
         long needed = System.currentTimeMillis() - start;
         LOG.log(Level.INFO, "Preset loaded in " + needed + "ms");
