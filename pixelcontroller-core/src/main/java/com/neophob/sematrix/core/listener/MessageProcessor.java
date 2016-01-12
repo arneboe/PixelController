@@ -782,7 +782,7 @@ public enum MessageProcessor {
             String[] cmd = StringUtils.split(s, ' ');
             if(overrideVisual >= 0 && cmd[0].equals("CHANGE_OUTPUT_VISUAL"))
             {
-                //FIXME extremly dirty hack!!!
+                //FIXME extremely dirty hack!!!
                 cmd[1] = String.valueOf(overrideVisual);
             }
             this.processMsg(cmd, false, null);

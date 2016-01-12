@@ -90,10 +90,9 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
             return;//wait for the correct button to be released first
         if(holdMode && button >= 0 && button < PresetService.NR_OF_PRESET_SLOTS) {//slot released
             createMessage(ValidCommand.CHANGE_PRESET, (oldPreset));
-            sendMsg(ValidCommand.LOAD_PRESET);//the message will cause a call to displayPreset()
+            createMessage(ValidCommand.LOAD_PRESET_AND_SET_VISUAL, visual);
             createMessage(ValidCommand.GENERATOR_SPEED, speed);
             createMessage(ValidCommand.CHANGE_BRIGHTNESS, brightness);
-            createMessage(ValidCommand.CHANGE_ALL_OUTPUT_VISUAL, visual);
         }
     }
 
