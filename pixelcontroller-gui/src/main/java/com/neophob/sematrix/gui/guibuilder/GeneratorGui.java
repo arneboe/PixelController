@@ -891,8 +891,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         cp5.addTextlabel(
                 "outputDeviceName", getOutputDeviceName(), 15 + GENERIC_X_OFS + xSizeForEachWidget * 3, 2 + GENERIC_Y_OFS + 10).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); 
 
-        cp5.addButton(GuiElement.ADD_COLORSET.guiText(), 0, 500,
-                500, 110, 15);
+        cp5.addButton(GuiElement.ADD_COLORSET.guiText(), 0, 790,
+                263, 60, 15);
 
 
         // register event listener
