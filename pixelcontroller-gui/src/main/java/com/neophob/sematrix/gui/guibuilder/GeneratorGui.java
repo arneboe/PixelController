@@ -189,8 +189,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private Group effectOptionGroup;
     private int generatorANextYOffset = 0;
     private int generatorBNextYOffset = 0;
+    private boolean hwControllerPresent = false;
 
-    public GeneratorGui(PixConServer pixelController, WindowSizeCalculator wsc) {
+    public GeneratorGui(PixConServer pixelController, WindowSizeCalculator wsc,
+                        boolean hwControllerPresent) {
         super();
         KeyboardHandler.gui = this;
         this.pixConServer = pixelController;
@@ -199,6 +201,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         this.singleVisualXSize = wsc.getSingleVisualWidth();
         this.singleVisualYSize = wsc.getSingleVisualHeight();
         this.p5GuiYOffset = this.singleVisualYSize + 110;
+        this.hwControllerPresent = hwControllerPresent;
 
         PixelControllerResize pcr = new PixelControllerResize();
         pcr.initAll();
@@ -382,6 +385,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         generatorSpeedSlider.setLabelVisible(true);
         generatorSpeedSlider.setNumberOfTickMarks(200);
         generatorSpeedSlider.showTickMarks(false);
+        if(hwControllerPresent)
+            generatorSpeedSlider.setLock(true);
 
         // beat animation
         cp5.addTextlabel("beatWorkmode", messages.getString("GeneratorGui.BEAT_WORKMODE"),
@@ -525,6 +530,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         brightnessControll.setRange(0, 100);
         brightnessControll.showTickMarks(false);
         brightnessControll.setLabelVisible(true);
+        if(hwControllerPresent)
+            brightnessControll.setLock(true);
 
         int nrOfOutputs = pixConServer.getConfig().getNrOfScreens();
         selectedOutputs = cp5.addRadioButton(GuiElement.CURRENT_OUTPUT.guiText(), GENERIC_X_OFS,
@@ -1674,5 +1681,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     public void decreaseBrightness() {
         final float newValue = brightnessControll.getValue() - 2;
         brightnessControll.setValue(newValue);
+    }
+
+    public void setBrightnessSliderLocked(boolean value) {
+        brightnessControll.setLock(value);
     }
 }

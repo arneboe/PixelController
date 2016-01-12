@@ -43,7 +43,7 @@ public class GeneratorGuiCreator {
 
     private static final Logger LOG = Logger.getLogger(GeneratorGuiCreator.class.getName());
 
-    private PApplet gui;
+    private GeneratorGui gui;
 
     /**
      * Instantiates a new internal debug window.
@@ -54,7 +54,7 @@ public class GeneratorGuiCreator {
      *            maximal x size of the window
      */
     public GeneratorGuiCreator(PixConServer pixelController, PApplet parentPapplet,
-            int maximalXSize, int maximalYSize) {
+            int maximalXSize, int maximalYSize, boolean hwControllerPresent) {
         int nrOfScreens = pixelController.getConfig().getNrOfScreens() + 1
                 + pixelController.getConfig().getNrOfAdditionalVisuals();
         LOG.log(Level.INFO, "create GUI, nr of screens: " + nrOfScreens);
@@ -64,7 +64,7 @@ public class GeneratorGuiCreator {
                 md.getBufferYSize(), maximalXSize, maximalYSize, nrOfScreens);
 
         // connect the new PApplet to our frame
-        gui = new GeneratorGui(pixelController, wsc);
+        gui = new GeneratorGui(pixelController, wsc, hwControllerPresent);
         gui.init();
 
         // create new window for child
@@ -111,4 +111,7 @@ public class GeneratorGuiCreator {
         return (GuiCallbackAction) gui;
     }
 
+    public void setLockBrightness(boolean lockBrightness) {
+        gui.setBrightnessSliderLocked(lockBrightness);
+    }
 }

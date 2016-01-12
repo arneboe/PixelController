@@ -24,6 +24,8 @@ import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.gui.HardwareController.AkaiApcMiniController;
+import com.neophob.sematrix.gui.HardwareController.HardwareControllerHandler;
 import processing.core.PApplet;
 
 import com.neophob.sematrix.core.api.CallbackMessageInterface;
@@ -32,6 +34,8 @@ import com.neophob.sematrix.gui.guibuilder.MatrixSimulatorGui;
 import com.neophob.sematrix.gui.guibuilder.eventhandler.KeyboardHandler;
 import com.neophob.sematrix.gui.guibuilder.eventhandler.WindowHandler;
 import com.neophob.sematrix.gui.service.PixConServer;
+
+import javax.sound.midi.MidiUnavailableException;
 
 /**
  * @author michu
@@ -62,6 +66,9 @@ abstract class AbstractPixelControllerP5 extends PApplet implements
 
     protected boolean postInitDone = false;
 
+    protected AkaiApcMiniController akai = null;
+    protected HardwareControllerHandler akaiHandler = null;
+
     public void setup() {
         try {
             LOG.log(Level.INFO, "Initialize...");
@@ -89,9 +96,26 @@ abstract class AbstractPixelControllerP5 extends PApplet implements
             drawProgressBar(0.0f);
             frameRate(FPS);
 
-            this.initPixelController();
+            initPixelController();
         } catch (Exception e) {
             LOG.log(Level.SEVERE, "Setup() call failed!", e);
+        }
+    }
+
+    protected void initHwController() {
+        akai = new AkaiApcMiniController();
+        try {
+            if(akai.open()) {
+                akaiHandler = new HardwareControllerHandler(pixelController, akai);
+                LOG.log(Level.INFO, "Connected akai apc mini controller");
+            }
+            else
+            {
+                LOG.log(Level.INFO, "Could not connect to akai apc mini controller");
+            }
+        } catch (MidiUnavailableException e) {
+            LOG.log(Level.INFO, "Could not connect to akai apc mini controller");
+            e.printStackTrace();
         }
     }
 
@@ -101,14 +125,15 @@ abstract class AbstractPixelControllerP5 extends PApplet implements
     protected void postSetupInitialisation() {
         this.matrixEmulator = new MatrixSimulatorGui(pixelController, this);
         background(0);
-
+        initHwController();
         int maxWidth = pixelController.getConfig().getDebugWindowMaximalXSize();
         int maxHeight = pixelController.getConfig().getDebugWindowMaximalYSize();
         GeneratorGuiCreator ggc = new GeneratorGuiCreator(pixelController, this, maxWidth,
-                maxHeight);
+                maxHeight, akaiHandler != null);
         // register GUI Window in the Keyhandler class, needed to do some
         // specific actions (select a visual...)
         KeyboardHandler.init(ggc.getGuiCallbackAction(), pixelController);
+
 
         try {
             // now start a little hack, remove all window listeners, so we can
@@ -139,6 +164,7 @@ abstract class AbstractPixelControllerP5 extends PApplet implements
 
         this.matrixEmulator.update();
         pixelController.updateNeededTimeForMatrixEmulator(System.currentTimeMillis() - startTime);
+
     }
 
     public abstract void initPixelController();

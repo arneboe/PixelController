@@ -36,27 +36,11 @@ import javax.sound.midi.MidiUnavailableException;
  */
 public class PixelControllerP5 extends AbstractPixelControllerP5 {  
 
-	private AkaiApcMiniController akai;
-	private HardwareControllerHandler akaiHandler;
+
 	public void initPixelController() {
 		pixelController = new LocalServer(this);
 		pixelController.start();
 		LOG.log(Level.INFO, "LocalServer created");
-
-		akai = new AkaiApcMiniController();
-		try {
-			if(akai.open()) {
-                akaiHandler = new HardwareControllerHandler(pixelController, akai);
-                LOG.log(Level.INFO, "Connected akai apc mini controller");
-            }
-            else
-            {
-                LOG.log(Level.INFO, "Could not connect to akai apc mini controller");
-            }
-		} catch (MidiUnavailableException e) {
-			LOG.log(Level.INFO, "Could not connect to akai apc mini controller");
-			e.printStackTrace();
-		}
 	}
 
 	public static void main(String[] args) {

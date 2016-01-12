@@ -42,6 +42,9 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
     private int speed = 50;
     private int brightness = 50;
 
+    /**true if the controller is sending a message. used to avoid infinit recursion */
+    private boolean sendingMsg = false;
+
     public HardwareControllerHandler(final PixConServer server, IHardwareController hw) {
         this.server = server;
         this.hw = hw;
@@ -115,13 +118,17 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
         String[] msg = new String[2];
         msg[0] = "" + validCommand;
         msg[1] = "" + (int) newValue;
+        sendingMsg = true;
         server.sendMessage(msg);
+        sendingMsg = false;
     }
 
     private void sendMsg(ValidCommand command) {
         String[] msg = new String[1];
         msg[0] = "" + command;
+        sendingMsg = true;
         server.sendMessage(msg);
+        sendingMsg = false;
     }
 
     /**Sets all push button colors to the inital values */
@@ -195,13 +202,15 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
                         displayPreset(preset);
                     }
                 }
-                else if(tmp[0].equals("CHANGE_BRIGHTNESS")) {
+                else if(tmp[0].equals("CHANGE_BRIGHTNESS") && !sendingMsg) {
+                    //override brightness changes by anyone else
+                    createMessage(ValidCommand.CHANGE_BRIGHTNESS, brightness);
 
                 }
-                else if(tmp[0].equals("CHANGE_BRIGHTNESS"))  {
-                    //FIXME there is no way to update the controllers sliders since they dont have motors :(
+                else if(tmp[0].equals("GENERATOR_SPEED") && !sendingMsg) {
+                    //override speed changes by anyone else
+                    createMessage(ValidCommand.GENERATOR_SPEED, speed);
                 }
-                else if(tmp[0].equals("GENERATOR_SPEED"))
                 {
                     //FIXME there is no way to update the controllers sliders since they dont have motors :(
                 }
