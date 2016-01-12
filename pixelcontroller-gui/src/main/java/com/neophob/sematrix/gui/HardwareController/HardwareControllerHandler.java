@@ -60,7 +60,6 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
 
     @Override
     public void buttonPressed(int button) {
-        if(button < 16) return;
         if(buttonDown != -1)//this code can only handle one button at a time
             return;
         buttonDown = button;
@@ -85,7 +84,6 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
 
     @Override
     public void buttonReleased(int button) {
-        if(button < 16) return;
         if(buttonDown == button) //int is used instead of bool to stop the user from pressing two buttons and releasing the wrong one first
             buttonDown = -1;
         else
@@ -134,7 +132,7 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
     /**Sets all push button colors to the inital values */
     private void initController() {
         //FIXME blink is just for testing
-        for(int i = 16; i < 64; ++i) {//3 color push buttons
+        for(int i = 0; i < 64; ++i) {//3 color push buttons
             hw.setButtonState(i, unusedPresetColor);
         }
         for(int i = 64; i < 72; ++i) { //red push buttons
