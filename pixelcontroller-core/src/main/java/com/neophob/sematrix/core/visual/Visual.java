@@ -25,6 +25,7 @@ import com.neophob.sematrix.core.visual.color.IColorSet;
 import com.neophob.sematrix.core.visual.effect.Effect;
 import com.neophob.sematrix.core.visual.generator.Generator;
 import com.neophob.sematrix.core.visual.mixer.Mixer;
+import com.neophob.sematrix.core.common.MathHelpers;
 
 /**
  * this model holds 2 generators, 2 effects and a mixer instance.
@@ -50,6 +51,15 @@ public class Visual {
 
     private IColorSet colorSet;
 
+    //strobo options
+    private static final int maxStrobeDelay = 800; //in ms
+    private static final int minStrobeDelay = 30; //in ms
+    private int globalStroboSpeed = 0; //range [0 .. 255]
+    private long strobeTime = 0;
+    private boolean flash = false;
+    private boolean strobeOn = true;
+    private int[] zeroBuffer;
+
     /**
      * 
      * @param generator1
@@ -67,6 +77,8 @@ public class Visual {
         this.effect2 = effect2;
         this.mixer = mixer;
         this.colorSet = colorSet;
+        zeroBuffer =  new int[generator1.getInternalBufferXSize() * generator1.getInternalBufferYSize()];
+
     }
 
     /**
@@ -83,6 +95,7 @@ public class Visual {
         this.effect2 = e;
         this.mixer = m;
         this.colorSet = c;
+        zeroBuffer =  new int[generator1.getInternalBufferXSize() * generator1.getInternalBufferYSize()];
     }
 
     public void initFrom(final Visual otherVisual) {
@@ -92,6 +105,7 @@ public class Visual {
         this.effect1 = otherVisual.getEffect1();
         this.effect2 = otherVisual.getEffect2();
         this.mixer = otherVisual.getMixer();
+        zeroBuffer =  new int[generator1.getInternalBufferXSize() * generator1.getInternalBufferYSize()];
     }
 
     /**
@@ -100,7 +114,40 @@ public class Visual {
      * @return the buffer
      */
     public int[] getBuffer() {
-        return this.getMixerBuffer();
+        if(stroboEnabled())
+        {
+            return getStroboBuffer();
+        }
+        else {
+            return this.getMixerBuffer();
+        }
+    }
+
+    private int[] getStroboBuffer() {
+        final long currentTime = System.currentTimeMillis();
+        final int flashTime = 6;
+        final int nonFlashTime = MathHelpers.map(globalStroboSpeed, 0, 255, maxStrobeDelay, minStrobeDelay);
+        final long timeSinceLastFlash = currentTime - strobeTime;
+
+
+        if(flash && timeSinceLastFlash > flashTime) {
+            strobeTime = currentTime;
+            flash = false;
+            strobeOn = false;
+        }
+        else if(!flash && timeSinceLastFlash > nonFlashTime) {
+            strobeTime = currentTime;
+            flash = true;
+            strobeOn = true;
+        }
+
+        if(strobeOn) {
+            return getMixerBuffer();
+        }
+        else
+        {
+            return zeroBuffer;
+        }
     }
 
     /**
@@ -152,6 +199,11 @@ public class Visual {
      */
     public int getGenerator1Idx() {
         return generator1.getId();
+    }
+
+
+    private boolean stroboEnabled() {
+        return globalStroboSpeed > 2;
     }
 
     /**
@@ -357,7 +409,7 @@ public class Visual {
     /**
      * Sets the mixer.
      * 
-     * @param mixer1
+     * @param mixer
      *            the new mixer
      */
     public void setMixer(Mixer mixer) {
@@ -392,8 +444,6 @@ public class Visual {
 
     /**
      * set color set by name
-     * 
-     * @param index
      */
     public void setColorSet(String name) {
         List<IColorSet> allColorSets = VisualState.getInstance().getColorSets();
@@ -415,4 +465,16 @@ public class Visual {
         return generator1.isPassThoughModeActive() || generator2.isPassThoughModeActive();
     }
 
+    public void setStroboSpeed(final int speed) {
+        if(speed < 0)
+            globalStroboSpeed = 0;
+        else if(speed > 255)
+            globalStroboSpeed = 255;
+        else
+            globalStroboSpeed = speed;
+    }
+
+    public int getStroboSpeed() {
+        return globalStroboSpeed;
+    }
 }

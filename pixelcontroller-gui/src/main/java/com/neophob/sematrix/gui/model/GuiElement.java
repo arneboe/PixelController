@@ -51,7 +51,7 @@ public enum GuiElement {
 
     SAVE_SCREENSHOT, SOUND_MODE_DROPDOWN, BPM, NO_BEAT_SPEED,
 
-    ADD_COLORSET, C1_3, C1_4, C1_5;
+    ADD_COLORSET, C1_3, C1_4, C1_5, STROBO;
 
     /**
      * 

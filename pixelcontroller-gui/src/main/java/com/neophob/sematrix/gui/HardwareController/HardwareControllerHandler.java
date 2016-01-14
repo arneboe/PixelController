@@ -18,6 +18,7 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
 
     private static final int speedSlider = 48;
     private static final int brightnessSlider = 49;
+    private static final int stroboSlider = 50;
     private static final int holdButton = 82;
 
     private static final  HWButtonState holdButtonActive = HWButtonState.GREEN_BLINK;
@@ -84,7 +85,7 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
 
     @Override
     public void buttonReleased(int button) {
-        if(buttonDown == button) //int is used instead of bool to stop the user from pressing two buttons and releasing the wrong one first
+        if(buttonDown == button) //stop the user from pressing two buttons and releasing the wrong one first
             buttonDown = -1;
         else
             return;//wait for the correct button to be released first
@@ -108,6 +109,10 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
             final int val = map(newValue, 0, 127, 0, 100);
             brightness = val;
             createMessage(ValidCommand.CHANGE_BRIGHTNESS, val);
+        }
+        else if(slider == stroboSlider) {
+            final int stroboSpeed =  map(newValue, 0, 127, 0, 255);
+            createMessage(ValidCommand.SET_STROBO_SPEED, stroboSpeed);
         }
 
     }

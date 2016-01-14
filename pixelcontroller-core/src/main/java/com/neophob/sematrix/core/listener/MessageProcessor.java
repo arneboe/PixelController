@@ -153,6 +153,13 @@ public enum MessageProcessor {
 
             Visual v;
             switch (cmd) {
+                case SET_STROBO_SPEED:
+                    int speed = parseValue(msg[1]);
+                    for(Visual vis : col.getAllVisuals()) {
+                        vis.setStroboSpeed(speed);
+                    }
+                    break;
+
                 case CHANGE_GENERATOR_A:
                     try {
                         int nr = col.getCurrentVisual();

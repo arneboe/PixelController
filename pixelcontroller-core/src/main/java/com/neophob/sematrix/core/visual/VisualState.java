@@ -666,6 +666,8 @@ public class VisualState extends Observable {
         ret.add(ValidCommand.GENERATOR_SPEED + " " + generatorSpeed);
         int outputGainInt =  (int) (this.outputGain * 100f);
         ret.add(ValidCommand.CHANGE_OUTPUT_GAIN + " " + outputGainInt);
+        int stroboSpeed = getVisual(0).getStroboSpeed();
+        ret.add(ValidCommand.SET_STROBO_SPEED + " " + stroboSpeed);
 
         // add element status
         ret.addAll(pixelControllerEffect.getCurrentState());

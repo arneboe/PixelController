@@ -283,6 +283,10 @@ public final class P5EventListener implements ControlListener {
                 float brightness = value;
                 createMessage(ValidCommand.CHANGE_BRIGHTNESS, brightness);
                 break;
+            case STROBO:
+                int speed = (int)value;
+                createMessage(ValidCommand.SET_STROBO_SPEED, speed);
+                break;
 
             case SAVE_SCREENSHOT:
                 createMessage(ValidCommand.SCREENSHOT, "");

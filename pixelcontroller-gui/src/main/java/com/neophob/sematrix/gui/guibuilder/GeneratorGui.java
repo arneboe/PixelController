@@ -122,6 +122,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
 
     private Slider brightnessControll;
+    private Slider stroboSlider;
     private Toggle freeze;
 
       // Generator Tab
@@ -533,6 +534,21 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         brightnessControll.setLabelVisible(true);
         if(hwControllerPresent)
             brightnessControll.setLock(true);
+
+        stroboSlider = cp5.addSlider(GuiElement.STROBO.guiText(), 0, 255, 255, 38 + GENERIC_X_OFS,
+                p5GuiYOffset + 120, 140, 14);
+        stroboSlider.setSliderMode(Slider.FIX);
+        stroboSlider.setDecimalPrecision(0);
+        stroboSlider.setNumberOfTickMarks(100);
+        stroboSlider.setRange(0, 255);
+        stroboSlider.showTickMarks(false);
+        stroboSlider.setValue(0);
+        stroboSlider.setLabelVisible(true);
+        if(hwControllerPresent)
+            stroboSlider.setLock(true);
+
+
+
 
         int nrOfOutputs = pixConServer.getConfig().getNrOfScreens();
         selectedOutputs = cp5.addRadioButton(GuiElement.CURRENT_OUTPUT.guiText(), GENERIC_X_OFS,
@@ -1397,6 +1413,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
                     case CHANGE_BRIGHTNESS:
                         brightnessControll.changeValue(Float.parseFloat(s.getValue()));
+                        break;
+
+                    case SET_STROBO_SPEED:
+                        stroboSlider.changeValue(Float.parseFloat(s.getValue()));
                         break;
 
                     case CHANGE_OUTPUT_FADER:
