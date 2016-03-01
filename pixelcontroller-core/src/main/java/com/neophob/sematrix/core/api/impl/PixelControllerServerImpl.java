@@ -376,14 +376,4 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
     public void setSoundMode(SoundCombiner.SoundMode mode) {
         sound.selectSound(mode);
     }
-
-    @Override
-    public void setBpm(int bpm) {
-        sound.setBpm(bpm);
-    }
-
-    @Override
-    public void setNoBeatSpeed(float noBeatSpeed) {
-        sound.setNoBeatSpeed(noBeatSpeed);
-    }
 }

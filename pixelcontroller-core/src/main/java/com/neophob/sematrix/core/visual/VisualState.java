@@ -798,12 +798,4 @@ public class VisualState extends Observable {
         setChanged();
         notifyObservers(getCurrentOptions(Options.Target.EFFECT_B));
     }
-
-    public void setBpm(int bpm) {
-        soundController.setBpm(bpm);
-    }
-
-    public void setNoBeatSpeed(float noBeatSpeed) {
-        soundController.setNoBeatSpeed(noBeatSpeed);
-    }
 }

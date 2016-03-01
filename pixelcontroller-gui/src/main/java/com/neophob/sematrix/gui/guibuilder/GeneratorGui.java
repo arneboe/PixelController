@@ -106,9 +106,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private DropdownList generatorListOne, effectListOne;
     private DropdownList generatorListTwo, effectListTwo;
     private DropdownList soundModeList;
-    private Slider bpmSlider;
-    private Slider noBeatSpeed;
-    private Slider beatSpeed;
     private DropdownList mixerList;
     private RadioButton selectedVisualList;
     private RadioButton selectedOutputs;
@@ -450,12 +447,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         genSoundOptsYOffset += 15;
 
         genSoundOptsYOffset += 15;
-        bpmSlider = cp5.addSlider(GuiElement.BPM.guiText(), 1f, 500, 1f,
-                GENERIC_X_OFS, genSoundOptsYOffset, 140, 14);
 
         genSoundOptsYOffset += 16;
-        noBeatSpeed = cp5.addSlider(GuiElement.NO_BEAT_SPEED.guiText(), 0f, 1f, 1f,
-                GENERIC_X_OFS, genSoundOptsYOffset, 140, 14);
 
         genSoundOptsYOffset -= 31;
         soundModeList = cp5.addDropdownList(GuiElement.SOUND_MODE_DROPDOWN.guiText(),
@@ -912,8 +905,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
         // register event listener
         cp5.addListener(listener);
-
-        bpmSlider.setValue(125);
 
         // select first visual
         selectedVisualList.activate(0);

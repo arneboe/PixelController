@@ -136,8 +136,6 @@ public enum ValidCommand {
     GET_PASSTHROUGH_MODE(CommandGroup.INTERNAL, 0, "Return the pass through mode", true),
 
     SOUND_MODE(CommandGroup.MISC, 1, "Change the sound mode"),
-    BPM(CommandGroup.MISC, 1, "set the current bpm"),
-    NO_BEAT_SPEED(CommandGroup.MISC, 1, "Volume when there is no beat"),
     COPY_VISUAL(CommandGroup.VISUAL, 2 ,"Copy visual from a to b"),
     SET_STROBO_SPEED(CommandGroup.VISUAL, 1, "set the global strobo speed. 0 = off. range 0..255");
 

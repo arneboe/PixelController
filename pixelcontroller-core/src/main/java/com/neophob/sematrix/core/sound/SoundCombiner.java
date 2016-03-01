@@ -9,28 +9,20 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 public class SoundCombiner implements ISound
 {
-    private BpmSound bpmSound = new BpmSound();
     private SoundMinimKctess5 audioSound = new SoundMinimKctess5();
     private SoundMinim minimSound = new SoundMinim(0.0005f);
 
     private ISound currentSound;
-    private float noBeatSpeed;
 
     public SoundCombiner()
     {
         currentSound = audioSound;
     }
 
-    public void setNoBeatSpeed(float noBeatSpeed) {
-        bpmSound.setNoBeatVolume(noBeatSpeed);
-    }
-
-
     public enum SoundMode
     {
         AUDIO(0),
-        BPM(1),
-        AUDIO2(2);
+        AUDIO2(1);
 
         private int id;
 
@@ -51,14 +43,12 @@ public class SoundCombiner implements ISound
     {
         switch(source)
         {
-            case BPM:
-                currentSound = bpmSound;
-                break;
             case AUDIO:
                 currentSound = audioSound;
                 break;
             case AUDIO2:
                 currentSound = minimSound;
+                break;
             default:
                 throw new NotImplementedException();
         }
@@ -107,8 +97,8 @@ public class SoundCombiner implements ISound
 
     @Override
     public void shutdown() {
-        bpmSound.shutdown();
         audioSound.shutdown();
+        minimSound.shutdown();
     }
 
     @Override
@@ -123,18 +113,13 @@ public class SoundCombiner implements ISound
 
     @Override
     public void start() {
-        bpmSound.start();
+        minimSound.start();
         audioSound.start();
     }
 
     @Override
     public void reset() {
-        bpmSound.reset();
+        minimSound.reset();
         audioSound.reset();
-    }
-
-    public void setBpm(int bpm)
-    {
-        bpmSound.setBpm(bpm);
     }
 }

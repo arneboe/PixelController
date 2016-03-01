@@ -304,14 +304,6 @@ public final class P5EventListener implements ControlListener {
                 createMessage(ValidCommand.SOUND_MODE, value);
                 break;
 
-            case BPM:
-                createMessage(ValidCommand.BPM, value);
-                break;
-
-            case NO_BEAT_SPEED:
-                createMessage(ValidCommand.NO_BEAT_SPEED, String.valueOf(value));
-                break;
-
             case C1_2:
                 createMessage(ValidCommand.COPY_VISUAL, 0, 1);
                 break;
