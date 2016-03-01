@@ -6,8 +6,17 @@ Introducted a ton of bugs and fixed a few.
 This fork is probably not useable by anyone else.
 
 # TODO
- * revert the audio stuff
+ * Check if BeatStrobo effect is actually usefull
+ * Add real strobo effect
  * make any matrix dimensions work
+ * make output.mapping work again
+ * re-add the better manual mapping option
+ * output.layout=ROTATE_90 does not seem to do anything?!
+ * What is Configuration.startupOutputGain ??
+ * rename panel.color.order to something better
+ * does the gamma correction work? what exactly does it doe?
+ * remove ConfigConstant.CFG_PIXEL_SIZE from config. It clutters the config and is useless. Use default pixel size and let user resize the window instead
+ * remove HorizontalLayout and BoxLayout. They are both just special cases of MatrixLayout and not needed anymore
 
 
 # PixelController

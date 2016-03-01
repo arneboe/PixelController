@@ -41,7 +41,8 @@ public abstract class Layout implements Serializable {
         HORIZONTAL(0),
 
         /** The BOX. */
-        BOX(1);
+        BOX(1),
+        MATRIX(2);
 
         /** The id. */
         private int id;

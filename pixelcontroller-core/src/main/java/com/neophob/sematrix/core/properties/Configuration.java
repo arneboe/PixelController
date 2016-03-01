@@ -28,6 +28,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.core.visual.layout.MatrixLayout;
 import org.apache.commons.lang3.StringUtils;
 
 import com.neophob.sematrix.core.output.OutputDeviceEnum;
@@ -50,41 +51,25 @@ public class Configuration implements Serializable {
 
     private static final long serialVersionUID = -742970229384663801L;
 
-    /** The log. */
     private static final transient Logger LOG = Logger.getLogger(Configuration.class.getName());
 
-    /** The Constant ERROR_MULTIPLE_DEVICES_CONFIGURATED. */
-    private static final transient String ERROR_MULTIPLE_DEVICES_CONFIGURATED = "Multiple devices configured, illegal configuration!";
-
     private static final transient String ERROR_MULTIPLE_CABLING_METHOD_CONFIGURATED = "Multiple cabling options (snake cabling and custom mapping) configured, illegal configuration!";
-
     private static final transient String ERROR_INVALID_OUTPUT_MAPPING = "Invalid output mapping entries, output.mapping > output.resolution.x*output.resolution.y";
-
-    /** The Constant FAILED_TO_PARSE. */
     private static final transient String FAILED_TO_PARSE = "Failed to parse {0}";
 
     private static final transient int MAXIMAL_PIXELS_PER_UNIVERSE = 170;
 
-    /** The config. */
     protected Properties config = null;
 
-    /** The output device enum. */
-    private OutputDeviceEnum outputDeviceEnum = null;
+    private OutputDeviceEnum deviceType = null;
 
     // output specific settings
-    /** The i2c addr. */
     private List<Integer> i2cAddr = null;
-
     private List<String> rainbowduinoV3SerialDevices = null;
-
-    /** The lpd device. */
     private List<DeviceConfig> lpdDevice = null;
-
     private List<DeviceConfig> tpm2netDevice = null;
     private List<DeviceConfig> artNetDevice = null;
     private List<DeviceConfig> e131Device = null;
-
-    /** The color format. */
     private List<ColorFormat> colorFormat = null;
 
     /** define how the panels are arranged, used by pixelinvaders panels */
@@ -94,16 +79,13 @@ public class Configuration implements Serializable {
 
     private transient Map<Integer, RGBAdjust> pixelInvadersCorrectionMap = new HashMap<Integer, RGBAdjust>();
 
-    /** The devices in row1. */
-    private int devicesInRow1 = 0;
+    /**The device matrix. Access is [y][x], i.e. [row][col] */
+    private DeviceConfig[][] deviceConfig;
 
-    /** The devices in row2. */
-    private int devicesInRow2 = 0;
-
-    /** The output device x resolution. */
+    /** The x resolution of each device */
     private int deviceXResolution = 0;
 
-    /** The output device y resolution. */
+    /** The y resolution of each */
     private int deviceYResolution = 0;
 
     /** user selected gamma correction */
@@ -115,150 +97,42 @@ public class Configuration implements Serializable {
     private String pixelinvadersNetIp;
     private int pixelinvadersNetPort;
 
-    /**
-     * Instantiates a new properties helper.
-     * 
-     * @param input
-     *            the input
-     */
+
     public Configuration(Properties config) {
         this.config = config;
 
-        int nullDevices = parseNullOutputAddress();
-        int rainbowduinoV2Devices = parseI2cAddress();
-        int rainbowduinoV3Devices = parseRainbowduinoV3Config();
-        int pixelInvadersDevices = parsePixelInvaderConfig();
-        int pixelInvadersNetDevices = parsePixelInvaderNetConfig();
-        int artnetDevices = parseArtNetDevices();
-        int e131Devices = parseE131Devices();
-        int miniDmxDevices = parseMiniDmxDevices();
-        int tpm2Devices = parseTpm2Devices();
-        int tpm2NetDevices = parseTpm2NetDevices();
-        int udpDevices = parseUdpDevices();
-        int rpi2801Devices = parseRpi2801Devices();
-        int opcDevices = parseOPCDevices();
-        // track how many output systems are enabled
-        int enabledOutputs = 0;
+        deviceType = parseDeviceType();
+        LOG.log(Level.INFO, "Device type is " + deviceType.toString());
+        switch(deviceType) {
+            case E1_31:
+                //TODO load additional config values?
+                break;
+            case NULL:
+                deviceXResolution = ConfigDefault.DEFAULT_PIXELINVADERS_PANEL_RESOULTION;
+                deviceYResolution = ConfigDefault.DEFAULT_PIXELINVADERS_PANEL_RESOULTION;
+                break;
+            default:
+        }
+        deviceConfig = parseDeviceLayout();
+        LOG.log(Level.INFO, "Device config: Rows: " + deviceConfig.length + ", Columns: " + deviceConfig[0].length);
+        final int totalDevices = deviceConfig.length * deviceConfig[0].length;
+        deviceXResolution = parseOutputXResolution();
+        deviceYResolution = parseOutputYResolution();
 
-        // track how many ouput devices are configured
-        int totalDevices = 0;
+        //FIXME make output mapping work again
+        //int outputMappingSize = getOutputMappingValues().length;
+       // if (isOutputSnakeCabeling() && outputMappingSize > 0) {
+       //     LOG.log(Level.SEVERE, ERROR_MULTIPLE_CABLING_METHOD_CONFIGURATED);
+      //      throw new IllegalArgumentException(ERROR_MULTIPLE_CABLING_METHOD_CONFIGURATED);
+      //  }
 
-        if (rainbowduinoV2Devices > 0) {
-            enabledOutputs++;
-            totalDevices = rainbowduinoV2Devices;
-            LOG.log(Level.INFO, "found RainbowduinoV2 device: " + totalDevices);
-            this.outputDeviceEnum = OutputDeviceEnum.RAINBOWDUINO_V2;
-        }
-        if (rainbowduinoV3Devices > 0) {
-            enabledOutputs++;
-            totalDevices = rainbowduinoV3Devices;
-            LOG.log(Level.INFO, "found RainbowduinoV3 device: " + totalDevices);
-            this.outputDeviceEnum = OutputDeviceEnum.RAINBOWDUINO_V3;
-        }
-        if (pixelInvadersDevices > 0) {
-            enabledOutputs++;
-            totalDevices = pixelInvadersDevices;
-            LOG.log(Level.INFO, "found PixelInvaders device: " + totalDevices);
-            this.outputDeviceEnum = OutputDeviceEnum.PIXELINVADERS;
-        }
-        if (pixelInvadersNetDevices > 0) {
-            enabledOutputs++;
-            totalDevices = pixelInvadersNetDevices;
-            LOG.log(Level.INFO, "found PixelInvaders Net device: " + totalDevices);
-            this.outputDeviceEnum = OutputDeviceEnum.PIXELINVADERS_NET;
-        }
-        if (artnetDevices > 0) {
-            enabledOutputs++;
-            totalDevices = artnetDevices;
-            LOG.log(Level.INFO, "found Artnet device: " + totalDevices);
-            this.outputDeviceEnum = OutputDeviceEnum.ARTNET;
-        }
-        if (e131Devices > 0) {
-            enabledOutputs++;
-            totalDevices = e131Devices;
-            LOG.log(Level.INFO, "found E1.31 device: " + totalDevices);
-            this.outputDeviceEnum = OutputDeviceEnum.E1_31;
-        }
-        if (miniDmxDevices > 0) {
-            enabledOutputs++;
-            totalDevices = miniDmxDevices;
-            LOG.log(Level.INFO, "found miniDMX device: " + totalDevices);
-            this.outputDeviceEnum = OutputDeviceEnum.MINIDMX;
-        }
-        if (tpm2Devices > 0) {
-            enabledOutputs++;
-            totalDevices = tpm2Devices;
-            LOG.log(Level.INFO, "found Tpm2 serial device: " + totalDevices);
-            this.outputDeviceEnum = OutputDeviceEnum.TPM2;
-        }
-        if (tpm2NetDevices > 0) {
-            enabledOutputs++;
-            totalDevices = tpm2NetDevices;
-            LOG.log(Level.INFO, "found Tpm2 Net device: " + totalDevices);
-            this.outputDeviceEnum = OutputDeviceEnum.TPM2NET;
-        }
-        if (udpDevices > 0) {
-            enabledOutputs++;
-            totalDevices = udpDevices;
-            LOG.log(Level.INFO, "found UDP device: " + totalDevices);
-            this.outputDeviceEnum = OutputDeviceEnum.UDP;
-        }
-        if (rpi2801Devices > 0) {
-            enabledOutputs++;
-            totalDevices = rpi2801Devices;
-            LOG.log(Level.INFO, "found RPI2801 device: " + totalDevices);
-            this.outputDeviceEnum = OutputDeviceEnum.RPI_2801;
-        }
-        if(opcDevices > 0) {
-            enabledOutputs++;
-            totalDevices = opcDevices;
-            LOG.log(Level.INFO, "found OPC device: " + totalDevices);
-            this.outputDeviceEnum = OutputDeviceEnum.OPEN_PIXEL_CONTROL;
-        }
-
-
-        if (nullDevices > 0) {
-            // enable null output only if configured AND no other output is
-            // enabled.
-            if (enabledOutputs == 0) {
-                enabledOutputs++;
-                totalDevices = nullDevices;
-                LOG.log(Level.INFO, "found Null device: " + totalDevices);
-                this.outputDeviceEnum = OutputDeviceEnum.NULL;
-            } else {
-                LOG.log(Level.INFO,
-                        "Null device is configured - but ignored due another configured output");
-            }
-        }
-
-        if (enabledOutputs > 1) {
-            LOG.log(Level.SEVERE, ERROR_MULTIPLE_DEVICES_CONFIGURATED + ": " + enabledOutputs);
-            throw new IllegalArgumentException(ERROR_MULTIPLE_DEVICES_CONFIGURATED);
-        }
-
-        int outputMappingSize = getOutputMappingValues().length;
-        if (isOutputSnakeCabeling() && outputMappingSize > 0) {
-            LOG.log(Level.SEVERE, ERROR_MULTIPLE_CABLING_METHOD_CONFIGURATED);
-            throw new IllegalArgumentException(ERROR_MULTIPLE_CABLING_METHOD_CONFIGURATED);
-        }
-
-        int entries = this.deviceXResolution * this.deviceYResolution;
+   /*     final int entries = this.deviceXResolution * this.deviceYResolution;
         if (outputMappingSize > 0 && outputMappingSize > entries) {
             String s = " (" + outputMappingSize + ">" + entries + ")";
             LOG.log(Level.SEVERE, ERROR_INVALID_OUTPUT_MAPPING + s);
             throw new IllegalArgumentException(ERROR_INVALID_OUTPUT_MAPPING + s);
         }
-
-        // nothing was configured, use 8x8 null device as default
-        if (enabledOutputs == 0 || totalDevices == 0) {
-            enabledOutputs = 1;
-            totalDevices = 1;
-            devicesInRow1 = 1;
-            this.deviceXResolution = ConfigDefault.DEFAULT_PIXELINVADERS_PANEL_RESOULTION;
-            this.deviceYResolution = ConfigDefault.DEFAULT_PIXELINVADERS_PANEL_RESOULTION;
-            LOG.log(Level.WARNING, "no output device defined, use NULL output");
-            this.outputDeviceEnum = OutputDeviceEnum.NULL;
-        }
+*/
 
         // add default color format RGB if nothing is configured
         int nrOfColorFormat = getColorFormatFromCfg();
@@ -271,26 +145,18 @@ public class Configuration implements Serializable {
             }
         }
 
-        // add default order if nothing is configured
-        int nrOfPanelOrder = getPanelOrderFromCfg(totalDevices);
-        if (nrOfPanelOrder < totalDevices) {
-            if (nrOfPanelOrder > 0) {
-                LOG.log(Level.WARNING, "PixelInvaders Panel Order count mismatch, use default!");
-            }
-            this.panelOrder.clear();
-            for (int i = 0; i < totalDevices; i++) {
-                this.panelOrder.add(i);
-            }
-        }
-
         gammaType = parseGammaCorrection();
-
         startupOutputGain = parseStartupOutputGain();
+    }
+
+    private OutputDeviceEnum parseDeviceType() {
+        final String value = config.getProperty(ConfigConstant.DEVICE_TYPE);
+        return OutputDeviceEnum.valueOf(value);
     }
 
     /**
      * Parses the boolean.
-     * 
+     *
      * @param property
      *            the property
      * @return true, if successful
@@ -349,7 +215,7 @@ public class Configuration implements Serializable {
     }
 
     /**
-     * 
+     *
      * @param property
      * @return
      */
@@ -398,106 +264,7 @@ public class Configuration implements Serializable {
         return DeviceConfig.NO_ROTATE;
     }
 
-    /**
-     * Parses the lpd address.
-     * 
-     * @return the int
-     */
-    private int parsePixelInvaderConfig() {
-        lpdDevice = new ArrayList<DeviceConfig>();
 
-        String value = config.getProperty(ConfigConstant.PIXELINVADERS_ROW1);
-        if (StringUtils.isNotBlank(value)) {
-
-            if (parseBoolean(ConfigConstant.PIXELINVADERS_IS_AN_EXPEDITINVADER)) {
-                this.deviceXResolution = ConfigDefault.DEFAULT_EXPEDITINVADERS_PANEL_RESOULTION;
-                this.deviceYResolution = ConfigDefault.DEFAULT_EXPEDITINVADERS_PANEL_RESOULTION;
-            } else {
-                this.deviceXResolution = ConfigDefault.DEFAULT_PIXELINVADERS_PANEL_RESOULTION;
-                this.deviceYResolution = ConfigDefault.DEFAULT_PIXELINVADERS_PANEL_RESOULTION;
-            }
-
-            devicesInRow1 = 0;
-            devicesInRow2 = 0;
-
-            for (String s : value.split(ConfigConstant.DELIM)) {
-                try {
-                    DeviceConfig cfg = DeviceConfig.valueOf(StringUtils.strip(s));
-                    lpdDevice.add(cfg);
-                    devicesInRow1++;
-                } catch (Exception e) {
-                    LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
-                }
-            }
-        }
-
-        value = config.getProperty(ConfigConstant.PIXELINVADERS_ROW2);
-        if (StringUtils.isNotBlank(value)) {
-            for (String s : value.split(ConfigConstant.DELIM)) {
-                try {
-                    DeviceConfig cfg = DeviceConfig.valueOf(StringUtils.strip(s));
-                    lpdDevice.add(cfg);
-                    devicesInRow2++;
-                } catch (Exception e) {
-                    LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
-                }
-            }
-        }
-
-        String tmp = config.getProperty(ConfigConstant.PIXELINVADERS_NET_IP);
-        this.pixelinvadersNetIp = StringUtils.strip(tmp);
-        this.pixelinvadersNetPort = parseInt(ConfigConstant.PIXELINVADERS_NET_PORT);
-
-        // colorcorrection, maximal 16 panels
-        for (int i = 0; i < 16; i++) {
-            String pixColAdjustR = config.getProperty(ConfigConstant.PIXELINVADERS_COLORADJUST_R
-                    + i);
-            String pixColAdjustG = config.getProperty(ConfigConstant.PIXELINVADERS_COLORADJUST_G
-                    + i);
-            String pixColAdjustB = config.getProperty(ConfigConstant.PIXELINVADERS_COLORADJUST_B
-                    + i);
-
-            if (pixColAdjustR != null && pixColAdjustG != null && pixColAdjustB != null) {
-                RGBAdjust adj = new RGBAdjust(parseInt(ConfigConstant.PIXELINVADERS_COLORADJUST_R
-                        + i), parseInt(ConfigConstant.PIXELINVADERS_COLORADJUST_G + i),
-                        parseInt(ConfigConstant.PIXELINVADERS_COLORADJUST_B + i));
-                LOG.log(Level.INFO, "Found PixelInvaders color correction for output " + i + ": "
-                        + adj);
-                pixelInvadersCorrectionMap.put(i, adj);
-            }
-        }
-
-        // check if PixelController Net Device is enabled
-        if (StringUtils.isNotBlank(pixelinvadersNetIp) && pixelinvadersNetPort > 0) {
-            LOG.log(Level.INFO, "Found PixelInvaders Net Config " + pixelinvadersNetIp + ":"
-                    + pixelinvadersNetPort);
-
-            // TODO this is quite a hack here
-            return 0;
-        }
-
-        // get blacklist devices
-        String blacklist = config.getProperty(ConfigConstant.PIXELINVADERS_BLACKLIST);
-        if (blacklist != null) {
-            pixelInvadersBlacklist = new ArrayList<String>();
-            for (String s : blacklist.split(",")) {
-                pixelInvadersBlacklist.add(StringUtils.strip(s));
-            }
-        }
-
-        return lpdDevice.size();
-    }
-
-    /**
-     * 
-     * @return
-     */
-    private int parsePixelInvaderNetConfig() {
-        if (StringUtils.isNotBlank(pixelinvadersNetIp) && pixelinvadersNetPort > 0) {
-            return lpdDevice.size();
-        }
-        return 0;
-    }
 
     /**
      * get the size of the software emulated matrix.
@@ -544,38 +311,6 @@ public class Configuration implements Serializable {
      * 
      * @return
      */
-    private int getPanelOrderFromCfg(int totalDevices) {
-        panelOrder = new LinkedList<Integer>();
-        String rawConfig = config.getProperty(ConfigConstant.PIXELINVADERS_PANEL_ORDER);
-
-        if (StringUtils.isNotBlank(rawConfig)) {
-            for (String s : rawConfig.split(ConfigConstant.DELIM)) {
-                try {
-                    Integer order = Integer.parseInt(StringUtils.strip(s));
-
-                    // sanity check
-                    if (order >= totalDevices) {
-                        LOG.log(Level.WARNING, ConfigConstant.PIXELINVADERS_PANEL_ORDER
-                                + ": Error parsing, " + "order value " + order
-                                + " >= total panels " + totalDevices + ". Settings igored!");
-                        panelOrder.clear();
-                        return 0;
-                    }
-                    panelOrder.add(order);
-                } catch (Exception e) {
-                    LOG.log(Level.WARNING, FAILED_TO_PARSE,
-                            ConfigConstant.PIXELINVADERS_PANEL_ORDER);
-                }
-            }
-        }
-
-        return panelOrder.size();
-    }
-
-    /**
-     * 
-     * @return
-     */
     private GammaType parseGammaCorrection() {
         GammaType ret = GammaType.NONE;
 
@@ -615,86 +350,6 @@ public class Configuration implements Serializable {
     }
 
     /**
-     * Parses the i2c address.
-     * 
-     * @return the int
-     */
-    private int parseI2cAddress() {
-        i2cAddr = new ArrayList<Integer>();
-
-        String rawConfig = config.getProperty(ConfigConstant.RAINBOWDUINO_V2_ROW1);
-        if (StringUtils.isNotBlank(rawConfig)) {
-            this.deviceXResolution = 8;
-            this.deviceYResolution = 8;
-
-            for (String s : rawConfig.split(ConfigConstant.DELIM)) {
-                i2cAddr.add(Integer.decode(StringUtils.strip(s)));
-                devicesInRow1++;
-            }
-        }
-        rawConfig = config.getProperty(ConfigConstant.RAINBOWDUINO_V2_ROW2);
-        if (StringUtils.isNotBlank(rawConfig)) {
-            for (String s : rawConfig.split(ConfigConstant.DELIM)) {
-                i2cAddr.add(Integer.decode(StringUtils.strip(s)));
-                devicesInRow2++;
-            }
-        }
-
-        return i2cAddr.size();
-    }
-
-    /**
-     * 
-     * @return
-     */
-    private int parseRainbowduinoV3Config() {
-        this.rainbowduinoV3SerialDevices = new ArrayList<String>();
-        String row1String = this.config.getProperty(ConfigConstant.RAINBOWDUINO_V3_ROW1);
-        if (StringUtils.isNotBlank(row1String)) {
-            this.deviceXResolution = 8;
-            this.deviceYResolution = 8;
-            for (String string : row1String.split(ConfigConstant.DELIM)) {
-                this.rainbowduinoV3SerialDevices.add(StringUtils.strip(string));
-                this.devicesInRow1++;
-            }
-        }
-        String row2String = this.config.getProperty(ConfigConstant.RAINBOWDUINO_V3_ROW2);
-        if (StringUtils.isNotBlank(row2String)) {
-            for (String string : row2String.split(ConfigConstant.DELIM)) {
-                this.rainbowduinoV3SerialDevices.add(StringUtils.strip(string));
-                this.devicesInRow2++;
-            }
-        }
-        return this.rainbowduinoV3SerialDevices.size();
-    }
-
-    /**
-     * Parses the null output settings.
-     * 
-     * @return the int
-     */
-    private int parseNullOutputAddress() {
-        int row1 = parseInt(ConfigConstant.NULLOUTPUT_ROW1);
-        int row2 = parseInt(ConfigConstant.NULLOUTPUT_ROW2);
-        if (row1 + row2 > 0) {
-            devicesInRow1 = row1;
-            devicesInRow2 = row2;
-
-            // check for a user specific output size
-            this.deviceXResolution = parseOutputXResolution();
-            this.deviceYResolution = parseOutputYResolution();
-
-            // fallback
-            if (deviceXResolution < 1 || deviceYResolution < 1) {
-                this.deviceXResolution = 8;
-                this.deviceYResolution = 8;
-            }
-        }
-
-        return row1 + row2;
-    }
-
-    /**
      * get configured udp ip.
      * 
      * @return the udp ip
@@ -705,7 +360,7 @@ public class Configuration implements Serializable {
 
     /**
      * get configured udp port.
-     * 
+     *
      * @return the udp port
      */
     public int getUdpPort() {
@@ -714,7 +369,7 @@ public class Configuration implements Serializable {
 
       /**
      * get configured OPC ip.
-     * 
+       *
      * @return the tcp ip
      */
     public String getOpcIp() {
@@ -723,7 +378,7 @@ public class Configuration implements Serializable {
 
     /**
      * get configured OPC port.
-     * 
+     *
      * @return the tcp port
      */
     public int getOpcPort() {
@@ -795,7 +450,7 @@ public class Configuration implements Serializable {
 
     /**
      * get first arnet universe id
-     * 
+     *
      * @return
      */
     public int getArtNetStartUniverseId() {
@@ -803,60 +458,14 @@ public class Configuration implements Serializable {
     }
 
     /**
-     * 
+     *
      * @return
      */
     public String getArtNetBroadcastAddr() {
         return config.getProperty(ConfigConstant.ARTNET_BROADCAST_ADDR, "");
     }
 
-    /**
-     * Parses the art net devices.
-     * 
-     * @return the int
-     */
-    private int parseArtNetDevices() {
-        artNetDevice = new ArrayList<DeviceConfig>();
 
-        // minimal ip length 1.1.1.1
-        if (StringUtils.length(getArtNetIp()) > 6 && parseOutputXResolution() > 0
-                && parseOutputYResolution() > 0) {
-            this.deviceXResolution = parseOutputXResolution();
-            this.deviceYResolution = parseOutputYResolution();
-
-            String value = config.getProperty(ConfigConstant.ARTNET_ROW1);
-            if (StringUtils.isNotBlank(value)) {
-
-                devicesInRow1 = 0;
-                devicesInRow2 = 0;
-
-                for (String s : value.split(ConfigConstant.DELIM)) {
-                    try {
-                        DeviceConfig cfg = DeviceConfig.valueOf(StringUtils.strip(s));
-                        artNetDevice.add(cfg);
-                        devicesInRow1++;
-                    } catch (Exception e) {
-                        LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
-                    }
-                }
-            }
-
-            value = config.getProperty(ConfigConstant.ARTNET_ROW2);
-            if (StringUtils.isNotBlank(value)) {
-                for (String s : value.split(ConfigConstant.DELIM)) {
-                    try {
-                        DeviceConfig cfg = DeviceConfig.valueOf(StringUtils.strip(s));
-                        artNetDevice.add(cfg);
-                        devicesInRow2++;
-                    } catch (Exception e) {
-                        LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
-                    }
-                }
-            }
-        }
-
-        return artNetDevice.size();
-    }
 
     /**
      * 
@@ -866,53 +475,6 @@ public class Configuration implements Serializable {
         return artNetDevice;
     }
 
-    /**
-     * Parses the e131 devices.
-     * 
-     * @return the int
-     */
-    private int parseE131Devices() {
-        e131Device = new ArrayList<DeviceConfig>();
-
-        if (StringUtils.length(getE131Ip()) > 6 && parseOutputXResolution() > 0
-                && parseOutputYResolution() > 0) {
-
-            this.deviceXResolution = parseOutputXResolution();
-            this.deviceYResolution = parseOutputYResolution();
-
-            String value = config.getProperty(ConfigConstant.E131_ROW1);
-            if (StringUtils.isNotBlank(value)) {
-
-                devicesInRow1 = 0;
-                devicesInRow2 = 0;
-
-                for (String s : value.split(ConfigConstant.DELIM)) {
-                    try {
-                        DeviceConfig cfg = DeviceConfig.valueOf(StringUtils.strip(s));
-                        e131Device.add(cfg);
-                        devicesInRow1++;
-                    } catch (Exception e) {
-                        LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
-                    }
-                }
-            }
-
-            value = config.getProperty(ConfigConstant.E131_ROW2);
-            if (StringUtils.isNotBlank(value)) {
-                for (String s : value.split(ConfigConstant.DELIM)) {
-                    try {
-                        DeviceConfig cfg = DeviceConfig.valueOf(StringUtils.strip(s));
-                        e131Device.add(cfg);
-                        devicesInRow2++;
-                    } catch (Exception e) {
-                        LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
-                    }
-                }
-            }
-        }
-
-        return e131Device.size();
-    }
 
     /**
      * 
@@ -922,128 +484,6 @@ public class Configuration implements Serializable {
         return e131Device;
     }
 
-    /**
-     * 
-     * @return
-     */
-    private int parseUdpDevices() {
-        if (StringUtils.length(getUdpIp()) > 6 && parseOutputXResolution() > 0
-                && parseOutputYResolution() > 0) {
-            this.devicesInRow1 = 1;
-            this.devicesInRow2 = 0;
-            this.deviceXResolution = parseOutputXResolution();
-            this.deviceYResolution = parseOutputYResolution();
-            return 1;
-        }
-
-        return 0;
-    }
-
-    public int parseRpi2801Devices() {
-        if (getRpiWs2801SpiSpeed() > 1000 && parseOutputXResolution() > 0
-                && parseOutputYResolution() > 0) {
-            this.devicesInRow1 = 1;
-            this.devicesInRow2 = 0;
-            this.deviceXResolution = parseOutputXResolution();
-            this.deviceYResolution = parseOutputYResolution();
-            return 1;
-        }
-
-        return 0;
-    }
-
-    public int parseOPCDevices() {
-        if (StringUtils.length(getOpcIp()) > 6 && parseOutputXResolution() > 0
-                && parseOutputYResolution() > 0) {
-            this.devicesInRow1 = 1;
-            this.devicesInRow2 = 0;
-            this.deviceXResolution = parseOutputXResolution();
-            this.deviceYResolution = parseOutputYResolution();
-            return 1;
-        }
-
-        return 0;
-    }
-
-    /**
-     * Parses the mini dmx devices.
-     * 
-     * @return the int
-     */
-    private int parseMiniDmxDevices() {
-        if (parseMiniDmxBaudRate() > 100 && parseOutputXResolution() > 0
-                && parseOutputYResolution() > 0) {
-            this.devicesInRow1 = 1;
-            this.devicesInRow2 = 0;
-            this.deviceXResolution = parseOutputXResolution();
-            this.deviceYResolution = parseOutputYResolution();
-            return 1;
-        }
-        return 0;
-    }
-
-    /**
-     * Parses tpm2 devices
-     * 
-     * @return
-     */
-    private int parseTpm2Devices() {
-        if (StringUtils.isNotBlank(getTpm2Device()) && parseOutputXResolution() > 0
-                && parseOutputYResolution() > 0) {
-            this.devicesInRow1 = 1;
-            this.devicesInRow2 = 0;
-            this.deviceXResolution = parseOutputXResolution();
-            this.deviceYResolution = parseOutputYResolution();
-            return 1;
-        }
-        return 0;
-    }
-
-    /**
-     * Parses tpm2net devices
-     * 
-     * @return
-     */
-    private int parseTpm2NetDevices() {
-        tpm2netDevice = new ArrayList<DeviceConfig>();
-
-        if (StringUtils.isNotBlank(getTpm2NetIpAddress()) && parseOutputXResolution() > 0
-                && parseOutputYResolution() > 0) {
-            this.deviceXResolution = parseOutputXResolution();
-            this.deviceYResolution = parseOutputYResolution();
-
-            String value = config.getProperty(ConfigConstant.TPM2NET_ROW1);
-            if (StringUtils.isNotBlank(value)) {
-
-                devicesInRow1 = 0;
-                devicesInRow2 = 0;
-
-                for (String s : value.split(ConfigConstant.DELIM)) {
-                    try {
-                        DeviceConfig cfg = DeviceConfig.valueOf(StringUtils.strip(s));
-                        tpm2netDevice.add(cfg);
-                        devicesInRow1++;
-                    } catch (Exception e) {
-                        LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
-                    }
-                }
-            }
-
-            value = config.getProperty(ConfigConstant.TPM2NET_ROW2);
-            if (StringUtils.isNotBlank(value)) {
-                for (String s : value.split(ConfigConstant.DELIM)) {
-                    try {
-                        DeviceConfig cfg = DeviceConfig.valueOf(StringUtils.strip(s));
-                        tpm2netDevice.add(cfg);
-                        devicesInRow2++;
-                    } catch (Exception e) {
-                        LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
-                    }
-                }
-            }
-        }
-        return tpm2netDevice.size();
-    }
 
     public int getRpiWs2801SpiSpeed() {
         return parseInt(ConfigConstant.RPI_WS2801_SPI_SPEED, 0);
@@ -1057,6 +497,36 @@ public class Configuration implements Serializable {
     public int parseOutputXResolution() {
         return parseInt(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, ConfigDefault.DEFAULT_RESOLUTION);
     }
+
+    /**
+     *
+     * @return A matrix of device configs [y][x].
+     */
+    public DeviceConfig[][] parseDeviceLayout() {
+        final String value = config.getProperty(ConfigConstant.DEVICE_LAYOUT);
+        final String[] rows = value.split(";");
+
+        DeviceConfig[][] config = new DeviceConfig[rows.length][];
+
+        for(int i = 0; i < rows.length; ++i) {
+            final String row = rows[i];
+            final String[] columns = row.split(",");
+            config[i] = new DeviceConfig[columns.length];
+            for(int j = 0; j < columns.length; ++j) {
+                config[i][j] = DeviceConfig.valueOf(columns[j].trim());
+            }
+        }
+
+        //check if all rows have the same length
+        final int row0Length = config[0].length;
+        for(DeviceConfig[] row : config) {
+            if(row.length != row0Length)
+                throw new IllegalStateException("e131.layout parsing failed. All rows should have equal length");
+        }
+
+        return config;
+    }
+
 
     /**
      * Parses the mini dmx devices y.
@@ -1101,15 +571,6 @@ public class Configuration implements Serializable {
     }
 
     /**
-     * overwrite root path of resources
-     * 
-     * @return
-     */
-    public String getResourcePath() {
-        return config.getProperty(ConfigConstant.RESOURCE_PATH);
-    }
-
-    /**
      * baudrate of the minidmx device
      * 
      * @return the int
@@ -1149,21 +610,12 @@ public class Configuration implements Serializable {
     }
 
     /**
-     * Start randommode.
-     * 
-     * @return true, if successful
-     */
-    public boolean isAudioAware() {
-        return parseBoolean(ConfigConstant.SOUND_AWARE_GENERATORS);
-    }
-
-    /**
      * Gets the nr of screens.
      * 
      * @return the nr of screens
      */
     public int getNrOfScreens() {
-        return devicesInRow1 + devicesInRow2;
+        deviceConfig.length * deviceConfig[0].length
     }
 
     /**
@@ -1199,6 +651,7 @@ public class Configuration implements Serializable {
      * @return the layout
      */
     public Layout getLayout() {
+        return new MatrixLayout()
         if (devicesInRow1 > 0 && devicesInRow2 == 0) {
             return new HorizontalLayout(devicesInRow1);
         }
@@ -1254,11 +707,7 @@ public class Configuration implements Serializable {
         return colorFormat;
     }
 
-    /**
-     * 
-     * @param nrOfPanels
-     * @return
-     */
+
     public List<Integer> getPanelOrder() {
         return panelOrder;
     }
@@ -1269,7 +718,7 @@ public class Configuration implements Serializable {
      * @return the configured output device
      */
     public OutputDeviceEnum getOutputDevice() {
-        return this.outputDeviceEnum;
+        return this.deviceType;
     }
 
     /**

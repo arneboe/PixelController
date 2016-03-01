@@ -24,38 +24,38 @@ package com.neophob.sematrix.core.output;
 public enum OutputDeviceEnum {
 
     /** The PIXELINVADERS (LPD6803 Based) PANELS. */
-    PIXELINVADERS(PixelInvadersSerialDevice.class, true),
+  //  PIXELINVADERS(PixelInvadersSerialDevice.class, true),
 
     /** The RAINBOWDUINO_V2. */
-    RAINBOWDUINO_V2(RainbowduinoV2Device.class, true),
+    //  RAINBOWDUINO_V2(RainbowduinoV2Device.class, true),
 
     /** The RAINBOWDUINO_V3. */
-    RAINBOWDUINO_V3(RainbowduinoV3Device.class, true),
+    // RAINBOWDUINO_V3(RainbowduinoV3Device.class, true),
 
     /** The ARTNET. */
-    ARTNET(ArtnetDevice.class, true),
+    //  ARTNET(ArtnetDevice.class, true),
 
     /** The E1.31 output. */
     E1_31(E1_31Device.class, true),
 
     /** The MINIDMX. */
-    MINIDMX(MiniDmxDevice.class, true),
+    // MINIDMX(MiniDmxDevice.class, true),
 
     /** The TPM2. */
-    TPM2(Tpm2.class, true),
+//    TPM2(Tpm2.class, true),
 
     /** The TPM2Net. */
-    TPM2NET(Tpm2Net.class, true),
+    //  TPM2NET(Tpm2Net.class, true),
 
     /** The UDP. */
-    UDP(UdpDevice.class, true),
+    //  UDP(UdpDevice.class, true),
 
-    PIXELINVADERS_NET(PixelInvadersNetDevice.class, true),
+    //  PIXELINVADERS_NET(PixelInvadersNetDevice.class, true),
 
-    RPI_2801(RaspberrySpi2801.class, true),
+    //   RPI_2801(RaspberrySpi2801.class, true),
 
     /** Open Pixel Control **/
-    OPEN_PIXEL_CONTROL(OpenPixelControl.class, true),
+    //   OPEN_PIXEL_CONTROL(OpenPixelControl.class, true),
 
     /** The NULL Output. */
     NULL(NullDevice.class, true);

@@ -54,8 +54,11 @@ public final class ConfigConstant {
     public static final String E131_IP = "e131.ip";
     public static final String E131_PIXELS_PER_UNIVERSE = "e131.pixels.per.universe";
     public static final String E131_FIRST_UNIVERSE_ID = "e131.first.universe.id";
-    public static final String E131_ROW1 = "e131.layout.row1";
-    public static final String E131_ROW2 = "e131.layout.row2";
+    public static final String E131_LAYOUT = "e131.layout";
+
+    public static final String DEVICE_TYPE = "device.type";
+    public static final String DEVICE_LAYOUT = "device.layout";
+
 
     public static final String UDP_IP = "udp.ip";
     public static final String UDP_PORT = "udp.port";
