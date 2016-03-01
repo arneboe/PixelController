@@ -116,11 +116,9 @@ public class LedSimulatorOutputWindow {
                 break;
 
             default: // AKA BOX
-                int xsize = Math.max(layout.getRow1Size(), layout.getRow2Size());
-                xsize = Math.max(xsize, layout.getRow3Size());
-                xsize = Math.max(xsize, layout.getRow4Size());
+                int xsize = (layout.getRow1Size() + layout.getRow2Size()) / 2;
                 x = getOneMatrixXSize() * xsize;
-                y = getOneMatrixYSize() * 4 ; // 4 rows
+                y = getOneMatrixYSize() * 2; // 2 rows
                 break;
         }
 

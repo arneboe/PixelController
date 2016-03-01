@@ -140,14 +140,6 @@ public class MatrixSimulatorGui {
 			}
 			for (int screen=0; screen<layout.getRow2Size(); screen++) {
 				drawOutput(cnt++, screen, 1, this.pixelController.getOutputBuffer(ofs+screen), currentOutput);
-                ofs++;
-			}
-			for (int screen=0; screen<layout.getRow3Size(); screen++) {
-				drawOutput(cnt++, screen, 2, this.pixelController.getOutputBuffer(ofs+screen), currentOutput);
-                ofs++;
-			}
-			for (int screen=0; screen<layout.getRow4Size(); screen++) {
-				drawOutput(cnt++, screen, 3, this.pixelController.getOutputBuffer(ofs+screen), currentOutput);
 			}
 			break;
 		}

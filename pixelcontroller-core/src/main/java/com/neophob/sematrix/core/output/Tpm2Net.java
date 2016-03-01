@@ -29,7 +29,6 @@ import com.neophob.sematrix.core.properties.ColorFormat;
 import com.neophob.sematrix.core.properties.DeviceConfig;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * 
@@ -105,8 +104,25 @@ public class Tpm2Net extends Output {
         this.colorFormat = ph.getColorFormat();
         this.panelOrder = ph.getPanelOrder();
         this.snakeCabeling = ph.isOutputSnakeCabeling();
-        throw new NotImplementedException();
-       // this.mapping = ph.getOutputMappingValues();
+        this.mapping = ph.getOutputMappingValues();
+        this.nrOfScreens = ph.getNrOfScreens();
+
+        targetAddrStr = ph.getTpm2NetIpAddress();
+        this.initialized = false;
+        this.udpImpl = udpImpl;
+        this.bufferCache = new BufferCache();
+
+        if (this.udpImpl.initializeEthernet(targetAddrStr, Tpm2NetProtocol.TPM2_NET_PORT)) {
+            this.initialized = true;
+            LOG.log(Level.INFO,
+                    "Initialized TPM2NET device, target IP: {0}:{1}, Resolution: {2}/{3}, snakeCabeling: {4}",
+                    new Object[] { targetAddrStr, Tpm2NetProtocol.TPM2_NET_PORT,
+                            this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize(),
+                            this.snakeCabeling });
+        } else {
+            LOG.log(Level.SEVERE, "Failed to resolve target address " + targetAddrStr + ":"
+                    + Tpm2NetProtocol.TPM2_NET_PORT);
+        }
     }
 
     /**

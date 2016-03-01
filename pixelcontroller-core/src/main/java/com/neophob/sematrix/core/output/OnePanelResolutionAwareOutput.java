@@ -26,7 +26,6 @@ import com.neophob.sematrix.core.properties.ColorFormat;
 import com.neophob.sematrix.core.properties.DeviceConfig;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * The Class ResolutionAwareOutput.
@@ -70,11 +69,26 @@ public abstract class OnePanelResolutionAwareOutput extends Output {
         super(matrixData, resizeHelper, outputDeviceEnum, ph, bpp);
 
         this.snakeCabeling = ph.isOutputSnakeCabeling();
-        throw new NotImplementedException();
-        //this.mapping = ph.getOutputMappingValues();
+        this.mapping = ph.getOutputMappingValues();
 
         // get the mini dmx layout
+        this.displayOption = ph.getOutputDeviceLayout();
+        if (this.displayOption == null) {
+            this.displayOption = DeviceConfig.NO_ROTATE;
+        }
 
+        this.colorFormat = ColorFormat.RBG;
+        if (ph.getColorFormat().size() > 0) {
+            this.colorFormat = ph.getColorFormat().get(0);
+        }
+
+        LOG.log(Level.INFO, "Output Settings:");
+        LOG.log(Level.INFO,
+                "\tResolution: " + matrixData.getDeviceXSize() + "/" + matrixData.getDeviceYSize());
+        LOG.log(Level.INFO, "\tSnakeCabeling: " + snakeCabeling);
+        LOG.log(Level.INFO, "\tRotate: " + displayOption);
+        LOG.log(Level.INFO, "\tColorFormat: " + colorFormat);
+        LOG.log(Level.INFO, "\tOutput Mapping entry size: " + this.mapping.length);
     }
 
     /**

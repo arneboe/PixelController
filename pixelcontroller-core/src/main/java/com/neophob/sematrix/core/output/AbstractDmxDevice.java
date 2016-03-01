@@ -19,7 +19,6 @@
 package com.neophob.sematrix.core.output;
 
 import java.net.InetAddress;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -67,7 +66,6 @@ public abstract class AbstractDmxDevice extends Output {
     /** flip each 2nd scanline? */
     protected boolean snakeCabeling;
 
-    protected ArrayList<int[]> mappings = new ArrayList<int[]>();
     protected int[] mapping;
 
     private int nrOfScreens;
@@ -90,10 +88,7 @@ public abstract class AbstractDmxDevice extends Output {
         this.xResolution = ph.parseOutputXResolution();
         this.yResolution = ph.parseOutputYResolution();
         this.snakeCabeling = ph.isOutputSnakeCabeling();
-        this.mappings.add(ph.getOutputMappingValues(0));
-        this.mappings.add(ph.getOutputMappingValues(1));
-        this.mappings.add(ph.getOutputMappingValues(2));
-        this.mappings.add(ph.getOutputMappingValues(3));
+        this.mapping = ph.getOutputMappingValues();
 
         this.initialized = false;
     }
@@ -123,7 +118,7 @@ public abstract class AbstractDmxDevice extends Output {
         LOG.log(Level.INFO, "\tPixels per universe: " + pixelsPerUniverse);
         LOG.log(Level.INFO, "\tFirst universe ID: " + firstUniverseId);
         LOG.log(Level.INFO, "\t# of universe: " + nrOfUniverse * nrOfScreens);
-       // LOG.log(Level.INFO, "\tOutput Mapping entry size: " + this.mapping.length);
+        LOG.log(Level.INFO, "\tOutput Mapping entry size: " + this.mapping.length);
         LOG.log(Level.INFO, "\tTarget address: " + targetAdress);
     }
 
@@ -150,9 +145,9 @@ public abstract class AbstractDmxDevice extends Output {
                     // flip each 2nd scanline
                     transformedBuffer = OutputHelper.flipSecondScanline(transformedBuffer,
                             this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize());
-                } else if (this.mappings.get(nr).length > 0) {
+                } else if (this.mapping.length > 0) {
                     // do manual mapping
-                    transformedBuffer = OutputHelper.manualMapping(transformedBuffer, this.mappings.get(nr),
+                    transformedBuffer = OutputHelper.manualMapping(transformedBuffer, mapping,
                             xResolution, yResolution);
                 }
 
