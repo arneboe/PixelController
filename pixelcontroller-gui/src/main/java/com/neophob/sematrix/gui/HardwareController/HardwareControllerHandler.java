@@ -20,6 +20,8 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
     private static final int brightnessSlider = 49;
     private static final int stroboSlider = 50;
     private static final int holdButton = 82;
+    private static final int prevColorSetButton = 70;
+    private static final int nextColorSetButton = 71;
 
     private static final  HWButtonState holdButtonActive = HWButtonState.GREEN_BLINK;
     private static final  HWButtonState holdButtonInactive = HWButtonState.GREEN;
@@ -40,6 +42,7 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
 
     private int speed = 50;
     private int brightness = 50;
+    private int stroboSpeed = 0;
 
     private int visual = 0;
 
@@ -70,6 +73,7 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
             createMessage(ValidCommand.LOAD_PRESET_AND_SET_VISUAL, visual);//the message will cause a call to displayPreset()
             createMessage(ValidCommand.GENERATOR_SPEED, speed);
             createMessage(ValidCommand.CHANGE_BRIGHTNESS, brightness);
+            createMessage(ValidCommand.SET_STROBO_SPEED, stroboSpeed);
         }
         else if(button == holdButton) {
             holdMode = !holdMode;
@@ -80,6 +84,13 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
             visual = button - 64;
             hw.setButtonState(64 + visual, HWButtonState.RED_BLINK);
             createMessage(ValidCommand.CHANGE_ALL_OUTPUT_VISUAL, visual);
+            createMessage(ValidCommand.CURRENT_VISUAL, visual);
+        }
+        else if(button == prevColorSetButton) {
+            sendMsg(ValidCommand.ROTATE_COLORSET_BACK);
+        }
+        else if(button == nextColorSetButton) {
+            sendMsg(ValidCommand.ROTATE_COLORSET);
         }
     }
 
@@ -94,6 +105,7 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
             createMessage(ValidCommand.LOAD_PRESET_AND_SET_VISUAL, visual);
             createMessage(ValidCommand.GENERATOR_SPEED, speed);
             createMessage(ValidCommand.CHANGE_BRIGHTNESS, brightness);
+            createMessage(ValidCommand.SET_STROBO_SPEED, stroboSpeed);
         }
     }
 
@@ -111,7 +123,7 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
             createMessage(ValidCommand.CHANGE_BRIGHTNESS, val);
         }
         else if(slider == stroboSlider) {
-            final int stroboSpeed =  map(newValue, 0, 127, 0, 255);
+            stroboSpeed =  map(newValue, 0, 127, 0, 255);
             createMessage(ValidCommand.SET_STROBO_SPEED, stroboSpeed);
         }
 
@@ -142,7 +154,7 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
         }
         for(int i = 64; i < 72; ++i) { //red push buttons
             hw.setButtonState(i, unusedRedColor);
-        }
+        }   
         for(int i = 82; i < 90; ++i) { //green push buttons
             hw.setButtonState(i, unusedGreenColor);
         }
@@ -152,7 +164,8 @@ public class HardwareControllerHandler implements IHardwareControllerSubscriber,
         hw.setButtonState(64 + visual, HWButtonState.RED_BLINK);
 
         hw.setButtonState(holdButton, holdMode ? holdButtonActive : holdButtonInactive);
-
+        hw.setButtonState(prevColorSetButton, HWButtonState.RED);
+        hw.setButtonState(nextColorSetButton, HWButtonState.RED);
     }
 
     /**Display @p preset  */
