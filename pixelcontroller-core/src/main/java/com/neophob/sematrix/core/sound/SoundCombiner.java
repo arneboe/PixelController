@@ -18,7 +18,7 @@ public class SoundCombiner implements ISound
 
     public SoundCombiner()
     {
-        currentSound = bpmSound;
+        currentSound = audioSound;
     }
 
     public void setNoBeatSpeed(float noBeatSpeed) {
@@ -28,8 +28,8 @@ public class SoundCombiner implements ISound
 
     public enum SoundMode
     {
-        BPM(0),
-        AUDIO(1),
+        AUDIO(0),
+        BPM(1),
         AUDIO2(2);
 
         private int id;
