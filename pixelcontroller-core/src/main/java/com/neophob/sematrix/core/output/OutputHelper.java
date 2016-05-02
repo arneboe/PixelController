@@ -92,7 +92,7 @@ public class OutputHelper {
 
         for(int i = 0; i < src.length; ++i)
         {
-            if(i < mapping.length)
+            if(i < mapping.length && mapping[i] >= 0)
                 bufferTwo[mapping[i]] = src[i];
         }
         return bufferTwo;
