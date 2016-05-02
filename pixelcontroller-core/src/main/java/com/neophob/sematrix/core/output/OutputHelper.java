@@ -87,6 +87,20 @@ public class OutputHelper {
         return bufferTwo;
     }
 
+    public static int[] manualMapping(int[] src, int[] mapping, int xResolution, int yResolution) {
+        int[] bufferTwo = new int[src.length];
+
+        for(int i = 0; i < src.length; ++i)
+        {
+            if(i < mapping.length && mapping[i] >= 0)
+                bufferTwo[mapping[i]] = src[i];
+        }
+        return bufferTwo;
+    }
+
+
+
+
     /**
      * Convert buffer to15bit.
      * 
