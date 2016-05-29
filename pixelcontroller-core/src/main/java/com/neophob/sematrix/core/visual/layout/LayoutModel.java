@@ -20,52 +20,24 @@ package com.neophob.sematrix.core.visual.layout;
 
 /**
  * helper class used to layout panels.
+ * There is one LayoutModel per screen. It contains all information needed to
+ * layout the visual (fx) on that screen.
  *
  * @author michu
  */
 public class LayoutModel {
 	
-	/** The same fx on x. */
 	private int sameFxOnX;
-	
-	/** The same fx on y. */
 	private int sameFxOnY;
-	
-	/** The ofs x. */
-	private int ofsX;
-	
-	/** The ofs y. */
-	private int ofsY;
-	
-	/** The visual id */
 	private int visualId;
-	
-	/** The screen fragment x. */
 	private float screenFragmentX;
-	
-	/** The screen fragment y. */
 	private float screenFragmentY;
-	
-	/** The x width. */
 	private float xStart,xWidth;
-	
-	/** The y width. */
 	private float yStart,yWidth;
 	
-	/**
-	 * Instantiates a new layout model.
-	 *
-	 * @param sameFxOnX the same fx on x
-	 * @param sameFxOnY the same fx on y
-	 * @param ofsX the ofs x
-	 * @param ofsY the ofs y
-	 * @param fxInput the fx input
-	 */
 	public LayoutModel(int sameFxOnX, int sameFxOnY, int ofsX, int ofsY, int visualId) {
 		this.sameFxOnX = sameFxOnX;
 		this.sameFxOnY = sameFxOnY;
-		this.ofsX = ofsX;
-		this.ofsY = ofsY;
 		this.visualId = visualId;
 		
 		if (!screenDoesNotNeedStretching()) {
@@ -88,98 +60,23 @@ public class LayoutModel {
 			yWidth = screenFragmentY;
 		}
 	}
-	
-	/**
-	 * Screen does not need stretching.
-	 *
-	 * @return true, if successful
-	 */
+
 	public boolean screenDoesNotNeedStretching() {
 		return sameFxOnX==1 && sameFxOnY==1;
 	}
 	
-	
-	/**
-	 * Gets the x start.
-	 *
-	 * @param bufferWidth the width of the internal buffer
-	 * @return the x start
-	 */
 	public int getxStart(int bufferWidth) {
 		return (int)(xStart*bufferWidth);
 	}
-
-	/**
-	 * Gets the x width.
-	 *
-	 * @param bufferWidth the width of the internal buffer
-	 * @return the x width
-	 */
 	public int getxWidth(int bufferWidth) {
 		return (int)(xWidth*bufferWidth);
 	}
-
-	/**
-	 * Gets the y start.
-	 *
-	 * @param bufferHeight the height of the internal buffer
-	 * @return the y start
-	 */
 	public int getyStart(int bufferHeight) {
 		return (int)(yStart*bufferHeight);
 	}
-
-	/**
-	 * Gets the y width.
-	 *
-	 * @param bufferHeight the height of the internal buffer
-	 * @return the y width
-	 */
 	public int getyWidth(int bufferHeight) {
 		return (int)(yWidth*bufferHeight);
 	}
-
-	/**
-	 * Gets the same fx on x.
-	 *
-	 * @return the same fx on x
-	 */
-	public int getSameFxOnX() {
-		return sameFxOnX;
-	}
-	
-	/**
-	 * Gets the same fx on y.
-	 *
-	 * @return the same fx on y
-	 */
-	public int getSameFxOnY() {
-		return sameFxOnY;
-	}
-	
-	/**
-	 * Gets the ofs x.
-	 *
-	 * @return the ofs x
-	 */
-	public int getOfsX() {
-		return ofsX;
-	}
-	
-	/**
-	 * Gets the ofs y.
-	 *
-	 * @return the ofs y
-	 */
-	public int getOfsY() {
-		return ofsY;
-	}
-	
-	/**
-	 * Gets the Visual ID.
-	 *
-	 * @return the Visual ID.
-	 */
 	public int getVisualId() {
 		return visualId;
 	}
@@ -190,8 +87,8 @@ public class LayoutModel {
 	@Override
 	public String toString() {
 		return String
-				.format("LayoutModel [sameFxOnX=%s, sameFxOnY=%s, ofsX=%s, ofsY=%s, visualId=%s, screenFragmentX=%s, screenFragmentY=%s, xStart=%s, xWidth=%s, yStart=%s, yWidth=%s]",
-						sameFxOnX, sameFxOnY, ofsX, ofsY, visualId,
+				.format("LayoutModel [sameFxOnX=%s, sameFxOnY=%s, visualId=%s, screenFragmentX=%s, screenFragmentY=%s, xStart=%s, xWidth=%s, yStart=%s, yWidth=%s]",
+						sameFxOnX, sameFxOnY, visualId,
 						screenFragmentX, screenFragmentY, xStart, xWidth,
 						yStart, yWidth);
 	}

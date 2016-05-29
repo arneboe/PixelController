@@ -21,7 +21,6 @@ package com.neophob.sematrix.core.properties;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -34,8 +33,6 @@ import org.apache.commons.lang3.StringUtils;
 import com.neophob.sematrix.core.output.OutputDeviceEnum;
 import com.neophob.sematrix.core.output.gamma.GammaType;
 import com.neophob.sematrix.core.output.gamma.RGBAdjust;
-import com.neophob.sematrix.core.visual.layout.BoxLayout;
-import com.neophob.sematrix.core.visual.layout.HorizontalLayout;
 import com.neophob.sematrix.core.visual.layout.Layout;
 
 /**
@@ -59,7 +56,7 @@ public class Configuration implements Serializable {
 
     private static final transient int MAXIMAL_PIXELS_PER_UNIVERSE = 170;
 
-    protected Properties config = null;
+    protected Properties properties = null;
 
     private OutputDeviceEnum deviceType = null;
 
@@ -79,8 +76,10 @@ public class Configuration implements Serializable {
 
     private transient Map<Integer, RGBAdjust> pixelInvadersCorrectionMap = new HashMap<Integer, RGBAdjust>();
 
-    /**The device matrix. Access is [y][x], i.e. [row][col] */
+    /**The device matrix. Access is [y][x], i.e. [row][col].
+     * deviceConfig[i].length = x holds for all i. I.e. all rows have the same amount of columns  */
     private DeviceConfig[][] deviceConfig;
+    Layout deviceLayout;
 
     /** The x resolution of each device */
     private int deviceXResolution = 0;
@@ -98,8 +97,8 @@ public class Configuration implements Serializable {
     private int pixelinvadersNetPort;
 
 
-    public Configuration(Properties config) {
-        this.config = config;
+    public Configuration(Properties properties) {
+        this.properties = properties;
 
         deviceType = parseDeviceType();
         LOG.log(Level.INFO, "Device type is " + deviceType.toString());
@@ -114,6 +113,7 @@ public class Configuration implements Serializable {
             default:
         }
         deviceConfig = parseDeviceLayout();
+        deviceLayout = new MatrixLayout(deviceConfig.length, deviceConfig[0].length);//for now only matrix layout exists :D
         LOG.log(Level.INFO, "Device config: Rows: " + deviceConfig.length + ", Columns: " + deviceConfig[0].length);
         final int totalDevices = deviceConfig.length * deviceConfig[0].length;
         deviceXResolution = parseOutputXResolution();
@@ -150,7 +150,7 @@ public class Configuration implements Serializable {
     }
 
     private OutputDeviceEnum parseDeviceType() {
-        final String value = config.getProperty(ConfigConstant.DEVICE_TYPE);
+        final String value = properties.getProperty(ConfigConstant.DEVICE_TYPE);
         return OutputDeviceEnum.valueOf(value);
     }
 
@@ -162,7 +162,7 @@ public class Configuration implements Serializable {
      * @return true, if successful
      */
     private boolean parseBoolean(String property) {
-        String rawConfig = config.getProperty(property);
+        String rawConfig = properties.getProperty(property);
         if (StringUtils.isNotBlank(rawConfig)) {
             try {
                 return Boolean.parseBoolean(rawConfig);
@@ -181,7 +181,7 @@ public class Configuration implements Serializable {
      * @return the int
      */
     private int parseInt(String property, int defaultValue) {
-        String rawConfig = config.getProperty(property);
+        String rawConfig = properties.getProperty(property);
         if (StringUtils.isNotBlank(rawConfig)) {
             try {
                 int val = Integer.parseInt(StringUtils.strip(rawConfig));
@@ -198,7 +198,7 @@ public class Configuration implements Serializable {
     }
 
     private float parseFloat(String property, float defaultValue) {
-        String rawConfig = config.getProperty(property);
+        String rawConfig = properties.getProperty(property);
         if (StringUtils.isNotBlank(rawConfig)) {
             try {
                 float val = Float.parseFloat(StringUtils.strip(rawConfig));
@@ -231,7 +231,7 @@ public class Configuration implements Serializable {
      * @return the property
      */
     public String getProperty(String key) {
-        return config.getProperty(key);
+        return properties.getProperty(key);
     }
 
     /**
@@ -244,7 +244,7 @@ public class Configuration implements Serializable {
      * @return the property
      */
     public String getProperty(String key, String defaultValue) {
-        return config.getProperty(key, defaultValue);
+        return properties.getProperty(key, defaultValue);
     }
 
     /**
@@ -252,7 +252,7 @@ public class Configuration implements Serializable {
      * @return
      */
     public DeviceConfig getOutputDeviceLayout() {
-        String value = config.getProperty(ConfigConstant.OUTPUT_DEVICE_LAYOUT);
+        String value = properties.getProperty(ConfigConstant.OUTPUT_DEVICE_LAYOUT);
         try {
             if (value != null) {
                 return DeviceConfig.valueOf(value);
@@ -273,7 +273,7 @@ public class Configuration implements Serializable {
      */
     public int getLedPixelSize() {
 
-        String tmp = config.getProperty(ConfigConstant.CFG_PIXEL_SIZE, ""
+        String tmp = properties.getProperty(ConfigConstant.CFG_PIXEL_SIZE, ""
                 + ConfigDefault.DEFAULT_GUI_PIXELSIZE);
         try {
             return Integer.parseInt(tmp);
@@ -291,7 +291,7 @@ public class Configuration implements Serializable {
      */
     private int getColorFormatFromCfg() {
         colorFormat = new ArrayList<ColorFormat>();
-        String rawConfig = config.getProperty(ConfigConstant.CFG_PANEL_COLOR_ORDER);
+        String rawConfig = properties.getProperty(ConfigConstant.CFG_PANEL_COLOR_ORDER);
 
         if (StringUtils.isNotBlank(rawConfig)) {
             for (String s : rawConfig.split(ConfigConstant.DELIM)) {
@@ -314,7 +314,7 @@ public class Configuration implements Serializable {
     private GammaType parseGammaCorrection() {
         GammaType ret = GammaType.NONE;
 
-        String rawConfig = config.getProperty(ConfigConstant.CFG_PANEL_GAMMA_TAB);
+        String rawConfig = properties.getProperty(ConfigConstant.CFG_PANEL_GAMMA_TAB);
         if (StringUtils.isBlank(rawConfig)) {
             return ret;
         }
@@ -333,7 +333,7 @@ public class Configuration implements Serializable {
      * @return int gain value from cfg or default
      */
     private int parseStartupOutputGain() {
-        String tmp = config.getProperty(ConfigConstant.STARTUP_OUTPUT_GAIN, ""
+        String tmp = properties.getProperty(ConfigConstant.STARTUP_OUTPUT_GAIN, ""
                 + ConfigDefault.DEFAULT_STARTUP_OUTPUT_GAIN);
         try {
             int ti = Integer.parseInt(tmp);
@@ -355,7 +355,7 @@ public class Configuration implements Serializable {
      * @return the udp ip
      */
     public String getUdpIp() {
-        return config.getProperty(ConfigConstant.UDP_IP);
+        return properties.getProperty(ConfigConstant.UDP_IP);
     }
 
     /**
@@ -373,7 +373,7 @@ public class Configuration implements Serializable {
      * @return the tcp ip
      */
     public String getOpcIp() {
-        return config.getProperty(ConfigConstant.OPC_IP);
+        return properties.getProperty(ConfigConstant.OPC_IP);
     }
 
     /**
@@ -391,7 +391,7 @@ public class Configuration implements Serializable {
      * @return the e131 controller ip
      */
     public String getE131Ip() {
-        return config.getProperty(ConfigConstant.E131_IP);
+        return properties.getProperty(ConfigConstant.E131_IP);
     }
 
     /**
@@ -429,7 +429,7 @@ public class Configuration implements Serializable {
      * @return the art net ip
      */
     public String getArtNetIp() {
-        return config.getProperty(ConfigConstant.ARTNET_IP);
+        return properties.getProperty(ConfigConstant.ARTNET_IP);
     }
 
     /**
@@ -462,7 +462,7 @@ public class Configuration implements Serializable {
      * @return
      */
     public String getArtNetBroadcastAddr() {
-        return config.getProperty(ConfigConstant.ARTNET_BROADCAST_ADDR, "");
+        return properties.getProperty(ConfigConstant.ARTNET_BROADCAST_ADDR, "");
     }
 
 
@@ -503,7 +503,7 @@ public class Configuration implements Serializable {
      * @return A matrix of device configs [y][x].
      */
     public DeviceConfig[][] parseDeviceLayout() {
-        final String value = config.getProperty(ConfigConstant.DEVICE_LAYOUT);
+        final String value = properties.getProperty(ConfigConstant.DEVICE_LAYOUT);
         final String[] rows = value.split(";");
 
         DeviceConfig[][] config = new DeviceConfig[rows.length][];
@@ -567,7 +567,7 @@ public class Configuration implements Serializable {
      * @return
      */
     public String getTpm2Device() {
-        return config.getProperty(ConfigConstant.TPM2_DEVICE);
+        return properties.getProperty(ConfigConstant.TPM2_DEVICE);
     }
 
     /**
@@ -615,7 +615,7 @@ public class Configuration implements Serializable {
      * @return the nr of screens
      */
     public int getNrOfScreens() {
-        deviceConfig.length * deviceConfig[0].length
+        return deviceConfig.length * deviceConfig[0].length;
     }
 
     /**
@@ -651,16 +651,7 @@ public class Configuration implements Serializable {
      * @return the layout
      */
     public Layout getLayout() {
-        return new MatrixLayout()
-        if (devicesInRow1 > 0 && devicesInRow2 == 0) {
-            return new HorizontalLayout(devicesInRow1);
-        }
-
-        if (devicesInRow1 > 0 && devicesInRow2 > 0 && devicesInRow1 == devicesInRow2) {
-            return new BoxLayout(devicesInRow1, devicesInRow2);
-        }
-
-        throw new IllegalStateException("Illegal device configuration detected!");
+        return deviceLayout;
     }
 
     /**
@@ -740,7 +731,7 @@ public class Configuration implements Serializable {
     }
 
     public int[] getOutputMappingValues() {
-        String rawConfig = config.getProperty(ConfigConstant.OUTPUT_MAPPING);
+        String rawConfig = properties.getProperty(ConfigConstant.OUTPUT_MAPPING);
         if (rawConfig == null) {
             return new int[0];
         }
@@ -785,7 +776,7 @@ public class Configuration implements Serializable {
      * @return the tpm2net ip
      */
     public String getTpm2NetIpAddress() {
-        return config.getProperty(ConfigConstant.TPM2NET_IP);
+        return properties.getProperty(ConfigConstant.TPM2NET_IP);
     }
 
     /**
@@ -827,7 +818,7 @@ public class Configuration implements Serializable {
      * @return
      */
     public float getSoundSilenceThreshold() {
-        String s = StringUtils.trim(config.getProperty(ConfigConstant.SOUND_SILENCE_THRESHOLD));
+        String s = StringUtils.trim(properties.getProperty(ConfigConstant.SOUND_SILENCE_THRESHOLD));
         if (StringUtils.isNotBlank(s)) {
             try {
                 float f = Float.parseFloat(s);

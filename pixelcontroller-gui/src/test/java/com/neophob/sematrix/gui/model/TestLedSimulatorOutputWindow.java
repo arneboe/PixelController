@@ -22,7 +22,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.neophob.sematrix.core.visual.MatrixData;
-import com.neophob.sematrix.core.visual.layout.HorizontalLayout;
 import com.neophob.sematrix.core.visual.layout.Layout;
 
 

@@ -74,28 +74,18 @@ public abstract class Layout implements Serializable {
     private LayoutName layoutName;
 
     /** The row1 size. */
-    protected int row1Size;
+    protected int rowCount;
 
     /** The row2 size. */
-    protected int row2Size;
+    protected int colCount;
 
-    /**
-     * Instantiates a new layout.
-     * 
-     * @param layoutName
-     *            the layout name
-     * @param row1Size
-     *            the row1 size
-     * @param row2Size
-     *            the row2 size
-     */
-    public Layout(LayoutName layoutName, int row1Size, int row2Size) {
+    public Layout(LayoutName layoutName, final int rowCount, final int colCount) {
         this.layoutName = layoutName;
-        this.row1Size = row1Size;
-        this.row2Size = row2Size;
+        this.rowCount = rowCount;
+        this.colCount = colCount;
 
-        LOG.log(Level.INFO, "Layout created: {0}, size row 1: {1}, row 2: {2}", new Object[] {
-                layoutName.toString(), row1Size, row2Size });
+        LOG.log(Level.INFO, "Layout created: {0}, rows: {1}, cols: {2}", new Object[] {
+                layoutName.toString(), rowCount, colCount });
     }
 
     /**
@@ -107,13 +97,16 @@ public abstract class Layout implements Serializable {
      */
     public abstract LayoutModel getDataForScreen(int screenNr, List<OutputMapping> ioMapping);
 
+
+
+
     /**
      * Gets the row1 size.
      * 
      * @return the row1 size
      */
-    public int getRow1Size() {
-        return row1Size;
+    public int getRowCount() {
+        return rowCount;
     }
 
     /**
@@ -121,8 +114,8 @@ public abstract class Layout implements Serializable {
      * 
      * @return the row2 size
      */
-    public int getRow2Size() {
-        return row2Size;
+    public int getColCount() {
+        return colCount;
     }
 
     /**

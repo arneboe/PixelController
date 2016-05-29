@@ -18,12 +18,6 @@
  */
 package com.neophob.sematrix.core.output;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import com.neophob.sematrix.core.output.gamma.GammaType;
 import com.neophob.sematrix.core.output.gamma.Gammatab;
 import com.neophob.sematrix.core.properties.Configuration;
@@ -37,6 +31,12 @@ import com.neophob.sematrix.core.visual.VisualState;
 import com.neophob.sematrix.core.visual.fader.IFader;
 import com.neophob.sematrix.core.visual.layout.Layout;
 import com.neophob.sematrix.core.visual.layout.LayoutModel;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * parent output class.
