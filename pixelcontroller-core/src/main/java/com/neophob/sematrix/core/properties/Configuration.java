@@ -236,7 +236,7 @@ public class Configuration implements Serializable {
             throw new IllegalArgumentException(ERROR_MULTIPLE_DEVICES_CONFIGURATED);
         }
 
-        int outputMappingSize = getOutputMappingValues().length;
+        int outputMappingSize = getOutputMappingValues(0).length;
         if (isOutputSnakeCabeling() && outputMappingSize > 0) {
             LOG.log(Level.SEVERE, ERROR_MULTIPLE_CABLING_METHOD_CONFIGURATED);
             throw new IllegalArgumentException(ERROR_MULTIPLE_CABLING_METHOD_CONFIGURATED);
@@ -1290,8 +1290,8 @@ public class Configuration implements Serializable {
         return deviceYResolution;
     }
 
-    public int[] getOutputMappingValues() {
-        String rawConfig = config.getProperty(ConfigConstant.OUTPUT_MAPPING);
+    public int[] getOutputMappingValues(final Integer i) {
+        String rawConfig = config.getProperty(ConfigConstant.OUTPUT_MAPPING + i.toString());
         if (rawConfig == null) {
             return new int[0];
         }

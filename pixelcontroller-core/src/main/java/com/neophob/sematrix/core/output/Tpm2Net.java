@@ -29,34 +29,35 @@ import com.neophob.sematrix.core.properties.ColorFormat;
 import com.neophob.sematrix.core.properties.DeviceConfig;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
- * 
+ *
  * Send data to a TPM2Net Device.
- * 
+ *
  * TPM2 use UDP as transport layer, Port 65506
- * 
+ *
  * see http://www.ledstyles.de/ftopic18969.html for more details
- * 
+ *
  * Protocol: Blockstart-Byte: 0x9C
- * 
+ *
  * Block-Art: 0xDA = Datenframe (DAta) *oder* 0xC0 = Befehl (Command) *oder*
  * 0xAA = Angeforderte Antwort (vom Datenempfänger an den Sender)
- * 
+ *
  * Framegrösse in 16 Bit: High-Byte zuerst, dann Low-Byte
- * 
+ *
  * Paketnummer: 0-255
- * 
+ *
  * Anzahl Pakete: 1-255
- * 
+ *
  * Nutzdaten: 1 - 65.535 Bytes Daten oder Befehle mit Parametern
- * 
+ *
  * Blockende-Byte: 0x36
- * 
- * 
- * 
+ *
+ *
+ *
  * @author michu
- * 
+ *
  */
 public class Tpm2Net extends Output {
 
@@ -92,42 +93,25 @@ public class Tpm2Net extends Output {
     private int nrOfScreens;
 
     /**
-     * 
+     *
      * @param ph
      * @param controller
      */
     public Tpm2Net(MatrixData matrixData, PixelControllerResize resizeHelper,
-            Configuration ph, IEthernetUdp udpImpl) {
+                   Configuration ph, IEthernetUdp udpImpl) {
         super(matrixData, resizeHelper, OutputDeviceEnum.TPM2NET, ph, 8);
 
         this.displayOptions = ph.getTpm2NetDevice();
         this.colorFormat = ph.getColorFormat();
         this.panelOrder = ph.getPanelOrder();
         this.snakeCabeling = ph.isOutputSnakeCabeling();
-        this.mapping = ph.getOutputMappingValues();
-        this.nrOfScreens = ph.getNrOfScreens();
-
-        targetAddrStr = ph.getTpm2NetIpAddress();
-        this.initialized = false;
-        this.udpImpl = udpImpl;
-        this.bufferCache = new BufferCache();
-
-        if (this.udpImpl.initializeEthernet(targetAddrStr, Tpm2NetProtocol.TPM2_NET_PORT)) {
-            this.initialized = true;
-            LOG.log(Level.INFO,
-                    "Initialized TPM2NET device, target IP: {0}:{1}, Resolution: {2}/{3}, snakeCabeling: {4}",
-                    new Object[] { targetAddrStr, Tpm2NetProtocol.TPM2_NET_PORT,
-                            this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize(),
-                            this.snakeCabeling });
-        } else {
-            LOG.log(Level.SEVERE, "Failed to resolve target address " + targetAddrStr + ":"
-                    + Tpm2NetProtocol.TPM2_NET_PORT);
-        }
+        throw new NotImplementedException();
+        // this.mapping = ph.getOutputMappingValues();
     }
 
     /**
      * send out a tpm2net paket
-     * 
+     *
      * @param packetNumber
      *            : a tpm2net frame can consists out of multiple udp packets
      * @param frameSize

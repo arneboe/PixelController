@@ -19,6 +19,7 @@
 package com.neophob.sematrix.core.output;
 
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,9 +31,9 @@ import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
- * 
+ *
  * @author michu
- * 
+ *
  */
 public abstract class AbstractDmxDevice extends Output {
 
@@ -66,20 +67,21 @@ public abstract class AbstractDmxDevice extends Output {
     /** flip each 2nd scanline? */
     protected boolean snakeCabeling;
 
+    protected ArrayList<int[]> mappings = new ArrayList<int[]>();
     protected int[] mapping;
 
     private int nrOfScreens;
 
     /**
-     * 
+     *
      * @param outputDeviceEnum
      * @param ph
      * @param controller
      * @param bpp
      */
     public AbstractDmxDevice(MatrixData matrixData, PixelControllerResize resizeHelper,
-            OutputDeviceEnum outputDeviceEnum, Configuration ph, int bpp,
-            int nrOfScreens) {
+                             OutputDeviceEnum outputDeviceEnum, Configuration ph, int bpp,
+                             int nrOfScreens) {
         super(matrixData, resizeHelper, outputDeviceEnum, ph, bpp);
 
         this.nrOfScreens = nrOfScreens;
@@ -88,22 +90,25 @@ public abstract class AbstractDmxDevice extends Output {
         this.xResolution = ph.parseOutputXResolution();
         this.yResolution = ph.parseOutputYResolution();
         this.snakeCabeling = ph.isOutputSnakeCabeling();
-        this.mapping = ph.getOutputMappingValues();
+        this.mappings.add(ph.getOutputMappingValues(0));
+        this.mappings.add(ph.getOutputMappingValues(1));
+        this.mappings.add(ph.getOutputMappingValues(2));
+        this.mappings.add(ph.getOutputMappingValues(3));
 
         this.initialized = false;
     }
 
     /**
      * concrete classes need to implement this
-     * 
+     *
      * @param universeId
      * @param buffer
      */
     protected abstract void sendBufferToReceiver(int universeId, byte[] buffer);
 
     /**
-	 * 
-	 */
+     *
+     */
     protected void calculateNrOfUniverse() {
         // check how many universe we need
         this.nrOfUniverse = 1;
@@ -118,13 +123,13 @@ public abstract class AbstractDmxDevice extends Output {
         LOG.log(Level.INFO, "\tPixels per universe: " + pixelsPerUniverse);
         LOG.log(Level.INFO, "\tFirst universe ID: " + firstUniverseId);
         LOG.log(Level.INFO, "\t# of universe: " + nrOfUniverse * nrOfScreens);
-        LOG.log(Level.INFO, "\tOutput Mapping entry size: " + this.mapping.length);
+        // LOG.log(Level.INFO, "\tOutput Mapping entry size: " + this.mapping.length);
         LOG.log(Level.INFO, "\tTarget address: " + targetAdress);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.neophob.sematrix.core.output.Output#update()
      */
     @Override
@@ -145,9 +150,9 @@ public abstract class AbstractDmxDevice extends Output {
                     // flip each 2nd scanline
                     transformedBuffer = OutputHelper.flipSecondScanline(transformedBuffer,
                             this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize());
-                } else if (this.mapping.length > 0) {
+                } else if (this.mappings.get(nr).length > 0) {
                     // do manual mapping
-                    transformedBuffer = OutputHelper.manualMapping(transformedBuffer, mapping,
+                    transformedBuffer = OutputHelper.manualMapping(transformedBuffer, this.mappings.get(nr),
                             xResolution, yResolution);
                 }
 

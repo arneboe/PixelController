@@ -26,11 +26,12 @@ import com.neophob.sematrix.core.properties.ColorFormat;
 import com.neophob.sematrix.core.properties.DeviceConfig;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * The Class ResolutionAwareOutput.
- * 
- * 
+ *
+ *
  * @author michu
  */
 public abstract class OnePanelResolutionAwareOutput extends Output {
@@ -56,7 +57,7 @@ public abstract class OnePanelResolutionAwareOutput extends Output {
 
     /**
      * Instantiates a new ResolutionAwareOutput.
-     * 
+     *
      * @param outputDeviceEnum
      *            the outputDeviceEnum
      * @param ph
@@ -65,35 +66,20 @@ public abstract class OnePanelResolutionAwareOutput extends Output {
      *            the controller
      */
     public OnePanelResolutionAwareOutput(MatrixData matrixData, PixelControllerResize resizeHelper,
-            OutputDeviceEnum outputDeviceEnum, Configuration ph, int bpp) {
+                                         OutputDeviceEnum outputDeviceEnum, Configuration ph, int bpp) {
         super(matrixData, resizeHelper, outputDeviceEnum, ph, bpp);
 
         this.snakeCabeling = ph.isOutputSnakeCabeling();
-        this.mapping = ph.getOutputMappingValues();
+        throw new NotImplementedException();
+        //this.mapping = ph.getOutputMappingValues();
 
         // get the mini dmx layout
-        this.displayOption = ph.getOutputDeviceLayout();
-        if (this.displayOption == null) {
-            this.displayOption = DeviceConfig.NO_ROTATE;
-        }
 
-        this.colorFormat = ColorFormat.RBG;
-        if (ph.getColorFormat().size() > 0) {
-            this.colorFormat = ph.getColorFormat().get(0);
-        }
-
-        LOG.log(Level.INFO, "Output Settings:");
-        LOG.log(Level.INFO,
-                "\tResolution: " + matrixData.getDeviceXSize() + "/" + matrixData.getDeviceYSize());
-        LOG.log(Level.INFO, "\tSnakeCabeling: " + snakeCabeling);
-        LOG.log(Level.INFO, "\tRotate: " + displayOption);
-        LOG.log(Level.INFO, "\tColorFormat: " + colorFormat);
-        LOG.log(Level.INFO, "\tOutput Mapping entry size: " + this.mapping.length);
     }
 
     /**
      * transform the buffer (rotate, flip 2nd scanline)
-     * 
+     *
      * @return the rotated buffer
      */
     public int[] getTransformedBuffer() {
