@@ -158,7 +158,9 @@ public class Geometrics extends Generator {
         private void update(int amount) {
             for (int n = 0; n < amount; n++) {
                 if (!finished) {
-                    if (dropSize < internalBufferXSize * 2) {
+                    final int maxSize = Math.max(internalBufferXSize, internalBufferYSize);
+                    if(dropSize < maxSize * 1.1) {
+                    //if (dropSize < internalBufferXSize * 2) {
                         dropSize++;
                     } else {
                         finished = true;
