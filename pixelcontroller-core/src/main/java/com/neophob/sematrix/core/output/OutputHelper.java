@@ -65,28 +65,7 @@ public class OutputHelper {
     /**
      * do manual mapping, this is used to support a more exotic device
      * configuration
-     * 
-     * @param buffer
-     * @param xResolution
-     * @param yResolution
-     * @return
      */
-    public static int[] manualMapping(int[] src, int[] mapping, int xResolution, int yResolution) {
-        int[] bufferTwo = new int[mapping.length];
-        int length = src.length;
-        int ofs = 0;
-        for (int i : mapping) {
-            if (i + 1 > length) {
-                LOG.log(Level.SEVERE,
-                        "Your manual mapping is wrong,the first index is 0! Invalid entry index: {0}",
-                        i);
-            } else {
-                bufferTwo[ofs++] = src[i];
-            }
-        }
-        return bufferTwo;
-    }
-
     public static int[] manualMapping(int[] src, int[] mapping, int xResolution, int yResolution) {
         int[] bufferTwo = new int[src.length];
 
