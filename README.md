@@ -17,6 +17,7 @@ This fork is probably not useable by anyone else.
  * does the gamma correction work? what exactly does it doe?
  * remove ConfigConstant.CFG_PIXEL_SIZE from config. It clutters the config and is useless. Use default pixel size and let user resize the window instead
  * remove HorizontalLayout and BoxLayout. They are both just special cases of MatrixLayout and not needed anymore
+ * Rewrite how speed is handled. Reducing fps is not a good way to reduce animation speed. fps should always be fixed.
 
 
 # PixelController
