@@ -57,7 +57,7 @@ public abstract class AbstractDmxDevice extends Output {
     // dmx specific settings
     protected int sequenceID;
     protected int pixelsPerUniverse;
-    protected int nrOfUniverse;
+    protected int nrOfUniverse; //how many universes do we need for one screen
     protected int firstUniverseId;
     protected InetAddress targetAdress;
 
@@ -127,6 +127,16 @@ public abstract class AbstractDmxDevice extends Output {
         LOG.log(Level.INFO, "\tTarget address: " + targetAdress);
     }
 
+
+    public byte[] concat(byte[] a, byte[] b) {
+        int aLen = a.length;
+        int bLen = b.length;
+        byte[] c= new byte[aLen+bLen];
+        System.arraycopy(a, 0, c, 0, aLen);
+        System.arraycopy(b, 0, c, aLen, bLen);
+        return c;
+    }
+
     /*
      * (non-Javadoc)
      *
@@ -138,32 +148,25 @@ public abstract class AbstractDmxDevice extends Output {
 
         if (initialized) {
             for (int nr = 0; nr < nrOfScreens; nr++) {
-                // get the effective panel buffer
-                int panelNr = this.panelOrder.get(nr);
 
-                // get buffer data
-                int[] transformedBuffer = RotateBuffer.transformImage(super.getBufferForScreen(nr),
-                        displayOptions.get(panelNr), this.matrixData.getDeviceXSize(),
-                        this.matrixData.getDeviceYSize());
+                byte[] rgbBuffer = getScreenRGBBuffer(nr);
 
-                if (this.snakeCabeling) {
-                    // flip each 2nd scanline
-                    transformedBuffer = OutputHelper.flipSecondScanline(transformedBuffer,
-                            this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize());
-                } else if (this.mappings.get(nr).length > 0) {
-                    // do manual mapping
-                    transformedBuffer = OutputHelper.manualMapping(transformedBuffer, this.mappings.get(nr),
-                            xResolution, yResolution);
+                //HACK to work around broken output on the pixlight
+                int numUniverses = this.nrOfUniverse;
+                if(nr == 0)
+                {
+                    byte[] buffer1 = getScreenRGBBuffer(1);
+                    rgbBuffer = concat(rgbBuffer, buffer1);
+                    numUniverses *= 2;
                 }
 
-                byte[] rgbBuffer = OutputHelper.convertBufferTo24bit(transformedBuffer,
-                        colorFormat.get(panelNr));
 
                 // send out
-                int remainingBytes = rgbBuffer.length;// 510
+                //output 2 is broken, is appended to one
+                int remainingBytes = rgbBuffer.length;
                 int ofs = 0;
-                for (int i = 0; i < this.nrOfUniverse; i++) {
-                    int tmp = pixelsPerUniverse * 3;// tmp=510
+                for (int i = 0; i < numUniverses; i++) {
+                    int tmp = pixelsPerUniverse * 3;
                     if (remainingBytes <= pixelsPerUniverse * 3) {
                         tmp = remainingBytes;
                     }
@@ -171,7 +174,8 @@ public abstract class AbstractDmxDevice extends Output {
                     System.arraycopy(rgbBuffer, ofs, buffer, 0, tmp);
                     remainingBytes -= tmp;
                     ofs += tmp;
-                    sendBufferToReceiver(this.firstUniverseId + universeOfs, buffer);
+                    final int targetUniverse = this.firstUniverseId + universeOfs;
+                    sendBufferToReceiver(targetUniverse, buffer);
 
                     universeOfs++;
                 }
@@ -180,6 +184,31 @@ public abstract class AbstractDmxDevice extends Output {
         }
 
     }
+
+    private byte[] getScreenRGBBuffer(final int screenNr) {
+        int panelNr = this.panelOrder.get(screenNr);
+
+        // get buffer data
+        int[] transformedBuffer = RotateBuffer.transformImage(super.getBufferForScreen(screenNr),
+                displayOptions.get(panelNr), this.matrixData.getDeviceXSize(),
+                this.matrixData.getDeviceYSize());
+
+        if (this.snakeCabeling) {
+            // flip each 2nd scanline
+            transformedBuffer = OutputHelper.flipSecondScanline(transformedBuffer,
+                    this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize());
+        } else if (this.mappings.get(screenNr).length > 0) {
+            // do manual mapping
+            transformedBuffer = OutputHelper.manualMapping(transformedBuffer, this.mappings.get(screenNr),
+                    xResolution, yResolution);
+        }
+
+        byte[] rgbBuffer = OutputHelper.convertBufferTo24bit(transformedBuffer,
+                colorFormat.get(panelNr));
+        return rgbBuffer;
+    }
+
+
 
     @Override
     public String getConnectionStatus() {
